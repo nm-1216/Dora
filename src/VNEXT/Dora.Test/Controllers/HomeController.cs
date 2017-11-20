@@ -42,17 +42,17 @@ namespace Dora.Test.Controllers
 
         public string Index()
         {
-            var temp = qyhApiService.getToken(string.Empty, string.Empty);
+            //var temp = qyhApiService.getToken(string.Empty, string.Empty);
 
 
 
 
 
-            var json = JObject.Parse(temp);
-            var ACCESS_TOKEN = json.GetValue("access_token").ToString();
+            //var json = JObject.Parse(temp);
+            //var ACCESS_TOKEN = json.GetValue("access_token").ToString();
 
-
-            return qyhApiService.agentGet(ACCESS_TOKEN, "0");
+            return "";
+            //return qyhApiService.agentGet(ACCESS_TOKEN, "0");
         }
 
         public IActionResult About()

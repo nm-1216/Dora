@@ -55,5 +55,6 @@
 -r:"C:\Users\Craze\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\Craze\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\Craze\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll"
+"E:\Dora\src\VNEXT\Dora.Core\AjaxResult.cs"
 "E:\Dora\src\VNEXT\Dora.Core\Net\UrlRequest.cs"
 "E:\Dora\src\VNEXT\Dora.Core\Properties\AssemblyInfo.cs"

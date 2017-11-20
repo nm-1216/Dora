@@ -13,6 +13,12 @@ namespace Dora.Database
             base.OnModelCreating(builder);
 
             builder.AddConfiguration(new DictMap());
+
+            builder.AddConfiguration(new ClassMap());
+            builder.AddConfiguration(new GradeMap());
+            builder.AddConfiguration(new SchoolUserInClassMap());
+            builder.AddConfiguration(new SchoolUserMap());
+            builder.AddConfiguration(new CourseMap());
         }
     }
 }

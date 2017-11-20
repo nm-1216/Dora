@@ -30,7 +30,8 @@
         "Dora.Domain": "1.0.0-*",
         "Dora.Infrastructure": "1.0.0-1",
         "Dora.Repositorys": "1.0.0-*",
-        "Dora.Services": "1.0.0-*"
+        "Dora.Services": "1.0.0-*",
+        "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1"
     },
 
     "tools": {

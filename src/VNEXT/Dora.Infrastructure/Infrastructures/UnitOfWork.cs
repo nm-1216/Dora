@@ -44,11 +44,18 @@
 
         async Task<bool> IUnitOfWork.RegisterNew<TEntity>(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Add(entity);
+            try
+            {
+                _dbContext.Set<TEntity>().Add(entity);
 
-            if (_dbTransaction != null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+                if (_dbTransaction != null)
+                    return await _dbContext.SaveChangesAsync() > 0;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         async Task<bool> IUnitOfWork.RegisterDirty<TEntity>(TEntity entity)

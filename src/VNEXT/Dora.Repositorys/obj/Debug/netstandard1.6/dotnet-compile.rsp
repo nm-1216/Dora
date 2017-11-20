@@ -130,5 +130,13 @@
 --reference:E:\Dora\src\VNEXT\Dora.Domain\bin\Debug\netstandard1.6\Dora.Domain.dll
 --reference:E:\Dora\src\VNEXT\Dora.Infrastructure\bin\Debug\netstandard1.6\Dora.Infrastructure.dll
 E:\Dora\src\VNEXT\Dora.Repositorys\Properties\AssemblyInfo.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\ClassRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\CourseRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\GradeRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\SchoolUserRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\Interfaces\IClassRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\Interfaces\ICourseRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\Interfaces\IGradeRepository.cs
+E:\Dora\src\VNEXT\Dora.Repositorys\School\AutoCode\Interfaces\ISchoolUserRepository.cs
 E:\Dora\src\VNEXT\Dora.Repositorys\Systems\AutoCode\DictRepository.cs
 E:\Dora\src\VNEXT\Dora.Repositorys\Systems\AutoCode\Interfaces\IDictRepository.cs

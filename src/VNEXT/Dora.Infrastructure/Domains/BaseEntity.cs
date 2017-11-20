@@ -9,6 +9,12 @@
     {
         //CreateUser, UpdateUser, CreateTime, UpdateTime, LastAction
 
+        public BaseEntity()
+        {
+            this.CreateTime = this.UpdateTime = DateTime.Now;
+            this.CreateUser = this.UpdateUser = this.LastAction = string.Empty;
+        }
+
         /// <summary>
         /// 创建用户
         /// </summary>
