@@ -1,0 +1,178 @@
+﻿@{
+    ViewData["Title"] = "诊改支撑平台";
+    Layout = "_Layout_1";
+}
+
+<style>
+    body .demo-class .layui-layer-title {
+        background: #000;
+        color: #fff;
+        border: none;
+    }
+
+    body .imgbox {
+        padding-bottom: 10px;
+    }
+
+        body .imgbox img {
+            width: 100%;
+        }
+
+    body .col-lg-1 {
+        padding: 10px;
+    }
+
+    .row1>div>div {
+        background:#ddd;
+        height:60px;
+        padding-top:8px;
+        text-align:center;
+    }
+</style>
+
+<h1>任课教师</h1>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4><em>F1 通用功能</em></h4>
+        </div>
+    </div>
+    <div class="row imgbox row1">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>课程教学大纲维护</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">课程资源维护
+            ,
+            手机端使用
+            </div>
+
+            
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">课程成绩维护</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            
+            <div style="background:#ff6a00">试卷送印</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            			
+            <div>授课计划查询</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            
+            <div>课程大纲查询</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            
+            <div style="background:#ff6a00">教师调课申请</div>
+
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            
+            <div style="background:#ff6a00" title="文件管理">教学管理制度查询</div>
+
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4><em>F2 理论课(实践)</em></h4>
+        </div>
+    </div>
+    <div class="row imgbox row1">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>授课计划填写	</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00" title="缺少考勤记录表,缺少课程反馈">教学（实训）日志填写</div>
+        </div>
+
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>辅导记录填写</div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4><em>F3 校内实训</em></h4>
+        </div>
+    </div>
+    <div class="row imgbox row1">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>实训计划填写	</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>实训室预约</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div>实训日志填写</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4><em>F4 校外实习</em></h4>
+        </div>
+    </div>
+    <div class="row imgbox row1">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">校外实习任务安排	</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">校外实习指导</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">校外实习成绩录入</div>
+        </div>
+    </div>
+    		
+    <div class="row">
+        <div class="col-lg-12">
+            <h4><em>F5 毕业环节</em></h4>
+        </div>
+    </div>
+    <div class="row imgbox row1">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">开题信息录入	</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">毕业设计指导</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">毕业设计中期检查</div>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+            <div style="background:#ff6a00">毕业设计成绩录入</div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            $('.logout').on('click', function () {
+                layer.confirm('你确定要退出系统吗？', {
+                    btn: ['确定', '取消'],
+                    skin: 'demo-class'
+                }, function () {
+                    document.getElementById('logoutForm').submit()
+                }, function () {
+
+                });
+            });
+        })
+    </script>
+}
+

@@ -1,0 +1,125 @@
+﻿@{
+    Layout = "_Layout_99";
+}
+@section styles{
+    @RenderSection("styles", required: false)
+}
+<div class="wapper">
+    @RenderBody()
+</div>
+<form asp-controller="Home" asp-action="LogOff" method="post" id="logoutForm">
+    <table class="os-bd-btm">
+        <tr>
+            <td class="t0">诊改支撑平台 Powered By: Os.Dora Team 技术支持：<i class="glyphicon glyphicon-envelope"></i><a href="mailto:o7o@outlook.com?subject=Os.Brain Question&body=Os.Brain Question">o7o@outlook.com</a> <i class="glyphicon glyphicon-phone-alt"></i><a href="javascript:void(0)">15895313369</a></td>
+            @*<td class="t1" onclick="javascript:void(0)"><i class="glyphicon glyphicon-info-sign" aria-hidden="true"></i> 版本信息</td>
+            <td class="t2" onclick="javascript:void(0)"><i class="glyphicon glyphicon-th-list" aria-hidden="true"></i> 登陆日志</td>
+            <td class="t3" onclick="javascript:void(0)"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i> 修改密码</td>
+            <td class="t7" onclick="javascript:void(0)"><i class="glyphicon glyphicon-cog" aria-hidden="true"></i> 个人设置</td>
+            <td class="t4" onclick="javascript: window.mainFrame.location.href = '/home/desk'"><i class="glyphicon glyphicon-home" aria-hidden="true"></i> 回到首页</td>
+            <td class="t5" onclick="javascript:void(0)"><i class="glyphicon glyphicon-off" aria-hidden="true"></i> 退出系统</td>
+            <td class="t6" onclick="javascript:void(0)"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i> 帮助手册</td>*@
+        </tr>
+    </table>
+</form>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">诊改支撑平台</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户权限管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">组织架构管理</a></li>
+                        <li><a href="#">模块管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">用户管理</a></li>
+                        <li><a href="#">角色管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">基础数据管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">学生管理</a></li>
+                        <li><a href="#">教师管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">班级管理</a></li>
+                        <li><a href="#">课程管理</a></li>
+                        <li><a href="#">专业管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">班级课程管理</a></li>
+                        <li><a href="#">专业课程管理</a></li>
+                        <li><a href="#">班级学生管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">公共教室管理</a></li>
+                        <li><a href="#">实训室管理</a></li>
+                        <li><a href="#">实训设备管理</a></li>
+
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">数据字典管理</a></li>
+                        <li><a href="#">审批流管理</a></li>
+                        <li><a href="#">实训项目管理</a></li>
+                        <li><a href="#">辅导记录管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">实训计划管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">教学任务管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">授课计划管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">教学大纲管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人才培养方案管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">倾苏恋 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Register">Register</a></li>
+                        <li><a href="/ChangePassword">ChangePassword</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="javascript:void(0)" class="logout"><i class="glyphicon glyphicon-off" style="top:3px;font-weight:bold"></i> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+@section scripts{
+    @RenderSection("scripts", required: false)
+}

@@ -1,6 +1,6 @@
 ﻿namespace Dora.Repositorys.Systems
 {
-    using Dora.Domain.Entities.System;
+    using Domain.Entities.Application;
     using Dora.Infrastructure.Infrastructures.Interfaces;
     using Dora.Infrastructure.Repositorys;
     using Dora.Repositorys.Systems.Interfaces;

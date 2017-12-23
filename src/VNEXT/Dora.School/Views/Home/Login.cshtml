@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "诊改支撑平台";
+    Layout = "_Layout_99";
+}
+@model LoginViewModel
+@section styles {
+    <link href="~/css/Login/Login.css" rel="stylesheet" />
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 form-box">
+            <div class="form-top">
+                <div class="form-top-left">
+                    <h3>Login to our system</h3>
+                    <p>Enter your username and password to log on:</p>
+                </div>
+                <div class="form-top-right">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </div>
+            </div>
+            <div class="form-bottom">
+                <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div asp-validation-summary="All" class="list-unstyled"></div>
+                    <div class="form-group">
+                        <label class="sr-only" for="form-username">Username</label>
+                        <input asp-for="Uname" placeholder="Username..." value="" class="form-username form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="form-password">Password</label>
+                        <input asp-for="Password" placeholder="Password..." class="form-password form-control" />
+                    </div>
+                    <button type="submit" class="btn">Sign in!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -2,7 +2,6 @@
 {
     using Dora.Infrastructure.Features.Common;
     using Entities.School;
-    using Entities.System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,7 +23,7 @@
 
 
             ///Relationships
-            builder.HasMany(b => b.Classes).WithOne(b => b.Course).HasForeignKey(b => b.CourseId);
+            //builder.HasMany(b => b.Classes).WithOne(b => b.Course).HasForeignKey(b => b.CourseId);
         }
     }
 }

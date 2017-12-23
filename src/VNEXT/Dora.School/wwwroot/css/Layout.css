@@ -1,0 +1,144 @@
+﻿html,
+body {
+    height: 100%;
+}
+
+body {
+    font: 12px/1.5 tahoma,arial,'Hiragino Sans GB',\5b8b\4f53,sans-serif;
+}
+
+.hidden {
+    display: none;
+}
+
+.os-bd-top {
+    background: url(../images/top/Bg_TopRight.gif) repeat-x;
+    height: 64px;
+}
+
+    .os-bd-top div {
+        background: url(../images/top/Bg_TopLeft.gif) no-repeat;
+        height: 64px;
+    }
+
+
+.os-bd-menu {
+    background: url(../images/top/Bg_MenuRight.gif) repeat-x #EEF2FB;
+}
+
+    .os-bd-menu div.tabs {
+        background: url(../images/top/Bg_MenuLeft.gif) no-repeat;
+        height: 60px;
+        padding-left: 180px;
+    }
+
+        .os-bd-menu div.tabs > ul {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            height: 28px;
+            overflow: hidden;
+        }
+
+            .os-bd-menu div.tabs > ul li {
+                display: block;
+                float: left;
+                color: #fff;
+                cursor: pointer;
+                width: 90px;
+                text-align: center;
+                height: 28px;
+                padding: 0 0 4px 0;
+            }
+
+                .os-bd-menu div.tabs > ul li.on {
+                    background: url(../images/top/Bg_MenuBottom.gif) center bottom no-repeat;
+                    color: #E17100;
+                }
+
+                .os-bd-menu div.tabs > ul li.over {
+                    color: #E17100;
+                }
+
+                .os-bd-menu div.tabs > ul li.lines {
+                    background: url(../images/top/Bg_MenuLine.gif) 0px 2px no-repeat;
+                    width: 1px;
+                }
+
+        .os-bd-menu div.tabs .tab_con {
+            border: 0px solid red;
+            height: 22px;
+            padding: 0;
+        }
+
+            .os-bd-menu div.tabs .tab_con li {
+                display: block;
+                float: left;
+                height: 22px;
+                padding: 0 10px;
+                background: url(../images/top/top-b4-b.gif);
+                cursor: pointer;
+            }
+
+                .os-bd-menu div.tabs .tab_con li.on {
+                    background: url(../images/top/top-b4-yellow.gif);
+                }
+
+                .os-bd-menu div.tabs .tab_con li.click {
+                    background: url(../images/top/top-b4-yellow.gif);
+                }
+
+                .os-bd-menu div.tabs .tab_con li.li_left {
+                    background: url(../images/top/Bg_MenuConLeft.gif) no-repeat;
+                    width: 5px;
+                    padding: 0;
+                }
+
+                .os-bd-menu div.tabs .tab_con li.li_right {
+                    background: url(../images/top/Bg_MenuConRight.gif) no-repeat;
+                    width: 5px;
+                    padding: 0;
+                }
+
+                .os-bd-menu div.tabs .tab_con li.li_line {
+                    width: 1px;
+                    padding: 0px 0px 4px 0px;
+                    background: url(../images/top/Bg_MenuConLine.jpg);
+                }
+
+.os-bd-btm {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border-collapse: collapse;
+    position:fixed;
+    bottom: 0;
+    height: 20px;
+    overflow: hidden;
+}
+
+    .os-bd-btm td {
+        width: 85px;
+        vertical-align: middle;
+        border-left: 1px solid #fff;
+        text-align: left;
+        padding: 0 5px;
+        cursor: pointer;
+        height: 20px;
+    }
+
+        .os-bd-btm td.t0 {
+            width: auto;
+            text-align: left;
+            border: 0;
+            padding-left: 10px;
+        }
+
+        .os-bd-btm td i {
+            top: 2px;
+            margin: 0px 2px 0 0;
+        }
+
+.os-fw {
+overflow:hidden;
+}

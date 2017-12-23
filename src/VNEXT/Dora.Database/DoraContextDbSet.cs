@@ -3,19 +3,100 @@
 namespace Dora.Database
 {
     using Domain.Entities.School;
-    using Dora.Domain.Entities.System;
     using Microsoft.EntityFrameworkCore;
 
     public partial class DoraContext
     {
-        #region System
-        public DbSet<Dict> Dicts { get; set; }
-        public DbSet<Class> Classes { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<SchoolUser> SchoolUsers { get; set; }
-        public DbSet<Grade> Grades { get; set; }
-        public DbSet<SchoolUserInClass> SchoolUserInClass { get; set; }
+        //#region Application
+        //public DbSet<EventLog> EventLogs { get; set; }
+        //public DbSet<LoginLog> LoginLogs { get; set; }
+        //public DbSet<Action> Actions { get; set; }
+        //public DbSet<Application> Applications { get; set; }
+        //public DbSet<Group> Groups { get; set; }
+        //public DbSet<Dict> Dicts { get; set; }
 
+        //#endregion
+
+        #region System
+        //public DbSet<Class> Classes { get; set; }
+        //public DbSet<Course> Courses { get; set; }
+        //public DbSet<SchoolUser> SchoolUsers { get; set; }
+        //public DbSet<SchoolUserInClass> SchoolUserInClass { get; set; }
+
+        #endregion
+
+
+        #region School
+
+        #region Auth
+        public DbSet<Permission> Permissions { get; set; }
+        #endregion
+
+        #region BasicData
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<ApprovalWorkflow> ApprovalWorkflows { get; set; }
+        public DbSet<BasicData> BasicDatas { get; set; }
+        public DbSet<CoachRecord> CoachRecords { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseClassTeacher> CourseClassTeachers { get; set; }
+        public DbSet<CourseProfessional> CourseProfessionals { get; set; }
+        public DbSet<Professional> Professionals { get; set; }
+        public DbSet<PublicClassRoom> PublicClassRooms { get; set; }
+        public DbSet<TrainingLabDevice> TrainingLabDevices { get; set; }
+        public DbSet<TrainingProject> TrainingProjects { get; set; }
+
+
+        #endregion
+
+        #region Model
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<ModuleType> ModuleTypes { get; set; }
+        #endregion
+
+        #region Organization
+        public DbSet<Organization> Organizations { get; set; }
+        #endregion
+
+        #region PersonnelTraining
+        public DbSet<PersonnelTraining> PersonnelTrainings { get; set; }
+        public DbSet<PersonnelTrainingApproval> PersonnelTrainingApprovals { get; set; }
+        public DbSet<PersonnelTrainingLog> PersonnelTrainingLogs { get; set; }
+        #endregion
+
+        #region SchoolUser
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Student> Students { get; set; }
+        #endregion
+
+        #region Syllabus
+        public DbSet<Syllabus> Syllabuss { get; set; }
+        public DbSet<SyllabusApproval> SyllabusApprovals { get; set; }
+        public DbSet<SyllabusBook> SyllabusBooks { get; set; }
+        public DbSet<SyllabusLog> SyllabusLog { get; set; }
+        public DbSet<SyllabusPeriod> SyllabusPeriod { get; set; }
+        #endregion
+
+        #region TeachingPlan
+        public DbSet<TeachingPlan> TeachingPlans { get; set; }
+        public DbSet<TeachingPlanLog> TeachingPlanLogs { get; set; }
+        public DbSet<TeachingPlanApproval> TeachingPlanApprovals { get; set; }
+        public DbSet<TeachingPlanDetail> TeachingPlanDetails { get; set; }
+        #endregion
+
+
+        #region TeachingPlan
+        public DbSet<TeachingTask> TeachingTasks { get; set; }
+        public DbSet<TeachingTaskDetail> TeachingTaskDetails { get; set; }
+        #endregion
+
+
+        #region TrainingPlan
+        public DbSet<TrainingPlan> TrainingPlans { get; set; }
+        public DbSet<TrainingPlanApproval> TrainingPlanApprovals { get; set; }
+        public DbSet<TrainingPlanDetail> TrainingPlanDetails { get; set; }
+        public DbSet<TrainingPlanLog> TrainingPlanLogs { get; set; }
+
+        #endregion
         #endregion
     }
 }

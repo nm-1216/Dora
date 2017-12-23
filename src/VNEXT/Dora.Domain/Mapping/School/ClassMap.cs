@@ -2,7 +2,6 @@
 {
     using Dora.Infrastructure.Features.Common;
     using Entities.School;
-    using Entities.System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,12 +20,12 @@
             ///Table & Column Mappings
             builder.ToTable("School_Class");
             builder.Property(b => b.ClassId).HasColumnName("ClassId");
-            builder.Property(b => b.CourseId).HasColumnName("CourseId");
+            //builder.Property(b => b.CourseId).HasColumnName("CourseId");
             builder.Property(b => b.Name).HasColumnName("Name");
             builder.Property(b => b.InviteCode).HasColumnName("InviteCode");
 
             ///Relationships
-            builder.HasMany(b => b.User).WithOne(b => b.Class).HasForeignKey(b => b.ClassId);
+            //builder.HasMany(b => b.User).WithOne(b => b.Class).HasForeignKey(b => b.ClassId);
         }
     }
 }

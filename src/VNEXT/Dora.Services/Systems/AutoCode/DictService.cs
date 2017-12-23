@@ -1,7 +1,7 @@
 ﻿
 namespace Dora.Services.Systems
 {
-    using Dora.Domain.Entities.System;
+    using Domain.Entities.Application;
     using Dora.Infrastructure.Infrastructures.Interfaces;
     using Dora.Infrastructure.Services;
     using Dora.Services.Systems.Interfaces;
