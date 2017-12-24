@@ -15,9 +15,9 @@
             ///Properties
             builder.Property(b => b.Name).HasMaxLength(Constants.INT256).IsRequired();
             builder.Property(b => b.AppLev).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.CouNat).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.CouType).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.CouAbs).HasMaxLength(Constants.INT256).IsRequired();
+            builder.Property(b => b.Nature).HasMaxLength(Constants.INT256).IsRequired();
+            builder.Property(b => b.Type).HasMaxLength(Constants.INT256).IsRequired();
+            builder.Property(b => b.Discription).HasMaxLength(Constants.INT4000).IsRequired();
 
             ///Table & Column Mappings
             builder.ToTable("School_Course");

@@ -7,6 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Dora.Domain.Entities.Application;
 using Dora.Domain.Entities.School;
+using Dora.Infrastructure.Infrastructures.Interfaces;
+using Dora.Infrastructure.Infrastructures;
+using Dora.Repositorys.School.Interfaces;
+using Dora.Repositorys.School;
+using Dora.Services.School;
+using Dora.Services.School.Interfaces;
 
 namespace Dora.School
 {
@@ -64,6 +70,14 @@ namespace Dora.School
                 options.AppVersion = Configuration["AppSettings:AppVersion"];
                 options.FrameWorkWeb = Configuration["AppSettings:FrameWorkWeb"];
             });
+
+
+            services.AddScoped<IDbContext, ApplicationDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+            services.AddTransient<IProfessionalRepository, ProfessionalRepository>();
+            services.AddTransient<IProfessionalService, ProfessionalService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

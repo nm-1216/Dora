@@ -8,9 +8,10 @@ using Dora.School;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171224044335_init1224")]
+    partial class init1224
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -633,8 +634,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<string>("OrganizationId");
-
                     b.Property<int>("Status");
 
                     b.Property<DateTime>("UpdateTime");
@@ -646,8 +645,6 @@ namespace dora.school.Migrations
                     b.Property<int>("Year");
 
                     b.HasKey("ProfessionalId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("School_Professional");
                 });
@@ -1866,13 +1863,6 @@ namespace dora.school.Migrations
                     b.HasOne("Dora.Domain.Entities.School.PersonnelTraining", "PersonnelTraining")
                         .WithMany("PersonnelTrainingLogs")
                         .HasForeignKey("PersonnelTrainingId");
-                });
-
-            modelBuilder.Entity("Dora.Domain.Entities.School.Professional", b =>
-                {
-                    b.HasOne("Dora.Domain.Entities.School.Organization", "Department")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.Student", b =>

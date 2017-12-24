@@ -8,22 +8,9 @@
     @RenderBody()
 </div>
 <form asp-controller="Home" asp-action="LogOff" method="post" id="logoutForm">
-    <table class="os-bd-btm">
-        <tr>
-            <td class="t0">诊改支撑平台 Powered By: Os.Dora Team 技术支持：<i class="glyphicon glyphicon-envelope"></i><a href="mailto:o7o@outlook.com?subject=Os.Brain Question&body=Os.Brain Question">o7o@outlook.com</a> <i class="glyphicon glyphicon-phone-alt"></i><a href="javascript:void(0)">15895313369</a></td>
-            @*<td class="t1" onclick="javascript:void(0)"><i class="glyphicon glyphicon-info-sign" aria-hidden="true"></i> 版本信息</td>
-            <td class="t2" onclick="javascript:void(0)"><i class="glyphicon glyphicon-th-list" aria-hidden="true"></i> 登陆日志</td>
-            <td class="t3" onclick="javascript:void(0)"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i> 修改密码</td>
-            <td class="t7" onclick="javascript:void(0)"><i class="glyphicon glyphicon-cog" aria-hidden="true"></i> 个人设置</td>
-            <td class="t4" onclick="javascript: window.mainFrame.location.href = '/home/desk'"><i class="glyphicon glyphicon-home" aria-hidden="true"></i> 回到首页</td>
-            <td class="t5" onclick="javascript:void(0)"><i class="glyphicon glyphicon-off" aria-hidden="true"></i> 退出系统</td>
-            <td class="t6" onclick="javascript:void(0)"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i> 帮助手册</td>*@
-        </tr>
-    </table>
 </form>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -33,10 +20,19 @@
             </button>
             <a class="navbar-brand" href="#">诊改支撑平台</a>
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">功能预览 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/index">任课教师</a></li>
+                        <li><a href="/index2">分院(系)领导</a></li>
+                        <li><a href="/index3">教学秘书</a></li>
+                        <li><a href="/index4">实验实训室管理员</a></li>
+                        <li><a href="/index5">教务管理员</a></li>
+                    </ul>
+                </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户权限管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -55,7 +51,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="#">班级管理</a></li>
                         <li><a href="#">课程管理</a></li>
-                        <li><a href="#">专业管理</a></li>
+                        <li><a href="Professional">专业管理</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">班级课程管理</a></li>
                         <li><a href="#">专业课程管理</a></li>

@@ -13,6 +13,7 @@
             this.CourseId = code;
         }
 
+        #region excel
         /// <summary>
         /// 课程编号
         /// </summary>
@@ -24,34 +25,29 @@
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets 适用层次 
-        /// </summary>
-        public virtual string AppLev { get; set; } = string.Empty;
-
-        /// <summary>
         /// Gets or sets 学分数 
         /// </summary>
-        public virtual decimal? Credit { get; set; }
+        public virtual float Credit { get; set; }
 
         /// <summary>
         /// Gets or sets 学时数 
         /// </summary>
-        public virtual decimal? Period { get; set; }
-
-        /// <summary>
-        /// Gets or sets 课程性质 专业课    非专业课
-        /// </summary>
-        public virtual string CouNat { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 课程类别 理论课    理论+实践 课
-        /// </summary>
-        public virtual string CouType { get; set; } = string.Empty;
+        public virtual float Period { get; set; }
 
         /// <summary>
         /// Gets or sets 课程简介 
         /// </summary>
-        public virtual string CouAbs { get; set; } = string.Empty;
+        public virtual string Discription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets 课程性质 专业课    非专业课
+        /// </summary>
+        public virtual string Nature { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets 课程类别 理论课    理论+实践 课
+        /// </summary>
+        public virtual string Type { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets 组织架构ID 所属部门
@@ -62,6 +58,20 @@
         /// Gets or sets Status 
         /// </summary>
         public virtual BaseStatus Status { get; set; }
+
+        #endregion
+
+
+        #region Other
+
+        /// <summary>
+        /// Gets or sets 适用层次 
+        /// </summary>
+        public virtual string AppLev { get; set; } = string.Empty;
+
+        #endregion
+
+        #region Class Property 
 
         /// <summary>
         /// 组织架构ID 所属部门
@@ -87,6 +97,8 @@
         /// 授课计划
         /// </summary>
         public virtual ICollection<TeachingPlan> TeachingPlans { get; set; }
+
+        #endregion
 
     }
 }

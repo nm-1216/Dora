@@ -1,15 +1,22 @@
 ﻿html, body {
     min-height: 100%;
 }
-
 .wapper {
     position: absolute;
     left: 0;
     right: 0;
     top: 50px;
-    bottom: 20px;
+    bottom: 0px;
     overflow: auto;
     width: 100%;
+    background-color:#e4e5e7
+}
+.container-fluid{
+    background-color:#fff
+}
+
+.navbar-default {
+    background:none
 }
 
 .hidden {
