@@ -1,56 +1,9 @@
-﻿#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
- 
-    文件名：RequestHandler.cs
-    文件功能描述：微信支付V3 请求处理
-    
-    
-    创建标识：Senparc - 20150211
-    
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-
-    修改标识：Yu XiaoChou - 20160107
-    修改描述：增加一个不需要HttpContext的初始化方法，避免使用这个类的时候，还要必须从页面初始化一个对象过来，可以在基类里直接使用这个类，相应的，将GetCharset方法中，不存在HttpContext时，默认使用UTF-8
-
-    修改标识：Senparc - 20161112
-    修改描述：为ParseXML()方法添加v==null的判断
-
-    修改标识：Senparc - 20170115
-    修改描述：v14.3.120 添加SetParameterWhenNotNull()方法
-
-    修改标识：Senparc - 20170319
-    修改描述：v14.3.134 修改RequestHandler构造函数
-
-    ----------------------------------------------------------------*/
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dora.Helpers.StringHelper;
 using Dora.Weixin.MP.Helpers;
-
 using Microsoft.AspNetCore.Http;
 
 namespace Dora.Weixin.MP.TenPayLibV3
@@ -82,11 +35,7 @@ namespace Dora.Weixin.MP.TenPayLibV3
         public RequestHandler(HttpContext httpContext)
         {
             Parameters = new Hashtable();
-#if NET35 || NET40 || NET45 || NET461
-			this.HttpContext = httpContext ?? HttpContext.Current;
-#else
-            this.HttpContext = httpContext ?? new DefaultHttpContext();
-#endif
+            this.HttpContext = httpContext;
 
         }
         /// <summary>
@@ -249,21 +198,12 @@ namespace Dora.Weixin.MP.TenPayLibV3
 
         protected virtual string GetCharset()
         {
-#if NET35 || NET40 || NET45 || NET461
-            if (this.HttpContext == null)//构造函数已经排除了这种可能，暂时保留
-            {
-                return Encoding.UTF8.BodyName;
-            }
-
-            return this.HttpContext.Request.ContentEncoding.BodyName;
-#else
             if (this.HttpContext == null)//构造函数已经排除了这种可能，暂时保留
             {
                 return Encoding.UTF8.WebName;
             }
 
             return this.HttpContext.Request.Headers["charset"];
-#endif
 
         }
     }

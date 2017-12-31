@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-#if NET45
-using System.Web;
-#else
-using Microsoft.AspNetCore.Http;
-#endif
 
 
 namespace Senparc.Weixin.MP.Sample.CommonService.Download

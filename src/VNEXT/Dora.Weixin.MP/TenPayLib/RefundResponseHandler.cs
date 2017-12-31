@@ -67,33 +67,7 @@ namespace Dora.Weixin.MP.TenPayLib
 
         protected HttpContext HttpContext;
 
-#if NET35 || NET40 || NET45 || NET461
-        /// <summary>
-        /// 获取服务器通知数据方式，进行参数获取
-        /// </summary>
-        /// <param name="httpContext"></param>
-        public RefundResponseHandler(HttpContext httpContext)
-        {
-            Parameters = new Hashtable();
 
-            this.HttpContext = httpContext ?? HttpContext.Current;
-            NameValueCollection collection;
-            if (this.HttpContext.Request.HttpMethod == "POST")
-            {
-                collection = this.HttpContext.Request.Form;
-            }
-            else
-            {
-                collection = this.HttpContext.Request.QueryString;
-            }
-
-            foreach (string k in collection)
-            {
-                string v = (string)collection[k];
-                this.SetParameter(k, v);
-            }
-        }
-#endif
 
         /// <summary>
         /// 获取密钥
@@ -167,26 +141,6 @@ namespace Dora.Weixin.MP.TenPayLib
             return GetParameter("sign").ToLower().Equals(sign);
         }
 
-#if NET35 || NET40 || NET45 || NET461
-        /// <summary>
-        /// 显示处理结果。
-        /// @param show_url 显示处</summary>
-        /// @throws IOException 
-        /// <param name="show_url"></param>
-        public void DoShow(string show_url)
-        {
-            string strHtml = "<html><head>\r\n" +
-                "<meta name=\"TENCENT_ONLINE_PAYMENT\" content=\"China TENCENT\">\r\n" +
-                "<script language=\"javascript\">\r\n" +
-                "window.location.href='" + show_url + "';\r\n" +
-                "</script>\r\n" +
-                "</head><body></body></html>";
-
-            this.HttpContext.Response.Write(strHtml);
-
-            this.HttpContext.Response.End();
-        }
-#endif
         /// <summary>
         /// 获取debug信息
         /// </summary>
@@ -203,11 +157,7 @@ namespace Dora.Weixin.MP.TenPayLib
 
         protected virtual string getCharset()
         {
-#if NET35 || NET40 || NET45 || NET461
-            return this.HttpContext.Request.ContentEncoding.BodyName;
-#else
             return Encoding.UTF8.WebName;
-#endif
         }
 
         /// <summary>

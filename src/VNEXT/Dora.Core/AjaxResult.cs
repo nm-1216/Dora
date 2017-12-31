@@ -26,7 +26,7 @@ namespace Dora.Core
 
         public T data { get; set; }
 
-        public int result { get; set; } = 0;
+        public int result { get; set; } = 1;
 
         public string msg { get; set; }
     }

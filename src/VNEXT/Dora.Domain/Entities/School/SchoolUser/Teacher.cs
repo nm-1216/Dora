@@ -29,6 +29,10 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual string Name { get; set; } = string.Empty;
 
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public virtual string IdCard { get; set; }
 
         /// <summary>
         /// Gets or sets JobTit 教师职称

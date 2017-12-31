@@ -2,7 +2,6 @@
 
 namespace Dora.Database
 {
-    using Domain.Mapping.Application;
     using Domain.Mapping.School;
     using Infrastructure.Extensions;
     using Microsoft.EntityFrameworkCore;
@@ -57,6 +56,8 @@ namespace Dora.Database
             builder.AddConfiguration(new CourseProfessionalMap());
             builder.AddConfiguration(new ProfessionalMap());
             builder.AddConfiguration(new PublicClassRoomMap());
+            
+            builder.AddConfiguration(new TrainingLabMap());
             builder.AddConfiguration(new TrainingLabDeviceMap());
             builder.AddConfiguration(new TrainingProjectMap());
 

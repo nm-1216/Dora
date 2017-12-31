@@ -8,10 +8,7 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System;
-    using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
-    using Newtonsoft.Json;
     /// <summary>
     /// TrainingPlanDetail 实训计划明细表
     /// </summary>

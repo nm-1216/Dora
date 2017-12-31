@@ -2,10 +2,10 @@
 
 namespace Dora.ViewModels.AccountViewModels
 {
+    using Domain.Entities.School;
+    using Microsoft.AspNetCore.Identity;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Domain.Entities.School;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     public class UserCreateViewModel
     {

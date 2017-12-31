@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dora.Core\Dora.Core.csproj" />
+    <ProjectReference Include="..\Dora.Domain\Dora.Domain.csproj" />
+    <ProjectReference Include="..\Dora.Infrastructure\Dora.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

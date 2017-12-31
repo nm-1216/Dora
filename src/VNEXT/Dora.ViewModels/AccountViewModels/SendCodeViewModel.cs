@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc.Rendering;
+
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }

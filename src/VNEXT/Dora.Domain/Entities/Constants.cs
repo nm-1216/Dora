@@ -10,10 +10,6 @@
         public const int INT512 = 512;
         public const int INT4000 = 4000;
 
-
-
-
-
         public enum UserType : int
         {
             普通员工 = 0,

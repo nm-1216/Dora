@@ -1,40 +1,3 @@
-#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
- 
-    文件名：ResponseHandler.cs
-    文件功能描述：微信支付V3 响应处理
-    
-    
-    创建标识：Senparc - 20150211
-    
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-
-    修改标识：Senparc - 20170623
-    修改描述：v14.4.14 排序规则统一为字典排序（ASCII）
-
-----------------------------------------------------------------*/
-
 using System;
 using System.Collections;
 using System.Text;
@@ -42,12 +5,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Dora.Helpers.StringHelper;
 using Dora.Weixin.MP.Helpers;
-
-#if NET35 || NET40 || NET45 || NET461
-using System.Web;
-#else
 using Microsoft.AspNetCore.Http;
-#endif
 
 namespace Dora.Weixin.MP.TenPayLibV3
 {
@@ -108,44 +66,9 @@ namespace Dora.Weixin.MP.TenPayLibV3
         /// <param name="httpContext"></param>
         public ResponseHandler(HttpContext httpContext)
         {
-#if NET35 || NET40 || NET45 || NET461
             Parameters = new Hashtable();
 
-            this.HttpContext = httpContext ?? HttpContext.Current;
-            NameValueCollection collection;
-            //post data
-            if (this.HttpContext.Request.HttpMethod == "POST")
-            {
-                collection = this.HttpContext.Request.Form;
-                foreach (string k in collection)
-                {
-                    string v = (string)collection[k];
-                    this.SetParameter(k, v);
-                }
-            }
-            //query string
-            collection = this.HttpContext.Request.QueryString;
-            foreach (string k in collection)
-            {
-                string v = (string)collection[k];
-                this.SetParameter(k, v);
-            }
-            if (this.HttpContext.Request.InputStream.Length > 0)
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(this.HttpContext.Request.InputStream);
-                XmlNode root = xmlDoc.SelectSingleNode("xml");
-                XmlNodeList xnl = root.ChildNodes;
-
-                foreach (XmlNode xnf in xnl)
-                {
-                    this.SetParameter(xnf.Name, xnf.InnerText);
-                }
-            }
-#else
-            Parameters = new Hashtable();
-
-            HttpContext = httpContext ?? new DefaultHttpContext();
+            HttpContext = httpContext;
             //post data
             if (HttpContext.Request.Method.ToUpper() == "POST" && HttpContext.Request.HasFormContentType)
             {
@@ -170,7 +93,6 @@ namespace Dora.Weixin.MP.TenPayLibV3
                     SetParameter(xnf.Name, xnf.InnerText);
                 }
             }
-#endif
         }
 
 
@@ -263,11 +185,7 @@ namespace Dora.Weixin.MP.TenPayLibV3
 
         protected virtual string GetCharset()
         {
-#if NET35 || NET40 || NET45
-            return this.HttpContext.Request.ContentEncoding.BodyName;
-#else
             return Encoding.UTF8.WebName;
-#endif
         }
 
         /// <summary>

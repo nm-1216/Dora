@@ -8,10 +8,8 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System;
-    using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
-    using Newtonsoft.Json;
+    using System;
 
     /// <summary>
     /// SyllabusPeriod 课程学时分配表

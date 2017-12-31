@@ -8,10 +8,7 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System;
-    using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
-    using Newtonsoft.Json;
     /// <summary>
     /// 学生
     /// </summary>
@@ -28,6 +25,11 @@ namespace Dora.Domain.Entities.School
         /// Gets or sets Name 
         /// </summary>
         public virtual string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public virtual string IdCard { get; set; }
 
         /// <summary>
         /// 班级编号
@@ -48,11 +50,6 @@ namespace Dora.Domain.Entities.School
         /// 学校用户身份
         /// </summary>
         public virtual SchoolUser SchoolUser { get; set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public virtual string BOB { get; set; }
 
         #endregion
 

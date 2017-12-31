@@ -2,13 +2,15 @@
 E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.Database\Dora.Database.xproj
 E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj
 E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.Repositorys\Dora.Repositorys.xproj
-E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.ViewModels\Dora.ViewModels.xproj
 E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.Services\Dora.Services.xproj
+E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.Utilities\Dora.Utilities.xproj
+E:\Dora\src\VNEXT\Dora.School\Dora.School.xproj|E:\Dora\src\VNEXT\Dora.ViewModels\Dora.ViewModels.xproj
 E:\Dora\src\VNEXT\Dora.Database\Dora.Database.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj
 E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj|E:\Dora\src\VNEXT\Dora.Infrastructure\Dora.Infrastructure.xproj
 E:\Dora\src\VNEXT\Dora.Repositorys\Dora.Repositorys.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj
 E:\Dora\src\VNEXT\Dora.Repositorys\Dora.Repositorys.xproj|E:\Dora\src\VNEXT\Dora.Infrastructure\Dora.Infrastructure.xproj
-E:\Dora\src\VNEXT\Dora.ViewModels\Dora.ViewModels.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj
 E:\Dora\src\VNEXT\Dora.Services\Dora.Services.xproj|E:\Dora\src\VNEXT\Dora.Core\Dora.Core.xproj
 E:\Dora\src\VNEXT\Dora.Services\Dora.Services.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj
 E:\Dora\src\VNEXT\Dora.Services\Dora.Services.xproj|E:\Dora\src\VNEXT\Dora.Infrastructure\Dora.Infrastructure.xproj
+E:\Dora\src\VNEXT\Dora.Utilities\Dora.Utilities.xproj|E:\Dora\src\VNEXT\Dora.Helpers\Dora.Helpers.xproj
+E:\Dora\src\VNEXT\Dora.ViewModels\Dora.ViewModels.xproj|E:\Dora\src\VNEXT\Dora.Domain\Dora.Domain.xproj

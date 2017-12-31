@@ -9,7 +9,7 @@
         #region 更新
         void BeginTransaction();
 
-        Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters);
+        //Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters);
 
         Task<bool> RegisterNew<TEntity>(TEntity entity) where TEntity : class;
 

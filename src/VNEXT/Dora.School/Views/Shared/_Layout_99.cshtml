@@ -20,7 +20,6 @@
         <link rel="stylesheet" href="~/lib/layer/theme/default/layer.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
-
     @RenderSection("styles", required: false)
 </head>
 <body>
@@ -30,12 +29,17 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/metisMenu/dist/metisMenu.js"></script>
         <script src="~/lib/layer/layer.js"></script>
+        <script src="~/js/site.min.js"></script>
+        <script src="~/js/jquery.form.min.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="~/lib/metisMenu/dist/metisMenu.min.js"></script>
         <script src="~/lib/layer/layer.js"></script>
+        <script src="~/js/site.min.js"></script>
+        <script src="~/js/jquery.form.min.js"></script>
+
     </environment>
     @RenderSection("scripts", required: false)
 </body>

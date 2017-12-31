@@ -71,11 +71,7 @@ namespace Dora.Weixin.MP.TenPayLib
         {
             Parameters = new Hashtable();
 
-#if NET35 || NET40 || NET45 || NET461
-			this.HttpContext = httpContext ?? HttpContext.Current;
-#else
-            this.HttpContext = httpContext ?? new DefaultHttpContext();
-#endif
+            this.HttpContext = httpContext;
         }
         /// <summary>
         /// √‹‘ø

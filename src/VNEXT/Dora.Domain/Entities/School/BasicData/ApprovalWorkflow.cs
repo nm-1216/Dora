@@ -8,9 +8,8 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System;
     using Dora.Infrastructure.Domains;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// 审批工作流

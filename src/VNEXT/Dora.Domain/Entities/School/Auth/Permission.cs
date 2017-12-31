@@ -8,9 +8,9 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System;
     using Dora.Infrastructure.Domains;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
+    using System;
 
     /// <summary>
     /// Permission 权限

@@ -1,7 +1,7 @@
 ﻿namespace Dora.Domain.Entities.School
 {
+    using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     /// <summary>
     /// 学校学生

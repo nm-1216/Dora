@@ -1,7 +1,6 @@
 namespace Dora.School.Controllers
 {
     using System.Linq;
-    using System.Threading.Tasks;
     using Core;
     using Domain.Entities.School;
     using Microsoft.AspNetCore.Authorization;
@@ -10,10 +9,7 @@ namespace Dora.School.Controllers
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using Repositorys.School.Interfaces;
-    using Services.School;
     using Services.School.Interfaces;
-    using ViewModels.AccountViewModels;
-    using ViewModels.ManageViewModels;
 
     [Authorize]
     public class ProfessionalController : Controller
@@ -26,7 +22,7 @@ namespace Dora.School.Controllers
         {
             this._ProfessionalRepository = professionalRepository;
             this._ProfessionalService = professionalService;
-            _logger = loggerFactory.CreateLogger<HomeController>();
+            _logger = loggerFactory.CreateLogger<ProfessionalController>();
         }
 
         public IActionResult Index(string searchKey, int page = 1)

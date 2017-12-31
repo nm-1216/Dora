@@ -1,7 +1,5 @@
 ﻿namespace Dora.Database
 {
-    using System.Collections.Generic;
-    using Domain.Entities.Application;
     using Domain.Entities.School;
     using Dora.Infrastructure.Infrastructures.Interfaces;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

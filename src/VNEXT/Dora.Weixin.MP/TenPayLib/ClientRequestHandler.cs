@@ -33,12 +33,7 @@ namespace Dora.Weixin.MP.TenPayLib
         public ClientRequestHandler(HttpContext httpContext)
         {
             Parameters = new Hashtable();
-
-#if NET35 || NET40 || NET45 || NET461
-            this.HttpContext = httpContext ?? HttpContext.Current;
-#else
-            this.HttpContext = httpContext ?? new DefaultHttpContext();
-#endif
+            this.HttpContext = httpContext;
         }
 
         /// <summary>

@@ -17,6 +17,6 @@
             ConfigureDerived(builder);
         }
 
-        public abstract void ConfigureDerived(EntityTypeBuilder<TEntity> builder);        
+        public abstract void ConfigureDerived(EntityTypeBuilder<TEntity> builder);
     }
 }

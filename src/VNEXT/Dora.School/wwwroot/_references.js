@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/jquery.form.min.js" />
 /// <reference path="js/script.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="js/skin.config.js" />

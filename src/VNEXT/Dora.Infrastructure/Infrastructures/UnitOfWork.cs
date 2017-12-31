@@ -6,13 +6,11 @@
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage;
-    using Microsoft.Extensions.Logging;
 
     public class UnitOfWork : IUnitOfWork
     {
         #region private
 
-        private readonly ILogger _iLogger;
         private readonly IDbContext _dbContext;
         private IDbContextTransaction _dbTransaction;
 
@@ -37,10 +35,11 @@
             _dbTransaction = _dbContext.Database.BeginTransaction();
         }
 
-        async Task<int> IUnitOfWork.ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters)
-        {
-            return await _dbContext.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
-        }
+        //async Task<int> IUnitOfWork.ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters)
+        //{
+            
+        //    return await _dbContext.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
+        //}
 
         async Task<bool> IUnitOfWork.RegisterNew<TEntity>(TEntity entity)
         {
