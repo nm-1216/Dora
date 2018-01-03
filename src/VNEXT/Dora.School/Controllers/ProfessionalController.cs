@@ -10,6 +10,7 @@ namespace Dora.School.Controllers
     using Microsoft.Extensions.Logging;
     using Repositorys.School.Interfaces;
     using Services.School.Interfaces;
+    using System;
 
     [Authorize]
     public class ProfessionalController : Controller
@@ -17,7 +18,7 @@ namespace Dora.School.Controllers
         private readonly ILogger _logger;
         private IProfessionalRepository _ProfessionalRepository;
         private IProfessionalService _ProfessionalService;
-        
+
         public ProfessionalController(ILoggerFactory loggerFactory, IProfessionalRepository professionalRepository, IProfessionalService professionalService)
         {
             this._ProfessionalRepository = professionalRepository;
@@ -34,6 +35,35 @@ namespace Dora.School.Controllers
                 .OrderBy(o => o.CreateTime), page, 10);
 
             return View(list);
+        }
+
+        public IActionResult Create()
+        {
+            _ProfessionalService.Add(new Professional() {
+                CreateTime=DateTime.Now,
+                CreateUser="",
+                Name="测试专业",
+                LastAction="",
+                ProfessionalId="1111",
+                Status= BaseStatus.有效,
+                UpdateTime=DateTime.Now,
+                UpdateUser="",
+                Year=3,
+                OrganizationId= "0135D9D1-82EE-4B77-B1EF-9DA951626E49",
+                Department=new Organization() {
+                    CreateTime = DateTime.Now,
+                    CreateUser = "",
+                    Name = "测试部门",
+                    LastAction = "",
+                    Status = BaseStatus.有效,
+                    UpdateTime = DateTime.Now,
+                    UpdateUser = "",
+                    Type= OrganizationType.系
+                }
+                
+            });
+            
+            return Content("写入成功");
         }
 
         public IActionResult Index1()

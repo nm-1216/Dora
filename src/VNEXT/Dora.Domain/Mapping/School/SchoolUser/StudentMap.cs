@@ -22,7 +22,7 @@
             builder.ToTable("School_Student");
 
             ///Relationships
-            builder.HasOne(b => b.Class).WithMany(b=>b.Students).HasForeignKey(b => b.ClassId);
+            builder.HasOne(b => b.Class).WithMany(b => b.Students).HasForeignKey(b => b.ClassId);
             builder.HasOne(b => b.SchoolUser).WithOne(b => b.Student).HasForeignKey<Student>(b => b.StudentId);
         }
     }

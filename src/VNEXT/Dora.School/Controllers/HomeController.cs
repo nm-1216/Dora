@@ -18,7 +18,8 @@ namespace Dora.School.Controllers
         public HomeController(
         UserManager<SchoolUser> userManager,
         SignInManager<SchoolUser> signInManager,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;

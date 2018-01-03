@@ -48,8 +48,13 @@ namespace Dora.School.Controllers
         public IActionResult Student(string searchKey, int page = 1)
         {
             ViewData["searchKey"] = searchKey;
-
-            var list = new PageList<Student>(_StudentRepository.GetAll().Where(b => string.IsNullOrEmpty(searchKey) || b.StudentId.Contains(searchKey) || b.Name.Contains(searchKey))
+            
+            var list = new PageList<Student>(_StudentRepository.GetAll().Include(b=>b.Class)
+                .Include(b=>b.SchoolUser)
+                .Where(
+                b => string.IsNullOrEmpty(searchKey) || 
+                b.StudentId.Contains(searchKey) || 
+                b.Name.Contains(searchKey))
                 .OrderBy(o => o.CreateTime), page, 10);
 
             return View(list);
@@ -65,6 +70,8 @@ namespace Dora.School.Controllers
 
             return View(list);
         }
+
+       
 
 
         public async Task<IActionResult> ImportStudent([FromServices]IHostingEnvironment env, IList<IFormFile> files)

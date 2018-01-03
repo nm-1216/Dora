@@ -42,6 +42,11 @@ namespace Dora.Domain.Entities.School
         public virtual int Status { get; set; }
 
         /// <summary>
+        /// 性别
+        /// </summary>
+        public virtual int Sex { get; set; }
+
+        /// <summary>
         /// 班级
         /// </summary>
         public virtual Class Class { get; set; }

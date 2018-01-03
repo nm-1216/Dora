@@ -90,7 +90,6 @@ namespace Dora.School
             services.AddScoped<IDbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
             services.AddTransient<IProfessionalRepository, ProfessionalRepository>();
             services.AddTransient<IProfessionalService, ProfessionalService>();
 
