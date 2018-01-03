@@ -4,6 +4,6 @@
 .vs/
 PublishProfiles/
 *.user
-
+*-lock.json
 
 
