@@ -5,5 +5,5 @@
 PublishProfiles/
 *.user
 *-lock.json
-
+.DS_Store
 
