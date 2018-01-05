@@ -1,4 +1,18 @@
-﻿html, body {
+﻿@font-face {
+    font-family: Notob;
+    /*为引入的字体命名*/
+    src: url(NotoSansCJK-Bold.otf);
+    /*定义要引入字体文件的路径*/
+}
+
+@font-face {
+    font-family: Notom;
+    /*为引入的字体命名*/
+    src: url(NotoSansCJK-Medium.otf);
+    /*定义要引入字体文件的路径*/
+}
+
+html, body {
     min-height: 100%;
 }
 .wapper {
@@ -9,7 +23,6 @@
     bottom: 0px;
     overflow: auto;
     width: 100%;
-    background-color:#e4e5e7
 }
 .container-fluid{
     background-color:#fff

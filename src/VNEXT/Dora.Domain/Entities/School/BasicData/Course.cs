@@ -2,12 +2,18 @@
 {
     using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
+    using System;
 
     /// <summary>
     /// 课程
     /// </summary>
     public partial class Course : BaseEntity
     {
+        public Course() : base()
+        {
+            this.CourseId = Guid.NewGuid().ToString();
+        }
+
         public Course(string code) : base()
         {
             this.CourseId = code;

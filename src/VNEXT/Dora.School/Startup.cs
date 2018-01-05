@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Dora.School
 {
@@ -61,20 +62,28 @@ namespace Dora.School
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-
-            services.ConfigureApplicationCookie(options => {
-                options.LoginPath = "/Login";
-                //options.AutomaticAuthenticate = true;
-                //options.AutomaticChallenge = true;
-
+            //应用程序的cookie常用设置
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "AspNetCoreAuthCookies";//cookied的名称. 默认为AspNetCore.Cookies.
+                options.Cookie.HttpOnly = true;//是否拒绝cookie从客户端脚本访问.默认为true.
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);//Cookie保持有效的时间60分。//TimeSpan.FromDays(150);
+                options.LoginPath = "/Login";//在进行登录时自动重定向。
+                options.LogoutPath = "/Logout";//在进行注销时自动重定向。
+                //options.AccessDeniedPath = "/Account/AccessDenied"; //当用户没有授权检查时将被重定向。
+                //options.SlidingExpiration = true;//当TRUE时，新cookie将在当前cookie超过到期窗口一半时发出新的到期时间。默认为true。
+                // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
+                //options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
             });
+
+
 
             services.AddMvc();
 
 
 
 
-           
+
 
             services.Configure<AppSettings>(options =>
             {
@@ -95,6 +104,12 @@ namespace Dora.School
 
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
+
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<ICourseService, CourseService>();
+
+            services.AddTransient<IClassRepository, ClassRepository>();
+            services.AddTransient<IClassService, ClassService>();
 
         }
 
@@ -122,7 +137,7 @@ namespace Dora.School
 
 
 
-            
+
 
             app.UseMvc(routes =>
             {

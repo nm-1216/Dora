@@ -1,0 +1,155 @@
+﻿@model Dora.Core.PageList<Class>
+
+@{
+    ViewData["Title"] = "诊改支撑平台";
+    Layout = "_Layout";
+}
+
+<style>
+    body .demo-class .layui-layer-title {
+        background: #000;
+        color: #fff;
+        border: none;
+    }
+
+    body .imgbox {
+        padding-bottom: 10px;
+    }
+
+        body .imgbox img {
+            width: 100%;
+        }
+
+    body .col-lg-1 {
+        padding: 10px;
+    }
+
+    .row1 > div > div {
+        background: #ddd;
+        height: 60px;
+        padding-top: 8px;
+        text-align: center;
+    }
+</style>
+
+<div id="importDiv" style="display:none">
+    <form id="AjaxForm1" name="AjaxForm1" action="~/BaseData/ImportClass" enctype="multipart/form-data" method="post">
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <input type="file" name="files" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>约束：</b><br />
+                    1，第一行表头必须固定，不支持随意调换列。<br />
+                    2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
+                    2，<a href="~/template/Class.xlsx">下载模板</a>
+                </td>
+            </tr>
+        </table>
+        <ol id="msgul"></ol>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+
+        <div class="row" style="padding-top:10px;">
+            <div class="col-lg-6">
+                    <div class="form-group">
+                        <p class="form-control-static">班级编码或班级名</p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
+                    </div>
+                    <button type="submit" class="btn btn-info">检索</button>
+            </div>
+            <div class="col-sm-1 col-sm-offset-4"><button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入班级',$('#importDiv'))">导入</button></div>
+            <div class="col-sm-1"><button type="button" class="btn btn-block btn-primary">导出</button></div>
+
+        </div>
+
+        <div class="row" style="margin-top:15px;">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>编码</th>
+                            <th>名称</th>
+                            <th>学生人数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@item.ClassId</td>
+                        <td>@item.Name</td>
+                        <td>@(item.Students==null?0:item.Students.Count)</td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+        @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
+    </form>
+</div>
+
+
+@section scripts{
+    <script>
+        var options = {
+            beforeSend: function () {
+                $('#msgul').html('')
+                layer.load(3, { shade: 0.8 });
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+            },
+            dataType: 'json',
+            success: function (r) {
+                layer.closeAll('loading');
+                console.log(r)
+                if (r.result==1) {
+                    console.log(1)
+                    jQuery("#grid-table").trigger("reloadGrid");
+                    if (r.data != null) {
+                        console.log(2)
+                        layer.msg(r.message + ",但是有重复数据");
+                        for (var i = 0; i < r.data.length; i++)
+                            $('#msgul').append(r.data[i])
+                    }
+                    else {
+                        console.log(3)
+                        layer.msg(r.msg, {
+                            time: 2000, end: function () {
+                                layer.closeAll();
+                                location.href = location.href;
+                            }
+                        })
+                    }
+                }
+                else {
+                    console.log(4)
+                    var msg = r.msg;
+                    layer.msg(msg);
+                }
+            },
+            complete: function (xhr) {
+            }
+        }
+
+        function AjaxForm1Submit() {
+            $("#AjaxForm1").ajaxSubmit(options);
+        }
+    </script>
+}
+

@@ -4,9 +4,14 @@
 @section styles{
     @RenderSection("styles", required: false)
 }
+@section scripts{
+    @RenderSection("scripts", required: false)
+}
+
 <div class="wapper">
     @RenderBody()
 </div>
+
 <form asp-controller="Home" asp-action="LogOff" method="post" id="logoutForm">
 </form>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -49,8 +54,8 @@
                         <li><a href="/User/Student">学生管理</a></li>
                         <li><a href="/User/Teacher">教师管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">班级管理</a></li>
-                        <li><a href="#">课程管理</a></li>
+                        <li><a href="/BaseData/ClassList">班级管理</a></li>
+                        <li><a href="/BaseData/CourseList">课程管理</a></li>
                         <li><a href="/Professional/Index">专业管理</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">班级课程管理</a></li>
@@ -116,6 +121,5 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-@section scripts{
-    @RenderSection("scripts", required: false)
-}
+
+

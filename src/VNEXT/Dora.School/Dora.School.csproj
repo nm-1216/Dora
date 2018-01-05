@@ -5,15 +5,17 @@
 		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
 	</PropertyGroup>
 	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="DotNetCore.NPOI" Version="1.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>
-		<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0-preview3-26071" />
-		<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0-preview3-26071" />
-		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0-preview3-26071" />
+		<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="" />
+		<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="" />
+		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Dora.Core\Dora.Core.csproj" />
@@ -23,5 +25,9 @@
 	  <ProjectReference Include="..\Dora.Repositorys\Dora.Repositorys.csproj" />
 	  <ProjectReference Include="..\Dora.Services\Dora.Services.csproj" />
 	  <ProjectReference Include="..\Dora.ViewModels\Dora.ViewModels.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
+	  <Folder Include="wwwroot\Images\NewFolder\" />
 	</ItemGroup>
 </Project>

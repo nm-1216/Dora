@@ -23,7 +23,20 @@
                     <div asp-validation-summary="All" class="list-unstyled"></div>
                     <div class="form-group">
                         <label class="sr-only" for="form-username">Username</label>
-                        <input asp-for="Uname" placeholder="Username..." value="" class="form-username form-control" />
+                        <environment names="Development">
+                            <select asp-for="Uname" class="form-username form-control">
+                                <option value="031714110">管理员</option>
+                                <option value="2040133234">学生-徐枫</option>
+                                <option value="2040133235">学生-惠建新</option>
+                                <option value="2040133236">学生-郑冬明</option>
+                                <option value="0665">老师-刘志刚</option>
+                                <option value="0667">老师-老师二</option>
+                                <option value="0668">老师-老师三</option>
+                            </select>
+                        </environment>
+                        <environment names="Staging,Production">
+                            <input asp-for="Uname" placeholder="Username..." value="" class="form-username form-control" />
+                        </environment>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-password">Password</label>
