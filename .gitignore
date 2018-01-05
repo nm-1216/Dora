@@ -3,7 +3,7 @@
 [Ll]og/
 .vs/
 PublishProfiles/
+temp/
 *.user
 *-lock.json
 .DS_Store
-
