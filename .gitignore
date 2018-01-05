@@ -4,6 +4,7 @@
 .vs/
 PublishProfiles/
 temp/
+Migrations/
 *.user
 *-lock.json
 .DS_Store
