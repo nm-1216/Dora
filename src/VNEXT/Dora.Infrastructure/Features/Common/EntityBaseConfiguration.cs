@@ -12,7 +12,6 @@
             builder.Property(x => x.UpdateTime).IsRequired();
             builder.Property(x => x.CreateUser).IsRequired().HasMaxLength(64);
             builder.Property(x => x.UpdateUser).IsRequired().HasMaxLength(64);
-            builder.Property(x => x.LastAction).IsRequired().HasMaxLength(64);
 
             ConfigureDerived(builder);
         }

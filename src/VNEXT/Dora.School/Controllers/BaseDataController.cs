@@ -129,13 +129,8 @@ namespace Dora.School.Controllers
                             {
                                 ClassId = code,
                                 Name = name,
-                                CreateTime = DateTime.Now,
-                                UpdateTime = DateTime.Now,
-                                CreateUser = string.Empty,
-                                UpdateUser=string.Empty,
                                 InviteCode=string.Empty,
-                                Status= BaseStatus.有效,
-                                LastAction=string.Empty
+                                Status= BaseStatus.有效
                             };
                             var result = await _ClassService.Add(model);
                         }

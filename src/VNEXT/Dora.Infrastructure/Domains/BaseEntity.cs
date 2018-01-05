@@ -12,7 +12,7 @@
         public BaseEntity()
         {
             this.CreateTime = this.UpdateTime = DateTime.Now;
-            this.CreateUser = this.UpdateUser = this.LastAction = string.Empty;
+            this.CreateUser = this.UpdateUser = string.Empty;
         }
 
         /// <summary>
@@ -34,11 +34,5 @@
         /// 修改时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string LastAction { get; set; }
-
     }
 }

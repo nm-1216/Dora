@@ -21,6 +21,11 @@ namespace Dora.Domain.Entities.School
         public virtual string TeacherId { get; set; }
 
         /// <summary>
+        /// 学期学年
+        /// </summary>
+        public virtual string Term { get; set; }
+
+        /// <summary>
         /// 课程
         /// </summary>
         public virtual Course Course { get; set; }

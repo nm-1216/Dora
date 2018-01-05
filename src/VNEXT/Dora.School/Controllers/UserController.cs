@@ -150,12 +150,7 @@ namespace Dora.School.Controllers
                                 {
                                     Name = name,
                                     IdCard = idCard,
-                                    CreateTime=DateTime.Now,
-                                    CreateUser="",
-                                    LastAction="",
-                                    Status=1,
-                                    UpdateTime=DateTime.Now,
-                                    UpdateUser=""
+                                    Status=1
                                 }
                             };
                             var result = await _userManager.CreateAsync(user, code);
@@ -247,12 +242,7 @@ namespace Dora.School.Controllers
                                 {
                                     Name = name,
                                     IdCard = idCard,
-                                    CreateTime = DateTime.Now,
-                                    CreateUser = "",
-                                    LastAction = "",
                                     Status = 1,
-                                    UpdateTime = DateTime.Now,
-                                    UpdateUser = ""
                                 }
                             };
                             var result = await _userManager.CreateAsync(user, code);

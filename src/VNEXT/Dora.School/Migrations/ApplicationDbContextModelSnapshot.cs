@@ -32,10 +32,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo")
                         .IsRequired()
                         .HasMaxLength(4000);
@@ -80,10 +76,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -125,10 +117,6 @@ namespace dora.school.Migrations
                     b.Property<string>("InviteCode")
                         .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -180,10 +168,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("TeacherId");
 
                     b.Property<string>("Time")
@@ -223,10 +207,6 @@ namespace dora.school.Migrations
                     b.Property<string>("Discription")
                         .IsRequired()
                         .HasMaxLength(4000);
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -273,9 +253,7 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
+                    b.Property<string>("Term");
 
                     b.Property<DateTime>("UpdateTime");
 
@@ -301,10 +279,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -335,10 +309,6 @@ namespace dora.school.Migrations
                     b.Property<string>("Ico")
                         .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("ModuleTypeId");
 
@@ -376,10 +346,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -403,10 +369,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -439,10 +401,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -499,10 +457,6 @@ namespace dora.school.Migrations
                     b.Property<string>("GraReq")
                         .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("LenOfSch")
                         .IsRequired()
@@ -570,10 +524,6 @@ namespace dora.school.Migrations
 
                     b.Property<string>("File");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo")
                         .IsRequired()
                         .HasMaxLength(4000);
@@ -604,10 +554,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo")
                         .IsRequired()
                         .HasMaxLength(4000);
@@ -635,10 +581,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -679,10 +621,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -789,10 +727,6 @@ namespace dora.school.Migrations
 
                     b.Property<string>("IdCard");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -859,10 +793,6 @@ namespace dora.school.Migrations
 
                     b.Property<string>("EvaWay");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("MeeSumPath");
 
                     b.Property<string>("PraCon");
@@ -904,10 +834,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo");
 
                     b.Property<string>("SyllabusApprovalId");
@@ -937,10 +863,6 @@ namespace dora.school.Migrations
 
                     b.Property<string>("Edition");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("PreTime");
@@ -967,10 +889,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -1002,10 +920,6 @@ namespace dora.school.Migrations
                         .HasMaxLength(64);
 
                     b.Property<decimal?>("ExpPer");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("SyllabusPeriodId");
 
@@ -1039,10 +953,6 @@ namespace dora.school.Migrations
                     b.Property<string>("JobTit")
                         .IsRequired()
                         .HasMaxLength(256);
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1083,10 +993,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -1134,10 +1040,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo");
 
                     b.Property<string>("TeachingPlanId");
@@ -1173,10 +1075,6 @@ namespace dora.school.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("Job");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Mode");
 
@@ -1223,10 +1121,6 @@ namespace dora.school.Migrations
                     b.Property<string>("Date");
 
                     b.Property<string>("Job");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Mode");
 
@@ -1280,10 +1174,6 @@ namespace dora.school.Migrations
 
                     b.Property<int?>("EndWeek");
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo");
 
                     b.Property<string>("TeacherId");
@@ -1317,10 +1207,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -1370,10 +1256,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Management");
 
                     b.Property<string>("Name")
@@ -1411,10 +1293,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -1462,10 +1340,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<int?>("SubSta");
 
                     b.Property<DateTime?>("SubTime");
@@ -1510,10 +1384,6 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
                     b.Property<string>("Memo");
 
                     b.Property<DateTime?>("Time");
@@ -1545,10 +1415,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 
@@ -1603,10 +1469,6 @@ namespace dora.school.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("Date");
-
-                    b.Property<string>("LastAction")
-                        .IsRequired()
-                        .HasMaxLength(64);
 
                     b.Property<string>("Mode");
 
@@ -1667,10 +1529,6 @@ namespace dora.school.Migrations
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("LastAction")
                         .IsRequired()
                         .HasMaxLength(64);
 

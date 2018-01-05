@@ -37,35 +37,6 @@ namespace Dora.School.Controllers
             return View(list);
         }
 
-        public IActionResult Create()
-        {
-            _ProfessionalService.Add(new Professional() {
-                CreateTime=DateTime.Now,
-                CreateUser="",
-                Name="测试专业",
-                LastAction="",
-                ProfessionalId="1111",
-                Status= BaseStatus.有效,
-                UpdateTime=DateTime.Now,
-                UpdateUser="",
-                Year=3,
-                OrganizationId= "0135D9D1-82EE-4B77-B1EF-9DA951626E49",
-                Department=new Organization() {
-                    CreateTime = DateTime.Now,
-                    CreateUser = "",
-                    Name = "测试部门",
-                    LastAction = "",
-                    Status = BaseStatus.有效,
-                    UpdateTime = DateTime.Now,
-                    UpdateUser = "",
-                    Type= OrganizationType.系
-                }
-                
-            });
-            
-            return Content("写入成功");
-        }
-
         public IActionResult Index1()
         {
             return View();
