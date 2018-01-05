@@ -2,9 +2,9 @@
 [Oo]bj/
 [Ll]og/
 .vs/
-PublishProfiles/
-temp/
-Migrations/
+[Pp]ublishProfiles/
+[Tt]emp/
+[Mm]igrations/
 *.user
 *-lock.json
 .DS_Store
