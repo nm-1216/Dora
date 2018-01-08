@@ -45,6 +45,12 @@ namespace Dora.School.Controllers
             this._logger = loggerFactory.CreateLogger<UserController>();
         }
 
+
+        public IActionResult Index()
+        {
+            return View(_userManager.Users.Where(b=>b.Student==null && b.Teacher==null));
+        }
+
         public IActionResult Student(string searchKey, int page = 1)
         {
             ViewData["searchKey"] = searchKey;

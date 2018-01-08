@@ -1,0 +1,70 @@
+﻿@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "诊改支撑平台";
+    Layout = "_Layout";
+}
+
+<style>
+    body .demo-class .layui-layer-title {
+        background: #000;
+        color: #fff;
+        border: none;
+    }
+
+    body .imgbox {
+        padding-bottom: 10px;
+    }
+
+        body .imgbox img {
+            width: 100%;
+        }
+
+    body .col-lg-1 {
+        padding: 10px;
+    }
+
+    .row1 > div > div {
+        background: #ddd;
+        height: 60px;
+        padding-top: 8px;
+        text-align: center;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+
+        <div class="row" style="padding-top:10px;">
+            <div class="col-sm-1 col-sm-offset-11">
+                <a class="btn btn-block btn-danger"  asp-action="Create">添加</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>角色编号</th>
+                            <th>角色名称</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </form>
+</div>

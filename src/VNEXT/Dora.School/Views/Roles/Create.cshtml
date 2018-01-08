@@ -1,0 +1,47 @@
+﻿@model IdentityRole
+
+@{
+    ViewData["Title"] = "诊改支撑平台";
+    Layout = "_Layout";
+}
+
+<style>
+    body .demo-class .layui-layer-title {
+        background: #000;
+        color: #fff;
+        border: none;
+    }
+
+    body .imgbox {
+        padding-bottom: 10px;
+    }
+
+        body .imgbox img {
+            width: 100%;
+        }
+
+    body .col-lg-1 {
+        padding: 10px;
+    }
+
+    .row1 > div > div {
+        background: #ddd;
+        height: 60px;
+        padding-top: 8px;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid">
+    <form asp-action="Create" method="post">
+        <table class="table table-striped" style="">
+            <tr>
+                <td style="vertical-align:middle">角色名称</td>
+                <td><input asp-for="Name" class="form-control" /><span asp-validation-for="Name" class="text-danger"></span></td>
+            </tr>
+        </table>
+        <div style="text-align:right;padding:5px 10px 0 0">
+            <input class="btn btn-danger btn-xs" type="submit" value=" 确 定 " />
+        </div>
+    </form>
+</div>

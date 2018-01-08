@@ -20,13 +20,17 @@ namespace Dora.School.Controllers
     using NPOI.XSSF.UserModel;
     using NPOI.HSSF.UserModel;
     using Dora.Services.School.Interfaces;
+    using System.Net.Http.Headers;
+    using Microsoft.AspNetCore.Cors;
 
+    [EnableCors("AllowSameDomain")]
     public class BaseDataController : Controller
     {
         private readonly ILogger _logger;
         private ICourseRepository _CourseRepository;
         private IClassRepository _ClassRepository;
         private IClassService _ClassService;
+        private IHostingEnvironment _hostingEnvironment;
 
 
 
@@ -34,13 +38,15 @@ namespace Dora.School.Controllers
             ILoggerFactory loggerFactory,
             ICourseRepository courseRepository,
             IClassRepository classRepository,
-            IClassService classService
+            IClassService classService,
+            IHostingEnvironment hostingEnvironment
             )
         {
             this._ClassService = classService;
             this._ClassRepository = classRepository;
             this._CourseRepository = courseRepository;
             this._logger = loggerFactory.CreateLogger<UserController>();
+            this._hostingEnvironment = hostingEnvironment;
         }
 
         #region 班级
@@ -163,6 +169,38 @@ namespace Dora.School.Controllers
         }
 
         #endregion
+
+
+        [HttpPost]
+        [EnableCors("AllowSameDomain")]
+        public JsonResult Ckeditor(IFormFile upload)
+        {
+
+            var uploaded = 1;
+            //var fileName = string.Empty;
+            var url = string.Empty;
+
+            //HashTable<String, Object> map = new HashTable<String, Object>();
+
+            //string Callback = @"{"uploaded": 1,"fileName": "","url": ""}";
+
+            var CKEditorFuncNum = Request.Query["CKEditorFuncNum"];
+
+            var filename = ContentDispositionHeaderValue.Parse(upload.ContentDisposition).FileName.Trim('"');
+            var extname = filename.Substring(filename.LastIndexOf("."), filename.Length - filename.LastIndexOf("."));
+            var NewFile = System.Guid.NewGuid().ToString() + extname;
+
+            filename = _hostingEnvironment.WebRootPath + $@"\upload\{NewFile}";
+            using (FileStream fs = System.IO.File.Create(filename))
+            {
+                upload.CopyTo(fs);
+                fs.Flush();
+            }
+
+            url = "http://localhost:56417/upload/" + NewFile;
+            //return Content(string.Format(Callback, CKEditorFuncNum, url), ContentType);
+            return Json(new { uploaded= uploaded, fileName= NewFile, url= url });
+        }
 
         #region 组织架构
 

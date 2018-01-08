@@ -40,13 +40,13 @@ namespace Dora.School
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors(options => options.AddPolicy(
-            //"AllowSameDomain",
-            //builder => builder.WithOrigins(
-            //"http://localhost:8080",
-            //"http://os.nieba.cn"
-            //).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()
-            //));
+            services.AddCors(options => options.AddPolicy(
+            "AllowSameDomain",
+            builder => builder.WithOrigins(
+            "http://localhost:56417",
+            "http://os.nieba.cn"
+            ).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()
+            ));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
