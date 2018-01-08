@@ -59,10 +59,7 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual SchoolUser SchoolUser { get; set; }
 
-        /// <summary>
-        /// 班级课程教师
-        /// </summary>
-        public virtual ICollection<CourseClassTeacher> CourseClassTeachers { get; set; }
+
 
         #endregion
     }

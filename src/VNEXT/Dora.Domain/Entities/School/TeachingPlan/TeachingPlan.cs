@@ -43,13 +43,13 @@ namespace Dora.Domain.Entities.School
 
 
         /// <summary>
-        /// Gets or sets 课程信息表自增主键 
+        /// Gets or sets 班级信息表自增主键 
         /// </summary>
         public virtual string ClassId { get; set; }
 
 
         /// <summary>
-        /// Gets or sets Term 
+        /// Gets or sets Term 学年 17-18-1,17-18-2
         /// </summary>
         public virtual string Term { get; set; } = string.Empty;
 
@@ -103,8 +103,6 @@ namespace Dora.Domain.Entities.School
         /// Gets or sets 课程信息表自增主键 
         /// </summary>
         public virtual Class Class { get; set; }
-
-
         public virtual ICollection<TeachingPlanApproval> TeachingPlanApprovals { get; set; }
         public virtual ICollection<TeachingPlanLog> TeachingPlanLogs { get; set; }
         public virtual ICollection<TeachingPlanDetail> TeachingPlanDetails { get; set; }

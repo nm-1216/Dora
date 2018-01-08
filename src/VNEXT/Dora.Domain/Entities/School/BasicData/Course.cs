@@ -85,11 +85,6 @@
         public virtual Organization Department { get; set; }
 
         /// <summary>
-        /// 班级课程教师
-        /// </summary>
-        public virtual ICollection<CourseClassTeacher> CourseClassTeachers { get; set; }
-
-        /// <summary>
         /// 课程专业
         /// </summary>
         public virtual ICollection<CourseProfessional> CourseProfessionals { get; set; }

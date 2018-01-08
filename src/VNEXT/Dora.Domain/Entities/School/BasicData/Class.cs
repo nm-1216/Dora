@@ -69,10 +69,7 @@
         /// </summary>
         public virtual ICollection<Student> Students { get; set; }
 
-        /// <summary>
-        /// 班级课程教师
-        /// </summary>
-        public virtual ICollection<CourseClassTeacher> CourseClassTeachers { get; set; }
+        
 
         /// <summary>
         /// 教学大纲

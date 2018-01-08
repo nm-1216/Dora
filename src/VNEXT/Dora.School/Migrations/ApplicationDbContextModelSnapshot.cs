@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
 namespace dora.school.Migrations
@@ -20,6 +21,39 @@ namespace dora.school.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Dora.Domain.Entities.Application.Group<string>", b =>
+                {
+                    b.Property<string>("GroupId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("GroupName")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ParentId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser");
+
+                    b.HasKey("GroupId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("AspNetGroups");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Group<string>");
+                });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.ApprovalWorkflow", b =>
                 {
@@ -237,37 +271,6 @@ namespace dora.school.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("School_Course");
-                });
-
-            modelBuilder.Entity("Dora.Domain.Entities.School.CourseClassTeacher", b =>
-                {
-                    b.Property<string>("ClassId");
-
-                    b.Property<string>("CourseId");
-
-                    b.Property<string>("TeacherId");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<string>("Term");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.HasKey("ClassId", "CourseId", "TeacherId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("School_CourseClassTeacher");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.CourseProfessional", b =>
@@ -1657,6 +1660,23 @@ namespace dora.school.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Dora.Domain.Entities.Application.Group", b =>
+                {
+                    b.HasBaseType("Dora.Domain.Entities.Application.Group<string>");
+
+
+                    b.ToTable("Group");
+
+                    b.HasDiscriminator().HasValue("Group");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.Application.Group<string>", b =>
+                {
+                    b.HasOne("Dora.Domain.Entities.Application.Group<string>", "Parent")
+                        .WithMany("Childs")
+                        .HasForeignKey("ParentId");
+                });
+
             modelBuilder.Entity("Dora.Domain.Entities.School.ApprovalWorkflow", b =>
                 {
                     b.HasOne("Dora.Domain.Entities.School.Organization", "Department")
@@ -1695,24 +1715,6 @@ namespace dora.school.Migrations
                     b.HasOne("Dora.Domain.Entities.School.Organization", "Department")
                         .WithMany()
                         .HasForeignKey("OrganizationId");
-                });
-
-            modelBuilder.Entity("Dora.Domain.Entities.School.CourseClassTeacher", b =>
-                {
-                    b.HasOne("Dora.Domain.Entities.School.Class", "Class")
-                        .WithMany("CourseClassTeachers")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
-                        .WithMany("CourseClassTeachers")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Dora.Domain.Entities.School.Teacher", "Teacher")
-                        .WithMany("CourseClassTeachers")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.CourseProfessional", b =>

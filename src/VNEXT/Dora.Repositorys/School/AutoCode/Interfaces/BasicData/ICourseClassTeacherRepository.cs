@@ -1,11 +1,11 @@
-﻿namespace Dora.Repositorys.School.Interfaces
-{
-    using Domain.Entities.School;
-    using Infrastructure.Repositorys.Interfaces;
+﻿//namespace Dora.Repositorys.School.Interfaces
+//{
+//    using Domain.Entities.School;
+//    using Infrastructure.Repositorys.Interfaces;
 
-    public partial interface ICourseClassTeacherRepository : IBaseRepository<CourseClassTeacher>
-    {
+//    public partial interface ICourseClassTeacherRepository : IBaseRepository<CourseClassTeacher>
+//    {
 
-    }
+//    }
 
-}
+//}

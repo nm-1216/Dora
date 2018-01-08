@@ -3,6 +3,7 @@
 namespace Dora.Database
 {
     using Domain.Entities.School;
+    using Dora.Domain.Entities.Application;
     using Microsoft.EntityFrameworkCore;
 
     public partial class DoraContext
@@ -12,7 +13,7 @@ namespace Dora.Database
         //public DbSet<LoginLog> LoginLogs { get; set; }
         //public DbSet<Action> Actions { get; set; }
         //public DbSet<Application> Applications { get; set; }
-        //public DbSet<Group> Groups { get; set; }
+        public DbSet<Group> Groups { get; set; }
         //public DbSet<Dict> Dicts { get; set; }
 
         //#endregion
@@ -38,7 +39,6 @@ namespace Dora.Database
         public DbSet<BasicData> BasicDatas { get; set; }
         public DbSet<CoachRecord> CoachRecords { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<CourseClassTeacher> CourseClassTeachers { get; set; }
         public DbSet<CourseProfessional> CourseProfessionals { get; set; }
         public DbSet<Professional> Professionals { get; set; }
         public DbSet<PublicClassRoom> PublicClassRooms { get; set; }

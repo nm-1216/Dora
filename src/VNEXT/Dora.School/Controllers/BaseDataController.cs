@@ -120,7 +120,7 @@ namespace Dora.School.Controllers
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name))
                         {
-                            var model = _ClassRepository.Find(b=>b.ClassId==code);
+                            var model = _ClassRepository.Find(b => b.ClassId == code);
 
                             if (model != null)
                                 continue;
@@ -129,8 +129,8 @@ namespace Dora.School.Controllers
                             {
                                 ClassId = code,
                                 Name = name,
-                                InviteCode=string.Empty,
-                                Status= BaseStatus.有效
+                                InviteCode = string.Empty,
+                                Status = BaseStatus.有效
                             };
                             var result = await _ClassService.Add(model);
                         }
@@ -165,6 +165,11 @@ namespace Dora.School.Controllers
         #endregion
 
         #region 组织架构
+
+        #endregion
+
+        #region 模块管理
+
 
         #endregion
 
