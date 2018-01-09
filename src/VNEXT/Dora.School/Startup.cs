@@ -4,6 +4,8 @@
     using Dora.Domain.Entities.School;
     using Dora.Infrastructure.Infrastructures;
     using Dora.Infrastructure.Infrastructures.Interfaces;
+    using Dora.Services.Application;
+    using Dora.Services.Application.Interfaces;
     using Dora.Services.School;
     using Dora.Services.School.Interfaces;
     using Microsoft.AspNetCore.Builder;
@@ -23,17 +25,6 @@
         }
 
         public IConfiguration Configuration { get; }
-
-        //public Startup(IHostingEnvironment env)
-        //{
-        //    var builder = new ConfigurationBuilder()
-        //    .SetBasePath(env.ContentRootPath)
-        //    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        //    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-        //    .AddEnvironmentVariables();
-        //    Configuration = builder.Build();
-        //}
-
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -73,14 +64,7 @@
                 //options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
             });
 
-
-
             services.AddMvc();
-
-
-
-
-
 
             services.Configure<AppSettings>(options =>
             {
@@ -91,20 +75,13 @@
                 options.AppVersion = Configuration["AppSettings:AppVersion"];
                 options.FrameWorkWeb = Configuration["AppSettings:FrameWorkWeb"];
             });
-
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-
-
             services.AddTransient<IProfessionalService, ProfessionalService>();
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IClassService, ClassService>();
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<IStudentService, StudentService>();
-
-
-
+            services.AddTransient<IGroupService, GroupService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -124,32 +101,25 @@
                 app.UseExceptionHandler("/Home/Error");
             }
 
-
             app.UseStaticFiles();
-
             app.UseAuthentication();
-
-
-
-
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-    name: "default",
-    template: "{controller=Home}/{action=Index}/{id?}",
-    defaults: new { Controllers = "Home" });
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}",
+                    defaults: new { Controllers = "Home" });
 
                 routes.MapRoute(
-    name: "action",
-    template: "{action=Index}/{id?}",
-    defaults: new { controller = "Home" });
-
+                    name: "action",
+                    template: "{action=Index}/{id?}",
+                    defaults: new { controller = "Home" });
 
                 routes.MapRoute(
-    name: "areaRoute",
-    template: "{area:exists}/{controller}/{action}/{page?}",
-    defaults: new { controller = "Home", action = "Index" });
+                    name: "areaRoute",
+                    template: "{area:exists}/{controller}/{action}/{page?}",
+                    defaults: new { controller = "Home", action = "Index" });
+
             });
         }
     }
