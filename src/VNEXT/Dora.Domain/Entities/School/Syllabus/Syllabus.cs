@@ -157,6 +157,11 @@ namespace Dora.Domain.Entities.School
         public virtual int? AudRes { get; set; }
 
         /// <summary>
+        /// 版本
+        /// </summary>
+        public virtual string Version { get; set; }
+
+        /// <summary>
         /// 课程
         /// </summary>
         public virtual Course Course { get; set; }
