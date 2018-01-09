@@ -8,4 +8,4 @@
 *.user
 *-lock.json
 .DS_Store
-.vs/config/applicationhost.config
+*applicationhost.config
