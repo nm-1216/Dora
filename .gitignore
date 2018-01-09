@@ -1,11 +1,11 @@
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-.vs/*
+/.vs/
+/.vs/config/applicationhost.config
 [Pp]ublishProfiles/
 [Tt]emp/
 [Mm]igrations/
 *.user
 *-lock.json
 .DS_Store
-*applicationhost.config
