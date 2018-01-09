@@ -4,31 +4,29 @@
 /// </summary>
 namespace Dora.School.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using Dora.Repositorys.School.Interfaces;
-    using Microsoft.Extensions.Logging;
-    using Dora.Domain.Entities.School;
     using Dora.Core;
+    using Dora.Domain.Entities.School;
+    using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using System.IO;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using NPOI.HSSF.UserModel;
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;
-    using NPOI.HSSF.UserModel;
-    using Dora.Services.School.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Net.Http.Headers;
-    using Microsoft.AspNetCore.Cors;
+    using System.Threading.Tasks;
 
     [EnableCors("AllowSameDomain")]
     public class BaseDataController : Controller
     {
         private readonly ILogger _logger;
-        private ICourseRepository _CourseRepository;
-        private IClassRepository _ClassRepository;
+        private ICourseService _CourseService;
         private IClassService _ClassService;
         private IHostingEnvironment _hostingEnvironment;
 
@@ -36,15 +34,14 @@ namespace Dora.School.Controllers
 
         public BaseDataController(
             ILoggerFactory loggerFactory,
-            ICourseRepository courseRepository,
-            IClassRepository classRepository,
+            ICourseService courseService,
             IClassService classService,
             IHostingEnvironment hostingEnvironment
             )
         {
             this._ClassService = classService;
-            this._ClassRepository = classRepository;
-            this._CourseRepository = courseRepository;
+            this._CourseService = courseService;
+            this._ClassService = classService;
             this._logger = loggerFactory.CreateLogger<UserController>();
             this._hostingEnvironment = hostingEnvironment;
         }
@@ -54,7 +51,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Class>(_ClassRepository.GetAll()
+            var list = new PageList<Class>(_ClassService.GetAll()
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.ClassId.Contains(searchKey) ||
@@ -106,8 +103,8 @@ namespace Dora.School.Controllers
                     }
 
                     IRow row = sheet.GetRow(0);
-                    var code = getValue(row.GetCell(0));
-                    var name = getValue(row.GetCell(1));
+                    var code = GetValue(row.GetCell(0));
+                    var name = GetValue(row.GetCell(1));
                     //var idCard = getValue(row.GetCell(2));
 
                     if (!code.Equals("编码") || !name.Equals("名称"))
@@ -121,12 +118,12 @@ namespace Dora.School.Controllers
                         row = sheet.GetRow(i);
                         if (row == null) continue;
 
-                        code = getValue(row.GetCell(0));
-                        name = getValue(row.GetCell(1));
+                        code = GetValue(row.GetCell(0));
+                        name = GetValue(row.GetCell(1));
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name))
                         {
-                            var model = _ClassRepository.Find(b => b.ClassId == code);
+                            var model = _ClassService.Find(b => b.ClassId == code);
 
                             if (model != null)
                                 continue;
@@ -158,7 +155,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Course>(_CourseRepository.GetAll()
+            var list = new PageList<Course>(_CourseService.GetAll()
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.CourseId.Contains(searchKey) ||
@@ -211,7 +208,7 @@ namespace Dora.School.Controllers
 
         #endregion
 
-        private string getValue(ICell cell)
+        private string GetValue(ICell cell)
         {
             if (cell == null)
             {

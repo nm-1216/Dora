@@ -8,13 +8,12 @@
 
 namespace Dora.Domain.Entities.School
 {
-    using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
 
     /// <summary>
     /// TeaInfo 实体类
     /// </summary>
-    public partial class Teacher: BaseEntity
+    public partial class Teacher : BaseEntity
     {
         #region Public Properties
 

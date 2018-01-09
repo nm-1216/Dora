@@ -1,22 +1,23 @@
 ﻿namespace Dora.Infrastructure.Infrastructures
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage;
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
 
     public class UnitOfWork : IUnitOfWork
     {
         #region private
 
-        private readonly IDbContext _dbContext;
+        private readonly DbContext _dbContext;
         private IDbContextTransaction _dbTransaction;
 
         #endregion
 
-        public UnitOfWork(IDbContext dbContext)
+        public UnitOfWork(DbContext dbContext)
         {
             if (null == dbContext)
             {
@@ -27,6 +28,30 @@
                 _dbContext = dbContext;
             }
         }
+
+        #region 检索
+
+        IQueryable<TEntity> IUnitOfWork.GetAll<TEntity>()
+        {
+            return _dbContext.Set<TEntity>();
+        }
+
+        IQueryable<TEntity> IUnitOfWork.Where<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().Where(predicate);
+        }
+
+        TEntity IUnitOfWork.Find<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().FirstOrDefault(predicate);
+        }
+
+        bool IUnitOfWork.Contains<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().Count(predicate) > 0;
+        }
+
+        #endregion
 
         #region 更新
 

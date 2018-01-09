@@ -1,6 +1,5 @@
 namespace Dora.School.Controllers
 {
-    using System.Linq;
     using Core;
     using Domain.Entities.School;
     using Microsoft.AspNetCore.Authorization;
@@ -8,20 +7,17 @@ namespace Dora.School.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using Repositorys.School.Interfaces;
     using Services.School.Interfaces;
-    using System;
+    using System.Linq;
 
     [Authorize]
     public class ProfessionalController : Controller
     {
         private readonly ILogger _logger;
-        private IProfessionalRepository _ProfessionalRepository;
         private IProfessionalService _ProfessionalService;
 
-        public ProfessionalController(ILoggerFactory loggerFactory, IProfessionalRepository professionalRepository, IProfessionalService professionalService)
+        public ProfessionalController(ILoggerFactory loggerFactory, IProfessionalService professionalService)
         {
-            this._ProfessionalRepository = professionalRepository;
             this._ProfessionalService = professionalService;
             _logger = loggerFactory.CreateLogger<ProfessionalController>();
         }
@@ -30,7 +26,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Professional>(_ProfessionalRepository.GetAll().Include(b => b.Department)
+            var list = new PageList<Professional>(_ProfessionalService.GetAll().Include(b => b.Department)
                 .Where(b => string.IsNullOrEmpty(searchKey) || b.ProfessionalId.Contains(searchKey) || b.Name.Contains(searchKey))
                 .OrderBy(o => o.CreateTime), page, 10);
 

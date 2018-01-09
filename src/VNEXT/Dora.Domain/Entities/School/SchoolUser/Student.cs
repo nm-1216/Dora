@@ -1,11 +1,3 @@
-//----------------------------------------------------------------------------------------------------------------------------
-// <copyright file="StuInfo.cs" company="Os.Brain">Copyright (c) Os.Brain. All rights reserved.</copyright>
-// <author>Craze</author>
-// <datetime>2017/12/19 23:55:01</datetime>
-// <discription>
-// </discription>
-//----------------------------------------------------------------------------------------------------------------------------
-
 namespace Dora.Domain.Entities.School
 {
     using Dora.Infrastructure.Domains;

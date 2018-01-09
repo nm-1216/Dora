@@ -21,7 +21,6 @@
     <ProjectReference Include="..\Dora.Domain\Dora.Domain.csproj" />
     <ProjectReference Include="..\Dora.Helpers\Dora.Helpers.csproj" />
     <ProjectReference Include="..\Dora.ViewModels\Dora.ViewModels.csproj" />
-    <ProjectReference Include="..\Dora.Repositorys\Dora.Repositorys.csproj" />
     <ProjectReference Include="..\Dora.Services\Dora.Services.csproj" />
   </ItemGroup>
   <ItemGroup>

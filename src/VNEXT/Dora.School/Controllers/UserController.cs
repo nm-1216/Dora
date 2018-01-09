@@ -1,11 +1,8 @@
 namespace Dora.School.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using Core;
     using Domain.Entities.School;
+    using Dora.Services.School.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -13,18 +10,21 @@ namespace Dora.School.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using Repositorys.School.Interfaces;
+    using NPOI.HSSF.UserModel;
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;
-    using NPOI.HSSF.UserModel;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Authorize]
     public class UserController : Controller
     {
         private readonly ILogger _logger;
-        private IStudentRepository _StudentRepository;
-        private ITeacherRepository _TeacherRepository;
+        private IStudentService _StudentService;
+        private ITeacherService _TeacherService;
 
         private readonly UserManager<SchoolUser> _userManager;
         private readonly SignInManager<SchoolUser> _signInManager;
@@ -32,16 +32,16 @@ namespace Dora.School.Controllers
 
         public UserController(
             ILoggerFactory loggerFactory,
-            IStudentRepository studentRepository,
-            ITeacherRepository teacherRepository,
+            IStudentService studentService,
+            ITeacherService teacherService,
             UserManager<SchoolUser> userManager,
             SignInManager<SchoolUser> signInManager
             )
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
-            this._StudentRepository = studentRepository;
-            this._TeacherRepository = teacherRepository;
+            this._StudentService = studentService;
+            this._TeacherService = teacherService;
             this._logger = loggerFactory.CreateLogger<UserController>();
         }
 
@@ -55,7 +55,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
             
-            var list = new PageList<Student>(_StudentRepository.GetAll().Include(b=>b.Class)
+            var list = new PageList<Student>(_StudentService.GetAll().Include(b=>b.Class)
                 .Include(b=>b.SchoolUser)
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) || 
@@ -70,7 +70,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Teacher>(_TeacherRepository.GetAll().Include(b => b.Department)
+            var list = new PageList<Teacher>(_TeacherService.GetAll().Include(b => b.Department)
                 .Where(b => string.IsNullOrEmpty(searchKey) || b.TeacherId.Contains(searchKey) || b.Name.Contains(searchKey))
                 .OrderBy(o => o.CreateTime), page, 10);
 
@@ -121,9 +121,9 @@ namespace Dora.School.Controllers
                     }
 
                     IRow row = sheet.GetRow(0);
-                    var code = getValue(row.GetCell(0));
-                    var name = getValue(row.GetCell(1));
-                    var idCard = getValue(row.GetCell(2));
+                    var code = GetValue(row.GetCell(0));
+                    var name = GetValue(row.GetCell(1));
+                    var idCard = GetValue(row.GetCell(2));
 
                     if (!code.Equals("学号") || !name.Equals("姓名") || !idCard.Equals("身份证"))
                     {
@@ -136,9 +136,9 @@ namespace Dora.School.Controllers
                         row = sheet.GetRow(i);
                         if (row == null) continue;
 
-                        code = getValue(row.GetCell(0));
-                        name = getValue(row.GetCell(1));
-                        idCard = getValue(row.GetCell(2));
+                        code = GetValue(row.GetCell(0));
+                        name = GetValue(row.GetCell(1));
+                        idCard = GetValue(row.GetCell(2));
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(idCard))
                         {
@@ -213,9 +213,9 @@ namespace Dora.School.Controllers
                     }
 
                     IRow row = sheet.GetRow(0);
-                    var code = getValue(row.GetCell(0));
-                    var name = getValue(row.GetCell(1));
-                    var idCard = getValue(row.GetCell(2));
+                    var code = GetValue(row.GetCell(0));
+                    var name = GetValue(row.GetCell(1));
+                    var idCard = GetValue(row.GetCell(2));
 
                     if (!code.Equals("工号") || !name.Equals("姓名") || !idCard.Equals("身份证"))
                     {
@@ -228,9 +228,9 @@ namespace Dora.School.Controllers
                         row = sheet.GetRow(i);
                         if (row == null) continue;
 
-                        code = getValue(row.GetCell(0));
-                        name = getValue(row.GetCell(1));
-                        idCard = getValue(row.GetCell(2));
+                        code = GetValue(row.GetCell(0));
+                        name = GetValue(row.GetCell(1));
+                        idCard = GetValue(row.GetCell(2));
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(idCard))
                         {
@@ -271,7 +271,7 @@ namespace Dora.School.Controllers
 
 
 
-        private string getValue(ICell cell)
+        private string GetValue(ICell cell)
         {
             if (cell == null)
             {

@@ -5,7 +5,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public partial class DoraContext : IdentityDbContext<SchoolUser>, IDbContext
+    public partial class DoraContext : IdentityDbContext<SchoolUser>
     {
         public DoraContext(DbContextOptions options) : base(options)
         {

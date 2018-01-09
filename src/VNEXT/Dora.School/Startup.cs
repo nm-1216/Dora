@@ -1,23 +1,20 @@
-﻿using Dora.Domain.Entities.Application;
-using Dora.Domain.Entities.School;
-using Dora.Infrastructure.Infrastructures;
-using Dora.Infrastructure.Infrastructures.Interfaces;
-using Dora.Repositorys.School;
-using Dora.Repositorys.School.Interfaces;
-using Dora.Services.School;
-using Dora.Services.School.Interfaces;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-
-namespace Dora.School
+﻿namespace Dora.School
 {
+    using Dora.Domain.Entities.Application;
+    using Dora.Domain.Entities.School;
+    using Dora.Infrastructure.Infrastructures;
+    using Dora.Infrastructure.Infrastructures.Interfaces;
+    using Dora.Services.School;
+    using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using System;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -96,20 +93,17 @@ namespace Dora.School
             });
 
 
-            services.AddScoped<IDbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<IProfessionalRepository, ProfessionalRepository>();
+
+
             services.AddTransient<IProfessionalService, ProfessionalService>();
-
-            services.AddTransient<IStudentRepository, StudentRepository>();
-            services.AddTransient<ITeacherRepository, TeacherRepository>();
-
-            services.AddTransient<ICourseRepository, CourseRepository>();
             services.AddTransient<ICourseService, CourseService>();
-
-            services.AddTransient<IClassRepository, ClassRepository>();
             services.AddTransient<IClassService, ClassService>();
+            services.AddTransient<ITeacherService, TeacherService>();
+            services.AddTransient<IStudentService, StudentService>();
+
+
 
         }
 
