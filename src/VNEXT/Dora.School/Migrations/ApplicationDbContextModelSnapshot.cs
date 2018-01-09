@@ -818,6 +818,8 @@ namespace dora.school.Migrations
 
                     b.Property<int?>("UseSta");
 
+                    b.Property<string>("Version");
+
                     b.HasKey("SyllabusId");
 
                     b.HasIndex("ClassId");
