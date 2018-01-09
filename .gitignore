@@ -1,7 +1,8 @@
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-.vs/
+
+.vs/*
 [Pp]ublishProfiles/
 [Tt]emp/
 [Mm]igrations/
