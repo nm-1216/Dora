@@ -2,8 +2,10 @@
 {
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore.Storage;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -62,19 +64,15 @@
 
         //async Task<int> IUnitOfWork.ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters)
         //{
-            
         //    return await _dbContext.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
         //}
 
-        async Task<bool> IUnitOfWork.RegisterNew<TEntity>(TEntity entity)
+        #region Add
+        EntityEntry<TEntity> IUnitOfWork.Add<TEntity>(TEntity entity)
         {
             try
             {
-                _dbContext.Set<TEntity>().Add(entity);
-
-                if (_dbTransaction != null)
-                    return await _dbContext.SaveChangesAsync() > 0;
-                return true;
+                return _dbContext.Set<TEntity>().Add(entity);
             }
             catch (Exception ex)
             {
@@ -82,38 +80,94 @@
             }
         }
 
-        async Task<bool> IUnitOfWork.RegisterDirty<TEntity>(TEntity entity)
+        void IUnitOfWork.AddRange<TEntity>(IEnumerable<TEntity> entities)
         {
             try
             {
-                _dbContext.Entry<TEntity>(entity).State = EntityState.Modified;
+                _dbContext.Set<TEntity>().AddRange(entities);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            if (_dbTransaction != null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
         }
 
-        async Task<bool> IUnitOfWork.RegisterClean<TEntity>(TEntity entity)
+        async Task<EntityEntry<TEntity>> IUnitOfWork.AddAsync<TEntity>(TEntity entity)
         {
-            _dbContext.Entry<TEntity>(entity).State = EntityState.Unchanged;
-
-            if (_dbTransaction != null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            try
+            {
+                return await _dbContext.Set<TEntity>().AddAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        async Task<bool> IUnitOfWork.RegisterDeleted<TEntity>(TEntity entity)
+        async Task IUnitOfWork.AddRangeAsync<TEntity>(IEnumerable<TEntity> entities)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
-
-            if (_dbTransaction != null)
-                return await _dbContext.SaveChangesAsync() > 0;
-            return true;
+            try
+            {
+                await _dbContext.Set<TEntity>().AddRangeAsync(entities);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+        #endregion
+
+        #region Remove 删除
+        EntityEntry<TEntity> IUnitOfWork.Remove<TEntity>(TEntity entity)
+        {
+            try
+            {
+                return _dbContext.Set<TEntity>().Remove(entity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        void IUnitOfWork.RemoveRange<TEntity>(IEnumerable<TEntity> entities)
+        {
+            try
+            {
+                _dbContext.Set<TEntity>().RemoveRange(entities);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region Update 更新
+        EntityEntry<TEntity> IUnitOfWork.Update<TEntity>(TEntity entity)
+        {
+            try
+            {
+                return _dbContext.Set<TEntity>().Update(entity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        void IUnitOfWork.UpdateRange<TEntity>(IEnumerable<TEntity> entities)
+        {
+            try
+            {
+                _dbContext.Set<TEntity>().UpdateRange(entities);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
 
         async Task<bool> IUnitOfWork.CommitAsync()
         {
@@ -123,6 +177,7 @@
                     return await _dbContext.SaveChangesAsync() > 0;
                 else
                     _dbTransaction.Commit();
+
                 return true;
             }
             catch (Exception ex)
@@ -141,9 +196,9 @@
         {
             if (null != _dbContext)
                 _dbContext.Dispose();
+
             if (null != _dbTransaction)
                 _dbTransaction.Dispose();
-
         }
 
         #endregion
