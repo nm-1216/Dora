@@ -1,8 +1,8 @@
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-
-.vs/*
+**/.vs/
+/.vs/config/applicationhost.config
 [Pp]ublishProfiles/
 [Tt]emp/
 [Mm]igrations/

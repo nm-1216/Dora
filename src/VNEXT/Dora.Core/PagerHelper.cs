@@ -46,9 +46,9 @@ namespace Dora.Core
             sb.Append("\n\n<!-- 分页 开始 -->\n\n");
             sb.Append("<div class=\"PList\">\n");
 
-            sb.Append(msg);
+            sb.Append(Msg);
 
-            sb.Append(nav);
+            sb.Append(Nav);
 
             //writer.Write(sb.ToString());
 
@@ -129,7 +129,7 @@ namespace Dora.Core
             }
         }
 
-        private static string msg
+        private static string Msg
         {
             get
             {
@@ -137,7 +137,7 @@ namespace Dora.Core
             }
         }
 
-        private static string url
+        private static string Url
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Dora.Core
             }
         }
 
-        private static string nav
+        private static string Nav
         {
             get
             {
@@ -170,11 +170,11 @@ namespace Dora.Core
                 }
                 else
                 {
-                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(url, "1") + "\">首页</a>\n");
-                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(url, Pre.ToString()) + "\">上一页</a>\n");
+                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(Url, "1") + "\">首页</a>\n");
+                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(Url, Pre.ToString()) + "\">上一页</a>\n");
                 }
 
-                sb.Append(num);
+                sb.Append(Num);
 
                 if (CurrPage >= PageCount)
                 {
@@ -183,8 +183,8 @@ namespace Dora.Core
                 }
                 else
                 {
-                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(url, Next.ToString()) + "\">下一页</a>\n");
-                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(url, PageCount.ToString()) + "\">末页</a>\n");
+                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(Url, Next.ToString()) + "\">下一页</a>\n");
+                    sb.Append("\t\t<a class=\"arr\" href=\"" + string.Format(Url, PageCount.ToString()) + "\">末页</a>\n");
                 }
 
                 sb.Append("\t</span>");
@@ -192,7 +192,7 @@ namespace Dora.Core
             }
         }
 
-        private static string num
+        private static string Num
         {
             get
             {
@@ -202,7 +202,7 @@ namespace Dora.Core
                 for (int i = StartAndEnd[0]; i <= StartAndEnd[1]; i++)
                 {
                     if (i != CurrPage)
-                        sb.Append("\t\t<a class=\"num\" href=\"" + string.Format(url, i.ToString()) + "\">" + i.ToString() + "</a>\n");
+                        sb.Append("\t\t<a class=\"num\" href=\"" + string.Format(Url, i.ToString()) + "\">" + i.ToString() + "</a>\n");
                     else
                         sb.Append("\t\t<a class=\"Cur\">" + i.ToString() + "</a>\n");
                 }

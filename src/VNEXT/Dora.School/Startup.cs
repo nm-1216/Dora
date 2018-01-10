@@ -75,6 +75,7 @@
                 options.AppVersion = Configuration["AppSettings:AppVersion"];
                 options.FrameWorkWeb = Configuration["AppSettings:FrameWorkWeb"];
             });
+            services.AddScoped<DbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProfessionalService, ProfessionalService>();
             services.AddTransient<ICourseService, CourseService>();
