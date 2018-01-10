@@ -17,23 +17,34 @@ namespace Dora.School.Controllers
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;
     using NPOI.HSSF.UserModel;
-    using System.Threading.Tasks; 
+    using System.Threading.Tasks;
+    using Dora.Services.Application.Interfaces;
 
     [Authorize]
     public class GroupController : Controller
     {
-        private readonly ILogger _logger; 
+        private readonly ILogger _logger;
+        private IGroupService _GroupService;
 
         public GroupController(
-           ILoggerFactory loggerFactory 
+           ILoggerFactory loggerFactory ,
+           IGroupService groupService
             )
         { 
             this._logger = loggerFactory.CreateLogger<GroupController>();
+            _GroupService = groupService;
         }
 
         public IActionResult Index()
         {
-            return View();
+           var list =  _GroupService.GetAll();
+            return View(list);
+        }
+
+        public JsonResult GetGroup()
+        {
+            var list = _GroupService.GetAll();
+            return Json(list); 
         }
     }
 }
