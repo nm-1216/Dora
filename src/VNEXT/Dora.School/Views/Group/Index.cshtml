@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Dora.Domain.Entities.Application.Group>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<h2>Index</h2>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            alert("aa");
+
+            //JQuery的 Ajax 请求
+            $.ajax({
+                type: "Post",
+                url: "GetGroup",
+                data: "",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                    if (result) {
+                        alert('成功');
+                    }
+                    else {
+                        alert("失败");
+                    }
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    //alert("complete");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("error");
+                    // alert(XMLHttpRequest);
+                    // alert(errorThrown);
+                    // alert(textStatus);
+                }
+            });
+
+        });
+    </script>
+}
