@@ -13,7 +13,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 排序用的索引
         /// </summary>
-        public virtual int index { get; set; }
+        public virtual int Index { get; set; }
 
         /// <summary>
         /// 权限

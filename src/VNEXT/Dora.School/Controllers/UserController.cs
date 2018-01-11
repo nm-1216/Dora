@@ -8,6 +8,7 @@ namespace Dora.School.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using NPOI.HSSF.UserModel;
@@ -28,9 +29,10 @@ namespace Dora.School.Controllers
 
         private readonly UserManager<SchoolUser> _userManager;
         private readonly SignInManager<SchoolUser> _signInManager;
-
+        protected readonly RoleManager<SchoolRole> _roleManager;
 
         public UserController(
+            RoleManager<SchoolRole> roleManager,
             ILoggerFactory loggerFactory,
             IStudentService studentService,
             ITeacherService teacherService,
@@ -38,6 +40,7 @@ namespace Dora.School.Controllers
             SignInManager<SchoolUser> signInManager
             )
         {
+            this._roleManager = roleManager;
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._StudentService = studentService;
@@ -48,7 +51,15 @@ namespace Dora.School.Controllers
 
         public IActionResult Index()
         {
-            return View(_userManager.Users.Where(b=>b.Student==null && b.Teacher==null));
+            var roles = _roleManager.Roles;
+
+            
+
+            var list = _userManager.Users.Include(b=>b.Roles).Where(b => b.Student == null && b.Teacher == null);
+
+            ViewBag.roles = roles;
+
+            return View(list);
         }
 
         public IActionResult Student(string searchKey, int page = 1)
@@ -76,9 +87,6 @@ namespace Dora.School.Controllers
 
             return View(list);
         }
-
-       
-
 
         public async Task<IActionResult> ImportStudent([FromServices]IHostingEnvironment env, IList<IFormFile> files)
         {
@@ -264,8 +272,83 @@ namespace Dora.School.Controllers
             return new JsonResult(new AjaxResult("导入成功"));
         }
 
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string id, string pwd,string okPwd)
+        {
+            if (string.IsNullOrEmpty(pwd) || pwd != okPwd)
+            {
+                return Json(new AjaxResult("操作失败,两次密码不一致") { result = 0 });
+            }
 
-        
+            var model = await _userManager.FindByIdAsync(id);
+            if (model != null)
+            {
+                await _userManager.AddPasswordAsync(model, pwd);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var model = await _userManager.FindByIdAsync(id);
+            if (model != null)
+            {
+                await _userManager.DeleteAsync(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
+        public IActionResult SetRole(string id)
+        {
+            var user = _userManager.Users.Include(b=>b.Roles).FirstOrDefault(b=>b.Id==id);
+
+            var temp = new List<SelectListItem>();
+            var list = _roleManager.Roles.OrderBy(b => b.Index);
+
+            foreach (var item in list)
+            {
+                temp.Add(new SelectListItem() { Text = item.Name, Value = item.NormalizedName, Selected = user.Roles.Where(b=>b.RoleId==item.Id).Count()>0 });
+            }
+
+            ViewBag.user = user;
+
+            return View(temp);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetRole(string id, List<string> roleIds)
+        {
+
+            var user = _userManager.Users.Include(b => b.Roles).FirstOrDefault(b => b.Id == id);
+
+            if (user.Roles != null && user.Roles.Count > 0)
+            {
+                var roles = _roleManager.Roles;
+                await _userManager.RemoveFromRolesAsync(user, roles.Where(c => user.Roles.Select(b => b.RoleId).Contains(c.Id)).Select(b => b.NormalizedName));
+            }
+            
+            await _userManager.AddToRolesAsync(user, roleIds);
+
+            //await _PermissionService.AddRange(role.Permissions);
+
+            return Content("操作成功");
+        }
+
 
         #region Helpers
 

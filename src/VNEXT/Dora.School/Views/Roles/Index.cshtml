@@ -18,7 +18,7 @@
             <tbody>
                 <tr>
                     <td><input id="CreateDivName" name="Name" class="form-control" /></td>
-                    <td><input id="CreateDivIndex" name="index" class="form-control" /></td>
+                    <td><input id="CreateDivIndex" name="Index" class="form-control" /></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
@@ -44,7 +44,7 @@
             <tbody>
                 <tr>
                     <td><input id="EditDivName" name="Name" type="text" class="form-control" /></td>
-                    <td><input id="EditDivIndex" name="index" type="number" class="form-control" /></td>
+                    <td><input id="EditDivIndex" name="Index" type="number" class="form-control" /></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
@@ -81,12 +81,12 @@
                         @foreach (var item in Model)
                         {
                         <tr>
-                            <td>@item.index</td>
+                            <td>@item.Index</td>
                             <td>@item.Name</td>
-                            <td>@item.Name</td>
+                            <td>@string.Join(", ", item.Permissions.Select(b=>string.Format("{1}-{0}",b.ModuleType.Name, b.ModuleType.Discription)))</td>
                             <td class="text-right">
-                                <a data-content-id="@item.Id" data-content-index="@item.index" data-content-name="@item.Name" class="btn btn-primary btn-xs btnEdit">修改</a>
-                                <a data-content-id="@item.Id" data-content-index="@item.index" data-content-name="@item.Name" class="btn btn-info btn-xs btnEdit">权限</a>
+                                <a data-content-id="@item.Id" data-content-index="@item.Index" data-content-name="@item.Name" class="btn btn-primary btn-xs btnEdit">修改</a>
+                                <a data-content-id="@item.Id" data-content-index="@item.Index" data-content-name="@item.Name" class="btn btn-info btn-xs btnPermission">权限</a>
                                 <a data-content-id="@item.Id" class="btn btn-danger btn-xs btnDel">删除</a>
                             </td>
                         </tr>
@@ -129,8 +129,6 @@
                     layer.msg(data.msg);
                 }
             };
-
-            //$("#AddModuleType").submit(function () { $(this).ajaxSubmit(options); return false; });
             $("#CreateRole").submit(function () { $(this).ajaxSubmit(options); return false; });
             $("#EditRole").submit(function () { $(this).ajaxSubmit(options); return false; });
             $('.btnDel').on('click', function () {
@@ -182,11 +180,18 @@
 
                 DivLayer(1, '编辑角色', $('.EditDiv'))
             })
-            $('.btnAdd').on('click', function () { 
+            $('.btnAdd').on('click', function () {
                 $('#CreateDivName').val('')
                 $('#CreateDivIndex').val('')
                 DivLayer(1, '新添角色', $('.CreateDiv'))
             })
+            $('.btnPermission').on('click', function () {
+
+                var id= $(this).attr('data-content-id')
+
+                IFreamLayer(1, '设置权限', '/Roles/SetPermission?id='+id)
+            })
+            
         })
 
     </script>

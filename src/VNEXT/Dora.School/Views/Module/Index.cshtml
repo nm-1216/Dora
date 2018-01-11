@@ -64,10 +64,15 @@
             <thead>
                 <tr>
                     <th style="vertical-align:middle">名称:</th>
-                    <th><input type="text" name="name" class="form-control" /></th>
+                    <th style="vertical-align:middle">备注:</th>
+
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td><input type="text" name="name" class="form-control" /></td>
+                    <td><input type="text" name="discription" class="form-control" /></td>
+                </tr>
                 <tr>
                     <td colspan="2" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
@@ -103,7 +108,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.ModuleType.Name</td>
+                                <td>@string.Format("{1}-{0}",item.ModuleType.Name,item.ModuleType.Discription)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Url</td>
                                 <td class="text-right">

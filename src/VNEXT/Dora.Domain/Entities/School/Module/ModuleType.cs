@@ -35,6 +35,11 @@ namespace Dora.Domain.Entities.School
         public virtual string Name { get; set; } = string.Empty;
 
         /// <summary>
+        /// 备注
+        /// </summary>
+        public virtual string Discription { get; set; }
+
+        /// <summary>
         /// 模块
         /// </summary>
         public virtual ICollection<Module> Modules { get; set; }

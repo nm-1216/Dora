@@ -138,7 +138,9 @@ namespace Dora.School.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+
+                    return Content("²Ù×÷³É¹¦");
+                    //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
             }

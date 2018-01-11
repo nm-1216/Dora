@@ -37,12 +37,12 @@
 
             foreach (var item in list)
             {
-                temp.Add(new SelectListItem() { Text = item.Name, Value = item.ModuleTypeId });
+                temp.Add(new SelectListItem() { Text = string.Format("{0}-{1}", item.Discription, item.Name), Value = item.ModuleTypeId });
             }
             ViewBag.moduleType = temp;
             ViewData["moduleType"] = temp;
 
-            return View(_ModuleService.GetAll().OrderByDescending(b=>b.CreateTime));
+            return View(_ModuleService.GetAll().OrderByDescending(b => b.CreateTime));
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -86,13 +86,13 @@
             return Json(new AjaxResult("操作成功") { result = 1 });
         }
 
-        public async Task<IActionResult> AddModuleType(string name)
+        public async Task<IActionResult> AddModuleType(string name, string discription)
         {
 
             var model = _ModuleTypeService.Find(b => b.Name == name);
             if (model == null)
             {
-                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name });
+                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name, Discription = discription });
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
             else

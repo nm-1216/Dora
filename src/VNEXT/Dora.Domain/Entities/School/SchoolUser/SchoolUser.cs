@@ -1,6 +1,7 @@
 ﻿namespace Dora.Domain.Entities.School
 {
     using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
@@ -40,5 +41,12 @@
         /// 用户的教师身份
         /// </summary>
         public virtual Teacher Teacher { get; set; }
+
+        /// <summary>
+        /// 权限
+        /// </summary>
+        public virtual IList<IdentityUserRole<string>> Roles { get; set; }
+
+
     }
 }

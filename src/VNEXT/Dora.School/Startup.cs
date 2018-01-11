@@ -85,6 +85,8 @@
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IModuleTypeService, ModuleTypeService>();
+            services.AddTransient<IPermissionService, PermissionService>();
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

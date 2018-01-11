@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SelectListItem>
+
+@{
+    ViewData["Title"] = "设置角色";
+    Layout = "_Layout_99";
+}
+
+
+@section styles{
+    <style>
+        body .checkbox-inline {
+            margin-left:0!important;
+            margin-right:10px;
+        }
+    </style>
+    
+}
+
+<form method="post">
+    <input type="hidden" name="RoleId" value="@ViewBag.user.Id" />
+    <table class="table table-striped">
+        <thead>
+            <tr><th>角色:@ViewBag.user.UserName</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="checkbox">
+                        @foreach (SelectListItem item in Model)
+                        {
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="roleIds" value="@item.Value" @(item.Selected ? "checked" : "") /> @item.Text
+                            </label>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</form>
