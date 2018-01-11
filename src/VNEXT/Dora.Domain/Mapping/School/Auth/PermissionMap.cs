@@ -10,7 +10,7 @@
         public override void ConfigureDerived(EntityTypeBuilder<Permission> builder)
         {
             ///Primary Key
-            builder.HasKey(b => new { b.PermissionId });
+            builder.HasKey(b => new { b.ModuleTypeId, b.RoleId });
 
             ///Properties
 
@@ -19,7 +19,7 @@
             builder.ToTable("School_Permission");
 
             ///Relationships
-            builder.HasOne(b => b.Role).WithMany().HasForeignKey(b => b.RoleId);
+            builder.HasOne(b => b.Role).WithMany(b=>b.Permissions).HasForeignKey(b => b.RoleId);
         }
     }
 }

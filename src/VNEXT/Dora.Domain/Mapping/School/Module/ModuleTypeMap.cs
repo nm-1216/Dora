@@ -20,6 +20,7 @@
 
             ///Relationships
             builder.HasMany(b => b.Modules).WithOne(b => b.ModuleType).HasForeignKey(b => b.ModuleTypeId);
+            builder.HasMany(b => b.Permissions).WithOne(b => b.ModuleType).HasForeignKey(b => b.ModuleTypeId);
         }
     }
 }

@@ -1,16 +1,6 @@
-//----------------------------------------------------------------------------------------------------------------------------
-// <copyright file="PermissionInfo.cs" company="Os.Brain">Copyright (c) Os.Brain. All rights reserved.</copyright>
-// <author>Craze</author>
-// <datetime>2017/12/19 23:51:49</datetime>
-// <discription>
-// </discription>
-//----------------------------------------------------------------------------------------------------------------------------
-
 namespace Dora.Domain.Entities.School
 {
     using Dora.Infrastructure.Domains;
-    using Microsoft.AspNetCore.Identity;
-    using System;
 
     /// <summary>
     /// Permission 权限
@@ -19,20 +9,21 @@ namespace Dora.Domain.Entities.School
     {
         public Permission() : base()
         {
-            this.PermissionId = Guid.NewGuid().ToString();
+
         }
 
+        public Permission(string moduleTypeId,string roleId) : base()
+        {
+            this.ModuleTypeId = moduleTypeId;
+            this.RoleId = roleId;
+        }
         #region Public Properties
 
-        /// <summary>
-        /// Gets or sets 权限编号 
-        /// </summary>
-        public virtual string PermissionId { get; set; }
 
         /// <summary>
-        /// Gets or sets 模块表Id 
+        /// Gets or sets 模块表Id
         /// </summary>
-        public virtual string ModuleId { get; set; }
+        public virtual string ModuleTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets 角色 
@@ -47,14 +38,12 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 模块
         /// </summary>
-        public virtual Module Module { get; set; }
+        public virtual ModuleType ModuleType { get; set; }
 
         /// <summary>
         /// 角色
         /// </summary>
-        public virtual IdentityRole Role { get; set; }
-
-
+        public virtual SchoolRole Role { get; set; }
         #endregion
 
     }

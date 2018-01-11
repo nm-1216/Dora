@@ -21,7 +21,7 @@
             builder.ToTable("School_Module");
 
             ///Relationships
-            builder.HasMany(b => b.Permissions).WithOne(b => b.Module).HasForeignKey(b => b.ModuleId);
+            //builder.HasMany(b => b.Permissions).WithOne(b => b.Module).HasForeignKey(b => b.ModuleId);
         }
     }
 }

@@ -39,6 +39,11 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual ICollection<Module> Modules { get; set; }
 
+        /// <summary>
+        /// 权限
+        /// </summary>
+        public virtual ICollection<Permission> Permissions { get; set; }
+
         #endregion
 
     }
