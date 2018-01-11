@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Module>
 
 @{
-    ViewData["Title"] = "用户管理";
+    ViewData["Title"] = "模块管理";
     Layout = "_Layout";
 }
 
 <div class="EditDiv" style="display:none">
-    <form id="EditModule" method="post" asp-action="Edit">
+    <form id="EditModule" method="post" enctype="multipart/form-data" asp-action="Edit">
         <input type="hidden" id="EditDivModuleId" name="ModuleId" />
         <table class="table-striped table">
             <thead>
@@ -23,6 +23,9 @@
                     <td><input id="EditDivUrl" name="url" type="text" class="form-control" /></td>
                 </tr>
                 <tr>
+                    <td colspan="3"><input name="files" type="file" class="" /></td>
+                </tr>
+                <tr>
                     <td colspan="3" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
@@ -33,7 +36,7 @@
 </div>
 
 <div class="AddDiv" style="display:none">
-    <form id="AddModule" method="post" asp-action="AddModule">
+    <form id="AddModule" method="post" enctype="multipart/form-data" asp-action="AddModule">
         <table class="table-striped table">
             <thead>
                 <tr>
@@ -47,6 +50,9 @@
                     <td><select class="form-control" name="moduleType" asp-items="@ViewBag.moduleType"></select> </td>
                     <td><input name="name" type="text" class="form-control" /></td>
                     <td><input name="url" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><input name="files" type="file" class="" /></td>
                 </tr>
                 <tr>
                     <td colspan="3" class="text-center">
@@ -101,6 +107,7 @@
                             <th>分类</th>
                             <th>名称</th>
                             <th>路径</th>
+                            <th>图片</th>
                             <th class="text-right">操作</th>
                         </tr>
                     </thead>
@@ -111,6 +118,7 @@
                                 <td>@string.Format("{1}-{0}",item.ModuleType.Name,item.ModuleType.Discription)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Url</td>
+                                <td>@item.Ico.Replace("/upload/module/","")</td>
                                 <td class="text-right">
                                 <a data-content-id="@item.ModuleId" data-content-type="@item.ModuleTypeId" data-content-name="@item.Name" data-content-url="@item.Url" class="btn btn-primary btn-xs btnEdit">修改</a>
                                 <a data-content-id="@item.ModuleId" class="btn btn-danger btn-xs btnDel">删除</a></td>

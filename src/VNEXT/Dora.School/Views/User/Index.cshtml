@@ -1,5 +1,4 @@
-﻿@model IEnumerable<SchoolUser>
-
+﻿@model Dora.Core.PageList<SchoolUser>
 @{
     ViewData["Title"] = "管理员";
     Layout = "_Layout";
@@ -33,9 +32,18 @@
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
-
         <div class="row" style="padding-top:10px;">
-            <div class="col-sm-1 col-sm-offset-11">
+            <div class="col-sm-11">
+                <div class="form-group">
+                    <p class="form-control-static">代码或名称</p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
+                </div>
+                <button type="submit" class="btn btn-info">search</button>
+
+            </div>
+            <div class="col-sm-1">
                 <a class="btn btn-block btn-danger btnAdd">添加</a>
             </div>
         </div>
@@ -46,7 +54,10 @@
                     <thead>
                         <tr>
                             <th>账号</th>
+                            <th>类型</th>
+                            <th>姓名</th>
                             <th>角色</th>
+                            
                             <th class="text-right">操作</th>
                         </tr>
                     </thead>
@@ -55,7 +66,10 @@
                         {
                             <tr>
                                 <td>@item.UserName</td>
+                                <td>@item.UserType</td>
+                                <td>@(item.Student!=null?item.Student.Name:item.Teacher!=null?item.Teacher.Name:item.UserName)</td>
                                 <td>@( string.Join(", ", (ViewBag.roles as IQueryable<SchoolRole>).Where(b=>item.Roles.Select(c=>c.RoleId).Contains(b.Id)).Select(b=>b.Name)) )</td>
+                                
                                 <td class="text-right">
                                     <a data-content-id="@item.Id" class="btn btn-info btn-xs btnSetRole">设置角色</a>
                                     <a data-content-id="@item.Id" class="btn btn-primary btn-xs btnResetPassword">修改密码</a>
@@ -67,6 +81,9 @@
                 </table>
             </div>
         </div>
+
+        <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+        @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
 
 
     </form>

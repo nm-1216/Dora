@@ -49,16 +49,20 @@ namespace Dora.School.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(string searchKey, int page=1)
         {
+            ViewData["searchKey"] = searchKey;
+
             var roles = _roleManager.Roles;
+            var list = new PageList<SchoolUser>(_userManager.Users.Include(b => b.Roles).Include(b => b.Teacher).Include(b => b.Student)
+                .Where(b => string.IsNullOrEmpty(searchKey)
+                || b.Teacher.Name.Contains(searchKey)
+                || b.Student.Name.Contains(searchKey)
+                || b.UserName.Contains(searchKey)
 
-            
-
-            var list = _userManager.Users.Include(b=>b.Roles).Where(b => b.Student == null && b.Teacher == null);
-
+                )
+                , page, 10);
             ViewBag.roles = roles;
-
             return View(list);
         }
 
