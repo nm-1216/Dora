@@ -39,7 +39,7 @@
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<SchoolUser, IdentityRole>(options =>
+            services.AddIdentity<SchoolUser, SchoolRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 1;
@@ -83,6 +83,8 @@
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IModuleTypeService, ModuleTypeService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

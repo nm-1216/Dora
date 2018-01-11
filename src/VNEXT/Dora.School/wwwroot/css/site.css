@@ -16,7 +16,7 @@ html, body {
     min-height: 100%;
 }
 .wapper {
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     top: 50px;

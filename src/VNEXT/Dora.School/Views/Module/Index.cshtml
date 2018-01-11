@@ -1,68 +1,90 @@
-﻿@model IEnumerable<SchoolRole>
+﻿@model IEnumerable<Module>
 
 @{
-    ViewData["Title"] = "角色管理";
+    ViewData["Title"] = "用户管理";
     Layout = "_Layout";
 }
 
-
-<div class="CreateDiv" style="display:none">
-    <form id="CreateRole" asp-action="Create" method="post">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>角色名称：</th>
-                    <th>排序：</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input id="CreateDivName" name="Name" class="form-control" /></td>
-                    <td><input id="CreateDivIndex" name="index" class="form-control" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="text-center">
-                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-    </form>
-</div>
 <div class="EditDiv" style="display:none">
-    <form id="EditRole" asp-action="Edit" method="post">
-        <input type="hidden" id="EditDivId" name="Id" />
-
-        <table class="table table-striped" style="">
+    <form id="EditModule" method="post" asp-action="Edit">
+        <input type="hidden" id="EditDivModuleId" name="ModuleId" />
+        <table class="table-striped table">
             <thead>
                 <tr>
-                    <th>角色名称：</th>
-                    <th>排序：</th>
+                    <th>分类</th>
+                    <th>名称:</th>
+                    <th>路径:</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><input id="EditDivName" name="Name" type="text" class="form-control" /></td>
-                    <td><input id="EditDivIndex" name="index" type="number" class="form-control" /></td>
+                    <td><select class="form-control" id="EditDivType" name="ModuleTypeId" asp-items="@ViewBag.moduleType"></select> </td>
+                    <td><input id="EditDivUame" name="name" type="text" class="form-control" /></td>
+                    <td><input id="EditDivUrl" name="url" type="text" class="form-control" /></td>
                 </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div class="AddDiv" style="display:none">
+    <form id="AddModule" method="post" asp-action="AddModule">
+        <table class="table-striped table">
+            <thead>
+                <tr>
+                    <th>分类</th>
+                    <th>名称:</th>
+                    <th>路径:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><select class="form-control" name="moduleType" asp-items="@ViewBag.moduleType"></select> </td>
+                    <td><input name="name" type="text" class="form-control" /></td>
+                    <td><input name="url" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div class="AddTypeDiv" style="display:none">
+    <form id="AddModuleType" class="" method="post" asp-action="AddModuleType">
+        <table class="table-striped table">
+            <thead>
+                <tr>
+                    <th style="vertical-align:middle">名称:</th>
+                    <th><input type="text" name="name" class="form-control" /></th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr>
                     <td colspan="2" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
             </tbody>
-
         </table>
     </form>
 </div>
-
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
+
         <div class="row" style="padding-top:10px;">
-            <div class="col-sm-1 col-sm-offset-11">
-                <a class="btn btn-block btn-danger btnAdd">添加</a>
+            <div class="col-sm-2 col-sm-offset-10">
+                <button class="btn btn-danger" type="button" onclick="DivLayer(1,'添加分类',$('.AddTypeDiv'))">添加分类</button>
+                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'))">添加</button>
             </div>
         </div>
 
@@ -71,36 +93,36 @@
                 <table class="table-striped table">
                     <thead>
                         <tr>
-                            <th style="width:50px;">排序</th>
-                            <th>角色名称</th>
-                            <th>权限</th>
+                            <th>分类</th>
+                            <th>名称</th>
+                            <th>路径</th>
                             <th class="text-right">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>@item.index</td>
-                            <td>@item.Name</td>
-                            <td>@item.Name</td>
-                            <td class="text-right">
-                                <a data-content-id="@item.Id" data-content-index="@item.index" data-content-name="@item.Name" class="btn btn-primary btn-xs btnEdit">修改</a>
-                                <a data-content-id="@item.Id" data-content-index="@item.index" data-content-name="@item.Name" class="btn btn-info btn-xs btnEdit">权限</a>
-                                <a data-content-id="@item.Id" class="btn btn-danger btn-xs btnDel">删除</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@item.ModuleType.Name</td>
+                                <td>@item.Name</td>
+                                <td>@item.Url</td>
+                                <td class="text-right">
+                                <a data-content-id="@item.ModuleId" data-content-type="@item.ModuleTypeId" data-content-name="@item.Name" data-content-url="@item.Url" class="btn btn-primary btn-xs btnEdit">修改</a>
+                                <a data-content-id="@item.ModuleId" class="btn btn-danger btn-xs btnDel">删除</a></td>
+                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
+
+
     </form>
 </div>
 
 @section scripts{
     <script type="text/javascript">
-
+        
         $(function () {
             var options = {
                 //target: '#output',          //把服务器返回的内容放入id为output的元素中
@@ -129,15 +151,15 @@
                     layer.msg(data.msg);
                 }
             };
+            $("#AddModuleType").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $("#AddModule").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $("#EditModule").submit(function () { $(this).ajaxSubmit(options); return false; });
 
-            //$("#AddModuleType").submit(function () { $(this).ajaxSubmit(options); return false; });
-            $("#CreateRole").submit(function () { $(this).ajaxSubmit(options); return false; });
-            $("#EditRole").submit(function () { $(this).ajaxSubmit(options); return false; });
-            $('.btnDel').on('click', function () {
+            $('.btnDel').on('click', function () { 
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');
                 $.ajax({
-                    url: '/Roles/Delete',
+                    url: '/Module/Delete',
                     type: 'POST',
                     async: true,
                     data: {
@@ -152,7 +174,7 @@
                     success: function (data, textStatus, jqXHR) {
                         console.log(data)
                         console.log(textStatus)
-                        console.log(jqXHR)
+                        console.log(jqXHR)                        
                         if (data.result == 1) {
                             layer.closeAll();
                             layer.msg(data.msg, {
@@ -175,17 +197,14 @@
                     }
                 })
             })
-            $('.btnEdit').on('click', function () {
-                $('#EditDivId').val($(this).attr('data-content-id'));
-                $('#EditDivName').val($(this).attr('data-content-name'));
-                $('#EditDivIndex').val($(this).attr('data-content-index'));
 
-                DivLayer(1, '编辑角色', $('.EditDiv'))
-            })
-            $('.btnAdd').on('click', function () { 
-                $('#CreateDivName').val('')
-                $('#CreateDivIndex').val('')
-                DivLayer(1, '新添角色', $('.CreateDiv'))
+            $('.btnEdit').on('click', function () { 
+                $('#EditDivModuleId').val($(this).attr('data-content-id'));
+                $('#EditDivUame').val($(this).attr('data-content-name'));
+                $('#EditDivUrl').val($(this).attr('data-content-url'));
+                $('#EditDivType').val($(this).attr('data-content-type'));
+
+                DivLayer(1, '编辑模块', $('.EditDiv'))
             })
         })
 
