@@ -3,6 +3,7 @@
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,17 +14,17 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class RolesController : Controller
+    [Authorize]
+    public class RolesController : BaseUserController<RolesController>
     {
-        protected readonly RoleManager<SchoolRole> _roleManager;
-        private readonly ILogger _logger;
         private readonly IPermissionService _PermissionService;
         private readonly IModuleTypeService _ModuleTypeService;
 
-        public RolesController(RoleManager<SchoolRole> roleManager, ILoggerFactory loggerFactory, IPermissionService permissionService, IModuleTypeService moduleTypeService)
+        public RolesController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
+        IPermissionService permissionService,
+        IModuleTypeService moduleTypeService
+        ) : base(roleManager, userManager, loggerFactory)
         {
-            _roleManager = roleManager;
-            _logger = loggerFactory.CreateLogger<RolesController>();
             _PermissionService = permissionService;
             _ModuleTypeService = moduleTypeService;
         }

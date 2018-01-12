@@ -22,35 +22,24 @@
     using System.Threading.Tasks;
 
     [Authorize]
-    public class UserController : Controller
+    public class UserController : BaseUserController<UserController>
     {
-        private readonly ILogger _logger;
-        private IStudentService _StudentService;
-        private ITeacherService _TeacherService;
-
-        private readonly UserManager<SchoolUser> _userManager;
+        private readonly IStudentService _StudentService;
+        private readonly ITeacherService _TeacherService;
         private readonly SignInManager<SchoolUser> _signInManager;
-        protected readonly RoleManager<SchoolRole> _roleManager;
 
-        public UserController(
-            RoleManager<SchoolRole> roleManager,
-            ILoggerFactory loggerFactory,
-            IStudentService studentService,
-            ITeacherService teacherService,
-            UserManager<SchoolUser> userManager,
-            SignInManager<SchoolUser> signInManager
-            )
+        public UserController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
+        IStudentService studentService,
+        ITeacherService teacherService,
+        SignInManager<SchoolUser> signInManager
+        ) : base(roleManager, userManager, loggerFactory)
         {
-            this._roleManager = roleManager;
-            this._userManager = userManager;
             this._signInManager = signInManager;
             this._StudentService = studentService;
             this._TeacherService = teacherService;
-            this._logger = loggerFactory.CreateLogger<UserController>();
         }
 
-
-        public IActionResult Index(string searchKey, int page=1)
+        public IActionResult Index(string searchKey, int page = 1)
         {
             ViewData["searchKey"] = searchKey;
 
@@ -70,12 +59,12 @@
         public IActionResult Student(string searchKey, int page = 1)
         {
             ViewData["searchKey"] = searchKey;
-            
-            var list = new PageList<Student>(_StudentService.GetAll().Include(b=>b.Class)
-                .Include(b=>b.SchoolUser)
+
+            var list = new PageList<Student>(_StudentService.GetAll().Include(b => b.Class)
+                .Include(b => b.SchoolUser)
                 .Where(
-                b => string.IsNullOrEmpty(searchKey) || 
-                b.StudentId.Contains(searchKey) || 
+                b => string.IsNullOrEmpty(searchKey) ||
+                b.StudentId.Contains(searchKey) ||
                 b.Name.Contains(searchKey))
                 .OrderBy(o => o.CreateTime), page, 10);
 
@@ -155,7 +144,7 @@
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(idCard))
                         {
-                            var model= await _userManager.FindByIdAsync(code);
+                            var model = await _userManager.FindByIdAsync(code);
                             if (model != null)
                                 continue;
 
@@ -169,7 +158,7 @@
                                 {
                                     Name = name,
                                     IdCard = idCard,
-                                    Status=1
+                                    Status = 1
                                 }
                             };
                             var result = await _userManager.CreateAsync(user, code);
@@ -284,7 +273,7 @@
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(string id, string pwd,string okPwd)
+        public async Task<IActionResult> ResetPassword(string id, string pwd, string okPwd)
         {
             if (string.IsNullOrEmpty(pwd) || pwd != okPwd)
             {
@@ -321,14 +310,14 @@
 
         public IActionResult SetRole(string id)
         {
-            var user = _userManager.Users.Include(b=>b.Roles).FirstOrDefault(b=>b.Id==id);
+            var user = _userManager.Users.Include(b => b.Roles).FirstOrDefault(b => b.Id == id);
 
             var temp = new List<SelectListItem>();
             var list = _roleManager.Roles.OrderBy(b => b.Index);
 
             foreach (var item in list)
             {
-                temp.Add(new SelectListItem() { Text = item.Name, Value = item.NormalizedName, Selected = user.Roles.Where(b=>b.RoleId==item.Id).Count()>0 });
+                temp.Add(new SelectListItem() { Text = item.Name, Value = item.NormalizedName, Selected = user.Roles.Where(b => b.RoleId == item.Id).Count() > 0 });
             }
 
             ViewBag.user = user;
@@ -347,7 +336,7 @@
                 var roles = _roleManager.Roles;
                 await _userManager.RemoveFromRolesAsync(user, roles.Where(c => user.Roles.Select(b => b.RoleId).Contains(c.Id)).Select(b => b.NormalizedName));
             }
-            
+
             await _userManager.AddToRolesAsync(user, roleIds);
 
             //await _PermissionService.AddRange(role.Permissions);

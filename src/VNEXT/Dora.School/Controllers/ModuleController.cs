@@ -3,6 +3,7 @@
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -15,6 +16,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    [Authorize]
     public class ModuleController : BaseUserController<ModuleController>
     {
         private readonly IModuleService _ModuleService;

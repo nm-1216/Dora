@@ -11,15 +11,15 @@ namespace Dora.School.Controllers
     using System.Linq;
 
     [Authorize]
-    public class ProfessionalController : Controller
+    public class ProfessionalController : BaseUserController<ProfessionalController>
     {
-        private readonly ILogger _logger;
         private IProfessionalService _ProfessionalService;
 
-        public ProfessionalController(ILoggerFactory loggerFactory, IProfessionalService professionalService)
+        public ProfessionalController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
+            , IProfessionalService professionalService
+            ) : base(roleManager, userManager, loggerFactory)
         {
             this._ProfessionalService = professionalService;
-            _logger = loggerFactory.CreateLogger<ProfessionalController>();
         }
 
         public IActionResult Index(string searchKey, int page = 1)

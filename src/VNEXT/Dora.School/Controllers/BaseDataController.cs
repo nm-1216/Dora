@@ -7,6 +7,7 @@ namespace Dora.School.Controllers
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -21,28 +22,24 @@ namespace Dora.School.Controllers
     using System.Linq;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
 
     [EnableCors("AllowSameDomain")]
-    public class BaseDataController : Controller
+    [Authorize]
+    public class BaseDataController : BaseUserController<BaseDataController>
     {
-        private readonly ILogger _logger;
         private ICourseService _CourseService;
         private IClassService _ClassService;
         private IHostingEnvironment _hostingEnvironment;
 
-
-
-        public BaseDataController(
-            ILoggerFactory loggerFactory,
-            ICourseService courseService,
-            IClassService classService,
-            IHostingEnvironment hostingEnvironment
-            )
+        public BaseDataController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
+        ICourseService courseService,
+        IClassService classService,
+        IHostingEnvironment hostingEnvironment
+        ) : base(roleManager, userManager, loggerFactory)
         {
-            this._ClassService = classService;
             this._CourseService = courseService;
             this._ClassService = classService;
-            this._logger = loggerFactory.CreateLogger<UserController>();
             this._hostingEnvironment = hostingEnvironment;
         }
 
@@ -196,7 +193,7 @@ namespace Dora.School.Controllers
 
             url = "http://localhost:56417/upload/" + NewFile;
             //return Content(string.Format(Callback, CKEditorFuncNum, url), ContentType);
-            return Json(new { uploaded= uploaded, fileName= NewFile, url= url });
+            return Json(new { uploaded = uploaded, fileName = NewFile, url = url });
         }
 
         #region 组织架构

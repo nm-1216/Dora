@@ -1,27 +1,27 @@
 ﻿namespace Dora.School.Controllers
 {
+    using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// 教学大纲
     /// </summary>
-    public class SyllabusController : Controller
+    [Authorize]
+    public class SyllabusController : BaseUserController<SyllabusController>
     {
-        private readonly ILogger _logger;
         private ISyllabusService _SyllabusService;
         private ICourseService _CourseService;
 
+        public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
+        , ISyllabusService SyllabusService
+        , ICourseService CourseService
 
-        public SyllabusController(ILoggerFactory loggerFactory
-            , ISyllabusService SyllabusService
-            , ICourseService CourseService
-
-            )
+        ) : base(roleManager, userManager, loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<SyllabusController>();
-
             _SyllabusService = SyllabusService;
             _CourseService = CourseService;
         }
