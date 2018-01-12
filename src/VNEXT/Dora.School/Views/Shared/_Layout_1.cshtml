@@ -12,7 +12,7 @@
     @RenderBody()
 </div>
 
-<form asp-controller="Home" asp-action="LogOff" method="post" id="logoutForm">
+<form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
 </form>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
@@ -86,11 +86,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">倾苏恋 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/Register">Register</a></li>
-                        <li><a href="/ChangePassword">ChangePassword</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        <li><a href="/Account/ChangePassword">修改密码</a></li>
+                        <li><a href="/Account">账号信息</a></li>
+                        <li><a href="/Account/SetInfo">个人设置</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="javascript:void(0)" class="logout"><i class="glyphicon glyphicon-off" style="top:3px;font-weight:bold"></i> Logout</a></li>
+                        <li><a href="javascript:void(0)" class="logout"><i class="glyphicon glyphicon-off" style="top:3px;font-weight:bold"></i> 退出系统</a></li>
                     </ul>
                 </li>
             </ul>

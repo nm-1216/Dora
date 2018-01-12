@@ -42,6 +42,8 @@
         /// </summary>
         public virtual Teacher Teacher { get; set; }
 
+        public virtual int PageSize { get; set; } = 10;
+
         /// <summary>
         /// 权限
         /// </summary>

@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
@@ -16,26 +15,14 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class ModuleController : Controller
+    public class ModuleController : BaseUserController<ModuleController>
     {
-        private readonly UserManager<SchoolUser> _userManager;
-        private readonly ILogger _logger;
         private readonly IModuleService _ModuleService;
         private readonly IModuleTypeService _ModuleTypeService;
-        protected readonly RoleManager<SchoolRole> _roleManager;
 
-        public ModuleController(
-            ILoggerFactory loggerFactory,
-            IModuleService moduleService,
-            RoleManager<SchoolRole> roleManager,
-            UserManager<SchoolUser> userManager,
-            IModuleTypeService moduleTypeService
-            )
+        public ModuleController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
+        , IModuleService moduleService, IModuleTypeService moduleTypeService) : base(roleManager, userManager, loggerFactory)
         {
-            this._logger = loggerFactory.CreateLogger<ModuleController>();
-            this._userManager = userManager;
-            this._roleManager = roleManager;
-
             this._ModuleService = moduleService;
             this._ModuleTypeService = moduleTypeService;
         }
@@ -172,20 +159,6 @@
             {
                 return Json(new AjaxResult("操作失败，数据已存在") { result = 0 });
             }
-        }
-
-        public async Task<IActionResult> GetMenu()
-        {
-            var user = await GetCurrentUserAsync();
-            var roles = await _userManager.GetRolesAsync(user);
-            var list = _roleManager.Roles.Include(b => b.Permissions).ThenInclude(c => c.ModuleType).ThenInclude(d => d.Modules).Where(b => roles.Contains(b.Name));
-
-            return Json(list.Select(b => new { b.Name, Permissions = b.Permissions.Select(c => new { c.ModuleType.Name, c.ModuleType.Modules }) }));
-        }
-
-        private Task<SchoolUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }

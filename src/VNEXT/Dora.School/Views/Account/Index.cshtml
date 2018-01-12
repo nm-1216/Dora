@@ -1,0 +1,34 @@
+﻿@model SchoolUser
+@{
+    ViewData["Title"] = "Change user infomation";
+}
+<div class="container-fluid">
+
+    <h2>@ViewData["Title"].</h2>
+
+
+    <form method="post" asp-action="ChangePassword" class="form-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <h4>Change user infomation.</h4>
+        <hr />
+        <div class="form-group">
+            <label asp-for="PageSize" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PageSize" class="form-control" />
+                <span asp-validation-for="PageSize" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-danger">Change password</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+

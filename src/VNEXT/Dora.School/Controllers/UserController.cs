@@ -3,6 +3,7 @@ namespace Dora.School.Controllers
     using Core;
     using Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Dora.ViewModels.AccountViewModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -352,6 +353,41 @@ namespace Dora.School.Controllers
 
             return Content("操作成功");
         }
+
+        #region Register
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new SchoolUser { Id = model.Uname, UserName = model.Uname, Email = model.Uname + "@School.com", UserType = SchoolUserType.other };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User created a new account with password.");
+
+                    return Content("操作成功");
+                    //return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        #endregion
 
 
         #region Helpers

@@ -1,31 +1,23 @@
 namespace Dora.School.Controllers
 {
-    using System.Threading.Tasks;
     using Domain.Entities.School;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using System.Threading.Tasks;
     using ViewModels.AccountViewModels;
-    using ViewModels.ManageViewModels;
 
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseUserController<HomeController>
     {
-        private readonly UserManager<SchoolUser> _userManager;
         private readonly SignInManager<SchoolUser> _signInManager;
-        private readonly ILogger _logger;
-        public HomeController(
-        UserManager<SchoolUser> userManager,
-        SignInManager<SchoolUser> signInManager,
-        ILoggerFactory loggerFactory
-            )
+
+        public HomeController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory, SignInManager<SchoolUser> signInManager) : base(roleManager, userManager, loggerFactory)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
-            _logger = loggerFactory.CreateLogger<HomeController>();
         }
 
+        #region Index
         public IActionResult Index()
         {
             return View();
@@ -59,10 +51,10 @@ namespace Dora.School.Controllers
             return View();
         }
 
-        #region Account/Login
+        #endregion
 
-        //
-        // GET: /Account/Login
+        #region Login
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -74,8 +66,6 @@ namespace Dora.School.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -112,8 +102,7 @@ namespace Dora.School.Controllers
 
         #endregion
 
-        //
-        // GET: /Account/Register
+        #region Register
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
@@ -122,8 +111,6 @@ namespace Dora.School.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -132,7 +119,7 @@ namespace Dora.School.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new SchoolUser { Id = model.Uname, UserName = model.Uname, Email = model.Uname + "@School.com", UserType= SchoolUserType.other };
+                var user = new SchoolUser { Id = model.Uname, UserName = model.Uname, Email = model.Uname + "@School.com", UserType = SchoolUserType.other };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -148,115 +135,6 @@ namespace Dora.School.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        #region Account/LogOff
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
-
         #endregion
-
-        #region ChangePassword
-        //
-        // GET: /Manage/ChangePassword
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User changed their password successfully.");
-
-                    return RedirectToAction(nameof(ManageMessage), new { Message = ManageMessageId.ChangePasswordSuccess });
-                }
-                AddErrors(result);
-                return View(model);
-            }
-
-            return RedirectToAction(nameof(ManageMessage), new { Message = ManageMessageId.Error });
-        }
-        #endregion
-
-
-        #region Helpers
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private Task<SchoolUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-        }
-
-        #endregion
-        #region
-        public string ManageMessage(ManageMessageId? message = null)
-        {
-            var StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-            return StatusMessage;
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-        #endregion
-
     }
 }

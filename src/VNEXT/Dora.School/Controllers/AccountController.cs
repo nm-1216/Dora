@@ -1,4 +1,133 @@
-﻿//using System.Linq;
+﻿namespace Dora.School.Controllers
+{
+    using Dora.Domain.Entities.School;
+    using Dora.ViewModels.ManageViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    [Authorize]
+    public class AccountController : BaseUserController<AccountController>
+    {
+        private readonly SignInManager<SchoolUser> _signInManager;
+
+        public AccountController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory, SignInManager<SchoolUser> signInManager) : base(roleManager, userManager, loggerFactory)
+        {
+            _signInManager = signInManager;
+        }
+
+        #region Index
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return View(await GetCurrentUserAsync());
+        }
+
+        #endregion
+
+        #region Info
+        [HttpGet]
+        public async Task<IActionResult> Info()
+        {
+            return View(await GetCurrentUserAsync());
+        }
+        #endregion
+
+        #region ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await GetCurrentUserAsync();
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction(nameof(ManageMessage), new { Message = ManageMessageId.ChangePasswordSuccess });
+                }
+                AddErrors(result);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(ManageMessage), new { Message = ManageMessageId.Error });
+        }
+        #endregion
+
+        #region GetMenu
+        public async Task<IActionResult> GetMenu()
+        {
+            var user = await GetCurrentUserAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+            var list = _roleManager.Roles.Include(b => b.Permissions).ThenInclude(c => c.ModuleType).ThenInclude(d => d.Modules).Where(b => roles.Contains(b.Name));
+
+            return Json(list.Select(b => new { b.Name, Permissions = b.Permissions.Select(c => new { c.ModuleType.Name, c.ModuleType.Modules }) }));
+        }
+        #endregion
+
+        #region LogOff
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        #endregion
+
+        #region helper
+        public string ManageMessage(ManageMessageId? message = null)
+        {
+            var StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : "";
+            return StatusMessage;
+        }
+
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            AddLoginSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
+        }
+        #endregion
+    }
+
+}
+
+
+
+
+
+
+//using System.Linq;
 //using System.Security.Claims;
 //using System.Threading.Tasks;
 //using Microsoft.AspNetCore.Authorization;
