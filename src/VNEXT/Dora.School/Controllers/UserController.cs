@@ -1,4 +1,4 @@
-namespace Dora.School.Controllers
+ï»¿namespace Dora.School.Controllers
 {
     using Core;
     using Domain.Entities.School;
@@ -101,7 +101,7 @@ namespace Dora.School.Controllers
 
                 if (!fileExtension.Equals(".xls") && !fileExtension.Equals(".xlsx"))
                 {
-                    return new JsonResult(new AjaxResult("ÎÄ¼ş¸ñÊ½²»ÕıÈ·") { result = 0 });
+                    return new JsonResult(new AjaxResult("æ–‡ä»¶æ ¼å¼ä¸æ­£ç¡®") { result = 0 });
                 }
 
                 var dir = Path.Combine(env.WebRootPath, "upload", "temp", DateTime.Now.ToString("yyMMdd"));
@@ -121,14 +121,14 @@ namespace Dora.School.Controllers
                 using (var Read = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
 
-                    if (fileExtension.Equals(".xlsx")) // 2007°æ±¾
+                    if (fileExtension.Equals(".xlsx")) // 2007ç‰ˆæœ¬
                         workbook = new XSSFWorkbook(Read);
                     else
                         workbook = new HSSFWorkbook(Read);
 
                     if (workbook != null)
                     {
-                        sheet = workbook.GetSheet("Ñ§Éú");
+                        sheet = workbook.GetSheet("å­¦ç”Ÿ");
                         if (sheet == null)
                             sheet = workbook.GetSheetAt(0);
                     }
@@ -138,9 +138,9 @@ namespace Dora.School.Controllers
                     var name = GetValue(row.GetCell(1));
                     var idCard = GetValue(row.GetCell(2));
 
-                    if (!code.Equals("Ñ§ºÅ") || !name.Equals("ĞÕÃû") || !idCard.Equals("Éí·İÖ¤"))
+                    if (!code.Equals("å­¦å·") || !name.Equals("å§“å") || !idCard.Equals("èº«ä»½è¯"))
                     {
-                        return new JsonResult(new AjaxResult("EXCELÎÄ¼ş¸ñÊ½²»ÕıÈ·") { result = 0 });
+                        return new JsonResult(new AjaxResult("EXCELæ–‡ä»¶æ ¼å¼ä¸æ­£ç¡®") { result = 0 });
                     }
 
                     int rowCount = sheet.LastRowNum;
@@ -182,7 +182,7 @@ namespace Dora.School.Controllers
                 }
             }
 
-            return new JsonResult(new AjaxResult("µ¼Èë³É¹¦"));
+            return new JsonResult(new AjaxResult("å¯¼å…¥æˆåŠŸ"));
         }
 
         public async Task<IActionResult> ImportTeacher([FromServices]IHostingEnvironment env, IList<IFormFile> files)
@@ -193,7 +193,7 @@ namespace Dora.School.Controllers
 
                 if (!fileExtension.Equals(".xls") && !fileExtension.Equals(".xlsx"))
                 {
-                    return new JsonResult(new AjaxResult("ÎÄ¼ş¸ñÊ½²»ÕıÈ·") { result = 0 });
+                    return new JsonResult(new AjaxResult("æ–‡ä»¶æ ¼å¼ä¸æ­£ç¡®") { result = 0 });
                 }
 
                 var dir = Path.Combine(env.WebRootPath, "upload", "temp", DateTime.Now.ToString("yyMMdd"));
@@ -213,14 +213,14 @@ namespace Dora.School.Controllers
                 using (var Read = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
 
-                    if (fileExtension.Equals(".xlsx")) // 2007°æ±¾
+                    if (fileExtension.Equals(".xlsx")) // 2007ç‰ˆæœ¬
                         workbook = new XSSFWorkbook(Read);
                     else
                         workbook = new HSSFWorkbook(Read);
 
                     if (workbook != null)
                     {
-                        sheet = workbook.GetSheet("½ÌÊ¦");
+                        sheet = workbook.GetSheet("æ•™å¸ˆ");
                         if (sheet == null)
                             sheet = workbook.GetSheetAt(0);
                     }
@@ -230,9 +230,9 @@ namespace Dora.School.Controllers
                     var name = GetValue(row.GetCell(1));
                     var idCard = GetValue(row.GetCell(2));
 
-                    if (!code.Equals("¹¤ºÅ") || !name.Equals("ĞÕÃû") || !idCard.Equals("Éí·İÖ¤"))
+                    if (!code.Equals("å·¥å·") || !name.Equals("å§“å") || !idCard.Equals("èº«ä»½è¯"))
                     {
-                        return new JsonResult(new AjaxResult("EXCELÎÄ¼ş¸ñÊ½²»ÕıÈ·") { result = 0 });
+                        return new JsonResult(new AjaxResult("EXCELæ–‡ä»¶æ ¼å¼ä¸æ­£ç¡®") { result = 0 });
                     }
 
                     int rowCount = sheet.LastRowNum;
@@ -274,11 +274,11 @@ namespace Dora.School.Controllers
                 }
             }
 
-            return new JsonResult(new AjaxResult("µ¼Èë³É¹¦"));
+            return new JsonResult(new AjaxResult("å¯¼å…¥æˆåŠŸ"));
         }
 
         /// <summary>
-        /// ÖØÖÃÃÜÂë
+        /// é‡ç½®å¯†ç 
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="pwd"></param>
@@ -288,18 +288,19 @@ namespace Dora.School.Controllers
         {
             if (string.IsNullOrEmpty(pwd) || pwd != okPwd)
             {
-                return Json(new AjaxResult("²Ù×÷Ê§°Ü,Á½´ÎÃÜÂë²»Ò»ÖÂ") { result = 0 });
+                return Json(new AjaxResult("æ“ä½œå¤±è´¥,ä¸¤æ¬¡å¯†ç ä¸ä¸€è‡´") { result = 0 });
             }
 
             var model = await _userManager.FindByIdAsync(id);
             if (model != null)
             {
+                await _userManager.RemovePasswordAsync(model);
                 await _userManager.AddPasswordAsync(model, pwd);
-                return Json(new AjaxResult("²Ù×÷³É¹¦") { result = 1 });
+                return Json(new AjaxResult("æ“ä½œæˆåŠŸ") { result = 1 });
             }
             else
             {
-                return Json(new AjaxResult("²Ù×÷Ê§°Ü,Î´ÕÒµ½¶ÔÏó") { result = 0 });
+                return Json(new AjaxResult("æ“ä½œå¤±è´¥,æœªæ‰¾åˆ°å¯¹è±¡") { result = 0 });
             }
         }
 
@@ -310,11 +311,11 @@ namespace Dora.School.Controllers
             if (model != null)
             {
                 await _userManager.DeleteAsync(model);
-                return Json(new AjaxResult("²Ù×÷³É¹¦") { result = 1 });
+                return Json(new AjaxResult("æ“ä½œæˆåŠŸ") { result = 1 });
             }
             else
             {
-                return Json(new AjaxResult("²Ù×÷Ê§°Ü,Î´ÕÒµ½¶ÔÏó") { result = 0 });
+                return Json(new AjaxResult("æ“ä½œå¤±è´¥,æœªæ‰¾åˆ°å¯¹è±¡") { result = 0 });
             }
         }
 
@@ -351,7 +352,7 @@ namespace Dora.School.Controllers
 
             //await _PermissionService.AddRange(role.Permissions);
 
-            return Content("²Ù×÷³É¹¦");
+            return Content("æ“ä½œæˆåŠŸ");
         }
 
         #region Register
@@ -378,7 +379,7 @@ namespace Dora.School.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
 
-                    return Content("²Ù×÷³É¹¦");
+                    return Content("æ“ä½œæˆåŠŸ");
                     //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

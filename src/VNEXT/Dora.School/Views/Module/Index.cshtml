@@ -98,7 +98,7 @@
     <form id="mainForm" class="form-inline" method="post">
 
         <div class="row" style="padding-top:10px;">
-            <div class="col-sm-10">
+            <div class="col-sm-8">
                 <div class="form-group">
                     <p class="form-control-static">分类：</p>
                 </div>
@@ -114,9 +114,11 @@
                 <button type="submit" class="btn btn-info">检索</button>
             </div>
 
-            <div class="col-sm-2">
+            <div class="col-sm-4">
+                <button class="btn btn-success" type="button" onclick="DivLayer(1,'模块排序',$('.AddTypeDiv'))">分类排序</button>
+                <button class="btn btn-success" type="button" onclick="DivLayer(1,'模块排序',$('.AddTypeDiv'))">模块排序</button>
                 <button class="btn btn-danger" type="button" onclick="DivLayer(1,'添加分类',$('.AddTypeDiv'))">添加分类</button>
-                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'),'800px','300px')">添加</button>
+                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'),'800px','300px')">添加模块</button>
             </div>
         </div>
 

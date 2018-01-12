@@ -26,17 +26,25 @@
                         <environment names="Development">
                             <select asp-for="Uname" class="form-username form-control">
                                 <option value="admin">管理员</option>
-                                <option value="2040133234">学生-徐枫</option>
-                                <option value="2040133235">学生-惠建新</option>
-                                <option value="2040133236">学生-郑冬明</option>
-                                <option value="0665">老师-刘志刚</option>
-                                <option value="0667">老师-老师二</option>
-                                <option value="0668">老师-老师三</option>
-
+                                <option value="1000001">任课教师</option>
+                                <option value="1000002">教研室(系)主任</option>
+                                <option value="1000003">分院(系)领导</option>
+                                <option value="1000004">教学秘书</option>
+                                <option value="1000005">实验实训室管理员</option>
+                                <option value="1000006">教务管理员</option>
                             </select>
                         </environment>
                         <environment names="Staging,Production">
-                            <input asp-for="Uname" placeholder="Username..." value="" class="form-username form-control" />
+                            @*<input asp-for="Uname" placeholder="Username..." value="" class="form-username form-control" />*@
+                            <select asp-for="Uname" class="form-username form-control">
+                                <option value="admin">管理员</option>
+                                <option value="1000001">任课教师</option>
+                                <option value="1000002">教研室(系)主任</option>
+                                <option value="1000003">分院(系)领导</option>
+                                <option value="1000004">教学秘书</option>
+                                <option value="1000005">实验实训室管理员</option>
+                                <option value="1000006">教务管理员</option>
+                            </select>
                         </environment>
                     </div>
                     <div class="form-group">

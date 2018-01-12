@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "_Layout_99";
+}
+@section styles{
+    @RenderSection("styles", required: false)
+}
+@section scripts{
+    @RenderSection("scripts", required: false)
+}
+
+<div class="wapper">
+    @RenderBody()
+</div>
+
+<form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+</form>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">诊改支撑平台</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">功能预览 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/index">任课教师</a></li>
+                        <li><a href="/index1">教研室（系）主任</a></li>
+                        
+                        <li><a href="/index2">分院(系)领导</a></li>
+                        <li><a href="/index3">教学秘书</a></li>
+                        <li><a href="/index4">实验实训室管理员</a></li>
+                        <li><a href="/index5">教务管理员</a></li>
+                    </ul>
+                </li>
+                <li><a href="/login">进入系统</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">刘德华 <span class="caret"></span></a>
+                    
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+

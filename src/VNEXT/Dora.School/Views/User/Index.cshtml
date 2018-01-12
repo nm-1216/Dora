@@ -57,25 +57,25 @@
                             <th>类型</th>
                             <th>姓名</th>
                             <th>角色</th>
-                            
+
                             <th class="text-right">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@item.UserName</td>
-                                <td>@item.UserType</td>
-                                <td>@(item.Student!=null?item.Student.Name:item.Teacher!=null?item.Teacher.Name:item.UserName)</td>
-                                <td>@( string.Join(", ", (ViewBag.roles as IQueryable<SchoolRole>).Where(b=>item.Roles.Select(c=>c.RoleId).Contains(b.Id)).Select(b=>b.Name)) )</td>
-                                
-                                <td class="text-right">
-                                    <a data-content-id="@item.Id" class="btn btn-info btn-xs btnSetRole">设置角色</a>
-                                    <a data-content-id="@item.Id" class="btn btn-primary btn-xs btnResetPassword">修改密码</a>
-                                    <a data-content-id="@item.Id" class="btn btn-danger btn-xs btnDel">删除</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@item.UserName</td>
+                            <td>@item.UserType</td>
+                            <td>@(item.Student!=null?item.Student.Name:item.Teacher!=null?item.Teacher.Name:item.UserName)</td>
+                            <td>@( string.Join(", ", (ViewBag.roles as IQueryable<SchoolRole>).Where(b=>item.Roles.Select(c=>c.RoleId).Contains(b.Id)).Select(b=>b.Name)) )</td>
+
+                            <td class="text-right">
+                                <a data-content-id="@item.Id" class="btn btn-info btn-xs btnSetRole">设置角色</a>
+                                <a data-content-id="@item.Id" class="btn btn-primary btn-xs btnResetPassword">修改密码</a>
+                                <a data-content-id="@item.Id" class="btn btn-danger btn-xs btnDel">删除</a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -111,9 +111,9 @@
                 if (data.result == 1) {
                     layer.closeAll();
                     layer.msg(data.msg, {
-                    time: 2000, end: function () {
-                        location.href = location.href;
-                    }
+                        time: 2000, end: function () {
+                            location.href = location.href;
+                        }
                     }
                     )
                 } else {
@@ -127,44 +127,51 @@
             $('.btnDel').on('click', function () {
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');
-                $.ajax({
-                    url: '/User/Delete',
-                    type: 'POST',
-                    async: true,
-                    data: {
-                        id: id
-                    },
-                    timeout: 5000,
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        console.log(xhr)
-                        console.log('发送前')
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data)
-                        console.log(textStatus)
-                        console.log(jqXHR)
-                        if (data.result == 1) {
-                            layer.closeAll();
-                            layer.msg(data.msg, {
-                                time: 2000, end: function () {
-                                    location.href = location.href;
+
+                layer.confirm('数据不可恢复，确认要删除吗？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    $.ajax({
+                        url: '/User/Delete',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result == 1) {
+                                layer.closeAll();
+                                layer.msg(data.msg, {
+                                    time: 2000, end: function () {
+                                        location.href = location.href;
+                                    }
                                 }
+                                )
+                            } else {
+                                layer.msg(data.msg);
                             }
-                            )
-                        } else {
-                            layer.msg(data.msg);
+                        },
+                        error: function (xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function () {
+                            console.log('结束')
                         }
-                    },
-                    error: function (xhr, textStatus) {
-                        console.log('错误')
-                        console.log(xhr)
-                        console.log(textStatus)
-                    },
-                    complete: function () {
-                        console.log('结束')
-                    }
-                })
+                    })
+                }, function () {
+                    return
+                });
             })
             $('.btnResetPassword').on('click', function () {
                 $('#ResetPasswordId').val($(this).attr('data-content-id'));
@@ -174,10 +181,10 @@
                 DivLayer(1, '重置密码', $('.ResetPasswordDiv'))
             })
             $('.btnAdd').on('click', function () {
-                IFreamLayer(1, '添加新用户', '/Register','580px','460px')
+                IFreamLayer(1, '添加新用户', '/Register', '580px', '460px')
             })
             $('.btnSetRole').on('click', function () {
-                var id=$(this).attr('data-content-id')
+                var id = $(this).attr('data-content-id')
 
                 IFreamLayer(1, '设置角色', '/User/SetRole?id=' + id, '580px', '460px')
             })
