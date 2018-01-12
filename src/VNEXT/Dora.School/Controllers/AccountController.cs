@@ -95,7 +95,12 @@
         {
             var user = await GetCurrentUserAsync();
             var roles = await _userManager.GetRolesAsync(user);
-            var list = _roleManager.Roles.Include(b => b.Permissions).ThenInclude(c => c.ModuleType).ThenInclude(d => d.Modules).Where(b => roles.Contains(b.Name));
+            var list = _roleManager.Roles
+                .Include(b => b.Permissions)
+                .ThenInclude(c => c.ModuleType)
+                .ThenInclude(d => d.Modules)
+                .Where(b => roles.Contains(b.Name))
+                .OrderBy(b => b.Index);
 
             string nav = @"<li><a class=""has-arrow"" href=""javascript:void(0)""><span class=""fa fa-fw fa-github fa-lg""></span>{0}</a>";
             string href = @"<li><a href=""{1}""><span class=""fa fa-fw fa-code-fork""></span>{0}</a></li>";
@@ -110,13 +115,13 @@
                 sb.Append(li);
                 sb.AppendFormat(nav, item.Name);
                 sb.Append(ul);
-                foreach (var Permission in item.Permissions)
+                foreach (var Permission in item.Permissions.OrderBy(b=>b.ModuleType.Index))
                 {
                     sb.Append(li);
                     sb.AppendFormat(nav, Permission.ModuleType.Name);
                     sb.Append(ul);
 
-                    foreach(var m in Permission.ModuleType.Modules)
+                    foreach(var m in Permission.ModuleType.Modules.OrderBy(b=>b.Index))
                     {
                         sb.AppendFormat(href, m.Name, m.Url);
                     }
@@ -129,18 +134,9 @@
             }
 
 
-            var temp = @"<li>
-            
-            <ul aria-expanded=""true"">
-            <li><a href=""javascript:void(0)""><span class=""fa fa-fw fa-code-fork""></span>通用功能</a></li>
-            <li><a href=""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>理论课(实践)</a></li>
-            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>校内实训</a></li>
-            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>校外实习</a></li>
-            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>毕业环节</a></li>
-            </ul>
-            </li>";
 
-            return Json(list.Select(b => new { b.Name, Permissions = b.Permissions.Select(c => new { c.ModuleType.Name, c.ModuleType.Modules }) }));
+
+            return Json(sb.ToString());
 
 
         }

@@ -40,6 +40,11 @@ namespace Dora.Domain.Entities.School
         public virtual string Discription { get; set; }
 
         /// <summary>
+        /// 排序
+        /// </summary>
+        public virtual int Index { get; set; } = 1;
+
+        /// <summary>
         /// 模块
         /// </summary>
         public virtual ICollection<Module> Modules { get; set; }

@@ -13,9 +13,10 @@ using System;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180112090558_init20180112_hwx_2")]
+    partial class init20180112_hwx_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,8 +353,6 @@ namespace dora.school.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("Discription");
-
-                    b.Property<int>("Index");
 
                     b.Property<string>("Name")
                         .IsRequired()

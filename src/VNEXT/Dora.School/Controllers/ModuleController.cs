@@ -27,19 +27,29 @@
             this._ModuleTypeService = moduleTypeService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string moduleTypeId, string searchKey)
         {
+            ViewData["searchKey"] = searchKey;
+
             var temp = new List<SelectListItem>();
-            var list = _ModuleTypeService.GetAll().OrderBy(b => b.Discription);
+            var list = _ModuleTypeService.GetAll().OrderBy(b => b.Discription).ThenBy(b => b.Index);
 
             foreach (var item in list)
             {
-                temp.Add(new SelectListItem() { Text = string.Format("{0}-{1}", item.Discription, item.Name), Value = item.ModuleTypeId });
+                temp.Add(new SelectListItem() { Text = string.Format("{0}-{1}", item.Discription, item.Name), Value = item.ModuleTypeId, Selected = item.ModuleTypeId == moduleTypeId });
             }
-            ViewBag.moduleType = temp;
-            ViewData["moduleType"] = temp;
 
-            return View(_ModuleService.GetAll().OrderBy(b => b.ModuleType.Discription).OrderByDescending(b => b.CreateTime));
+            List<SelectListItem> temp1 = new List<SelectListItem>(temp);
+            temp1.Insert(0, new SelectListItem() { Text = "==请选择分类==", Value = string.Empty });
+            temp1.ForEach(i => i.Selected = i.Value == moduleTypeId);
+
+            ViewBag.moduleType = temp;
+            ViewBag.moduleTypeForSearch = temp1;
+
+
+            return View(_ModuleService.GetAll()
+                .Where(b => (string.IsNullOrEmpty(moduleTypeId) || b.ModuleTypeId == moduleTypeId) && (string.IsNullOrEmpty(searchKey) || b.Name.Contains(searchKey)))
+                .OrderBy(b => b.ModuleType.Discription).ThenBy(b => b.ModuleType.Index).ThenBy(b => b.Index));
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -92,13 +102,20 @@
 
             if (item != null)
             {
-                item.Name = model.Name;
-                item.Url = model.Url;
-                item.ModuleTypeId = model.ModuleTypeId;
+                if (!string.IsNullOrEmpty(model.Name))
+                    item.Name = model.Name;
+
+                if (!string.IsNullOrEmpty(model.ModuleTypeId))
+                    item.ModuleTypeId = model.ModuleTypeId;
+
+                item.Url = model.Url ?? string.Empty;
                 item.UpdateTime = DateTime.Now;
 
                 if (!string.IsNullOrEmpty(Ico))
                     item.Ico = Ico;
+
+                if (model.Index > 0)
+                    item.Index = model.Index;
 
                 await _ModuleService.Update(item);
                 return Json(new AjaxResult("操作成功") { result = 1 });
@@ -109,7 +126,7 @@
             }
         }
 
-        public async Task<IActionResult> AddModule([FromServices]IHostingEnvironment env, string name, string url, string moduleType, IList<IFormFile> files)
+        public async Task<IActionResult> AddModule([FromServices]IHostingEnvironment env, string name, string url, string moduleType, IList<IFormFile> files, int index = 1)
         {
             name = name ?? string.Empty;
             url = url ?? string.Empty;
@@ -141,18 +158,18 @@
                 }
             }
 
-            await _ModuleService.Add(new Domain.Entities.School.Module() { Name = name, Url = url, ModuleTypeId = moduleType, Ico = Ico });
+            await _ModuleService.Add(new Domain.Entities.School.Module() { Name = name, Url = url, ModuleTypeId = moduleType, Ico = Ico, Index = index > 0 ? index : 1 });
 
             return Json(new AjaxResult("操作成功") { result = 1 });
         }
 
-        public async Task<IActionResult> AddModuleType(string name, string discription)
+        public async Task<IActionResult> AddModuleType(string name, string discription, int index = 1)
         {
 
             var model = _ModuleTypeService.Find(b => b.Name == name);
             if (model == null)
             {
-                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name, Discription = discription });
+                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name, Discription = discription, Index = index > 0 ? index : 1 });
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
             else

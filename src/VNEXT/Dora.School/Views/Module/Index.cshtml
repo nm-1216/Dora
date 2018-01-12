@@ -14,6 +14,7 @@
                     <th>分类</th>
                     <th>名称:</th>
                     <th>路径:</th>
+                    <th>排序:</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,12 +22,13 @@
                     <td><select class="form-control" id="EditDivType" name="ModuleTypeId" asp-items="@ViewBag.moduleType"></select> </td>
                     <td><input id="EditDivUame" name="name" type="text" class="form-control" /></td>
                     <td><input id="EditDivUrl" name="url" type="text" class="form-control" /></td>
+                    <td><input id="EditDivIndex" name="index" type="text" class="form-control" /></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><input name="files" type="file" class="" /></td>
+                    <td colspan="4"><input name="files" type="file" class="" /></td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
@@ -43,6 +45,7 @@
                     <th>分类</th>
                     <th>名称:</th>
                     <th>路径:</th>
+                    <th>排序:</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,12 +53,13 @@
                     <td><select class="form-control" name="moduleType" asp-items="@ViewBag.moduleType"></select> </td>
                     <td><input name="name" type="text" class="form-control" /></td>
                     <td><input name="url" type="text" class="form-control" /></td>
+                    <td><input name="index" value="1" type="number" class="form-control" /></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><input name="files" type="file" class="" /></td>
+                    <td colspan="4"><input name="files" type="file" class="" /></td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
@@ -69,18 +73,19 @@
         <table class="table-striped table">
             <thead>
                 <tr>
-                    <th style="vertical-align:middle">名称:</th>
-                    <th style="vertical-align:middle">备注:</th>
-
+                    <th>名称:</th>
+                    <th>分组（排序优先级最高）:</th>
+                    <th>排序:</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input type="text" name="name" class="form-control" /></td>
                     <td><input type="text" name="discription" class="form-control" /></td>
+                    <td><input type="number" value="1" name="index" class="form-control" /></td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="text-center">
+                    <td colspan="3" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
@@ -93,9 +98,25 @@
     <form id="mainForm" class="form-inline" method="post">
 
         <div class="row" style="padding-top:10px;">
-            <div class="col-sm-2 col-sm-offset-10">
+            <div class="col-sm-10">
+                <div class="form-group">
+                    <p class="form-control-static">分类：</p>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="ModuleTypeId" asp-items="@ViewBag.moduleTypeForSearch"></select>
+                </div>
+                <div class="form-group">
+                    <p class="form-control-static"> 名称：</p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
+                </div>
+                <button type="submit" class="btn btn-info">检索</button>
+            </div>
+
+            <div class="col-sm-2">
                 <button class="btn btn-danger" type="button" onclick="DivLayer(1,'添加分类',$('.AddTypeDiv'))">添加分类</button>
-                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'))">添加</button>
+                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'),'800px','300px')">添加</button>
             </div>
         </div>
 
@@ -104,6 +125,7 @@
                 <table class="table-striped table">
                     <thead>
                         <tr>
+                            <th style="width:50px">排序</th>
                             <th>分类</th>
                             <th>名称</th>
                             <th>路径</th>
@@ -115,13 +137,15 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@string.Format("{1}-{0}",item.ModuleType.Name,item.ModuleType.Discription)</td>
+                                <td>@item.Index</td>
+                                <td>@string.Format("{1}-{0}", item.ModuleType.Name, item.ModuleType.Discription)</td>
                                 <td>@item.Name</td>
                                 <td>@item.Url</td>
-                                <td>@item.Ico.Replace("/upload/module/","")</td>
+                                <td>@item.Ico.Replace("/upload/module/", "")</td>
                                 <td class="text-right">
-                                <a data-content-id="@item.ModuleId" data-content-type="@item.ModuleTypeId" data-content-name="@item.Name" data-content-url="@item.Url" class="btn btn-primary btn-xs btnEdit">修改</a>
-                                <a data-content-id="@item.ModuleId" class="btn btn-danger btn-xs btnDel">删除</a></td>
+                                    <a data-content-id="@item.ModuleId" data-content-type="@item.ModuleTypeId" data-content-name="@item.Name" data-content-url="@item.Url" data-content-index="@item.Index" class="btn btn-primary btn-xs btnEdit">修改</a>
+                                    <a data-content-id="@item.ModuleId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -135,7 +159,7 @@
 
 @section scripts{
     <script type="text/javascript">
-        
+
         $(function () {
             var options = {
                 //target: '#output',          //把服务器返回的内容放入id为output的元素中
@@ -155,9 +179,9 @@
                 if (data.result == 1) {
                     layer.closeAll();
                     layer.msg(data.msg, {
-                    time: 2000, end: function () {
-                        location.href = location.href;
-                    }
+                        time: 2000, end: function () {
+                            location.href = location.href;
+                        }
                     }
                     )
                 } else {
@@ -168,56 +192,65 @@
             $("#AddModule").submit(function () { $(this).ajaxSubmit(options); return false; });
             $("#EditModule").submit(function () { $(this).ajaxSubmit(options); return false; });
 
-            $('.btnDel').on('click', function () { 
+            $('.btnDel').on('click', function () {
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');
-                $.ajax({
-                    url: '/Module/Delete',
-                    type: 'POST',
-                    async: true,
-                    data: {
-                        id: id
-                    },
-                    timeout: 5000,
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        console.log(xhr)
-                        console.log('发送前')
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data)
-                        console.log(textStatus)
-                        console.log(jqXHR)                        
-                        if (data.result == 1) {
-                            layer.closeAll();
-                            layer.msg(data.msg, {
-                                time: 2000, end: function () {
-                                    location.href = location.href;
+
+                layer.confirm('数据不可恢复，确认要删除吗？', {
+                    btn: ['确定', '取消']
+                }, function () {
+
+                    $.ajax({
+                        url: '/Module/Delete',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result == 1) {
+                                layer.closeAll();
+                                layer.msg(data.msg, {
+                                    time: 2000, end: function () {
+                                        location.href = location.href;
+                                    }
                                 }
+                                )
+                            } else {
+                                layer.msg(data.msg);
                             }
-                            )
-                        } else {
-                            layer.msg(data.msg);
+                        },
+                        error: function (xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function () {
+                            console.log('结束')
                         }
-                    },
-                    error: function (xhr, textStatus) {
-                        console.log('错误')
-                        console.log(xhr)
-                        console.log(textStatus)
-                    },
-                    complete: function () {
-                        console.log('结束')
-                    }
-                })
+                    })
+                }, function () {
+                    return
+                });
             })
 
-            $('.btnEdit').on('click', function () { 
+            $('.btnEdit').on('click', function () {
                 $('#EditDivModuleId').val($(this).attr('data-content-id'));
                 $('#EditDivUame').val($(this).attr('data-content-name'));
                 $('#EditDivUrl').val($(this).attr('data-content-url'));
+                $('#EditDivIndex').val($(this).attr('data-content-index'));
                 $('#EditDivType').val($(this).attr('data-content-type'));
 
-                DivLayer(1, '编辑模块', $('.EditDiv'))
+                DivLayer(1, '编辑模块', $('.EditDiv'), '800px', '300px')
             })
         })
 

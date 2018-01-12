@@ -57,6 +57,11 @@ namespace Dora.Domain.Entities.School
         public virtual BaseStatus Status { get; set; }
 
         /// <summary>
+        /// 排序
+        /// </summary>
+        public virtual int Index { get; set; } = 1;
+
+        /// <summary>
         /// 模块类别表
         /// </summary>
         public virtual ModuleType ModuleType { get; set; }
