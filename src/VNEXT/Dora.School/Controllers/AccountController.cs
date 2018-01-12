@@ -25,7 +25,6 @@
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            await _user();
             return View(await GetCurrentUserAsync());
         }
         #endregion
@@ -34,15 +33,11 @@
         [HttpGet]
         public async Task<IActionResult> SetInfo()
         {
-            await _user();
-
             return View(await GetCurrentUserAsync());
         }
 
         public async Task<IActionResult> SetInfo(int pageSize = 10)
         {
-            await _user();
-
             var user = await GetCurrentUserAsync();
             if (pageSize > 0)
             {
