@@ -30,6 +30,25 @@
             this._roleManager = roleManager;
         }
 
+        protected async Task _user()
+        {
+
+            string value = string.Empty;
+            if (HttpContext.Request.Cookies.ContainsKey("SchoolUser-Name"))
+            {
+                HttpContext.Request.Cookies.TryGetValue("", out value);
+            }
+            else
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                value = user.Student != null ? user.Student.Name : user.Teacher != null ? user.Teacher.Name : user.UserName;
+                HttpContext.Response.Cookies.Append("SchoolUser-Name", value);
+            }
+
+            ViewBag.Name = value;
+        }
+
+
         /// <summary>
         /// 获取用户
         /// </summary>

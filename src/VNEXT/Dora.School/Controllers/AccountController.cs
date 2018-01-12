@@ -9,6 +9,7 @@
     using Microsoft.Extensions.Logging;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Text;
 
     [Authorize]
     public class AccountController : BaseUserController<AccountController>
@@ -24,16 +25,35 @@
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            await _user();
             return View(await GetCurrentUserAsync());
         }
-
         #endregion
 
         #region Info
         [HttpGet]
-        public async Task<IActionResult> Info()
+        public async Task<IActionResult> SetInfo()
         {
+            await _user();
+
             return View(await GetCurrentUserAsync());
+        }
+
+        public async Task<IActionResult> SetInfo(int pageSize = 10)
+        {
+            await _user();
+
+            var user = await GetCurrentUserAsync();
+            if (pageSize > 0)
+            {
+                user.PageSize = pageSize;
+            }
+
+            await _userManager.UpdateAsync(user);
+
+            ModelState.AddModelError(string.Empty, "修改成功");
+
+            return View(user);
         }
         #endregion
 
@@ -41,6 +61,7 @@
         [HttpGet]
         public IActionResult ChangePassword()
         {
+
             return View();
         }
 
@@ -76,7 +97,52 @@
             var roles = await _userManager.GetRolesAsync(user);
             var list = _roleManager.Roles.Include(b => b.Permissions).ThenInclude(c => c.ModuleType).ThenInclude(d => d.Modules).Where(b => roles.Contains(b.Name));
 
+            string nav = @"<li><a class=""has-arrow"" href=""javascript:void(0)""><span class=""fa fa-fw fa-github fa-lg""></span>{0}</a>";
+            string href = @"<li><a href=""{1}""><span class=""fa fa-fw fa-code-fork""></span>{0}</a></li>";
+            string ul = @"<ul aria-expanded=""true"">";
+            string ulend = @"</ul>";
+            string li = @"<li>";
+            string liend = @"</li>";
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in list)
+            {
+                sb.Append(li);
+                sb.AppendFormat(nav, item.Name);
+                sb.Append(ul);
+                foreach (var Permission in item.Permissions)
+                {
+                    sb.Append(li);
+                    sb.AppendFormat(nav, Permission.ModuleType.Name);
+                    sb.Append(ul);
+
+                    foreach(var m in Permission.ModuleType.Modules)
+                    {
+                        sb.AppendFormat(href, m.Name, m.Url);
+                    }
+
+                    sb.Append(ulend);
+                    sb.Append(liend);
+                }
+                sb.Append(ulend);
+                sb.Append(liend);
+            }
+
+
+            var temp = @"<li>
+            
+            <ul aria-expanded=""true"">
+            <li><a href=""javascript:void(0)""><span class=""fa fa-fw fa-code-fork""></span>通用功能</a></li>
+            <li><a href=""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>理论课(实践)</a></li>
+            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>校内实训</a></li>
+            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>校外实习</a></li>
+            <li><a href= ""javascript:void(0)"" ><span class=""fa fa-fw fa-code-fork"" ></span>毕业环节</a></li>
+            </ul>
+            </li>";
+
             return Json(list.Select(b => new { b.Name, Permissions = b.Permissions.Select(c => new { c.ModuleType.Name, c.ModuleType.Modules }) }));
+
+
         }
         #endregion
 
@@ -87,10 +153,30 @@
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Response.Cookies.Delete("SchoolUser-Name");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         #endregion
+
+        public async Task<IActionResult> LoginUser()
+        {
+
+            string value = string.Empty;
+            if (HttpContext.Request.Cookies.ContainsKey("SchoolUser-Name"))
+            {
+                HttpContext.Request.Cookies.TryGetValue("SchoolUser-Name", out value);
+            }
+            else
+            {
+                var user = await GetCurrentUserAsync();
+                user = _userManager.Users.Include(b => b.Student).Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
+                value = user.Teacher != null ? user.Teacher.Name : user.Student != null ? user.Student.Name : user.UserName;
+                HttpContext.Response.Cookies.Append("SchoolUser-Name", value);
+            }
+
+            return Json(value);
+        }
 
         #region helper
         public string ManageMessage(ManageMessageId? message = null)
