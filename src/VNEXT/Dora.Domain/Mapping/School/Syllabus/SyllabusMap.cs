@@ -21,7 +21,10 @@
             builder.ToTable("School_Syllabus");
 
             ///Relationships
-            builder.HasOne(b => b.Course).WithMany(b=>b.Syllabuss).HasForeignKey(b => b.CourseId);
+            builder.HasOne(b => b.Course).WithMany(b => b.Syllabuss).HasForeignKey(b => b.CourseId);
+            builder.HasOne(b => b.Group).WithMany().HasForeignKey(b => b.GroupId);
+            builder.HasOne(b => b.Teacher).WithMany(b => b.Syllabuss).HasForeignKey(b => b.TeacherId);
+
 
             builder.HasMany(b => b.SyllabusBooks).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);
             builder.HasMany(b => b.SyllabusApprovals).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);

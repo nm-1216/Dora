@@ -105,18 +105,40 @@
             string liend = @"</li>";
 
             StringBuilder sb = new StringBuilder();
-            foreach (var item in list)
+            if (list.Count() > 1)
             {
-                sb.Append(li);
-                sb.AppendFormat(nav, item.Name);
-                sb.Append(ul);
-                foreach (var Permission in item.Permissions.OrderBy(b=>b.ModuleType.Index))
+                foreach (var item in list)
+                {
+                    sb.Append(li);
+                    sb.AppendFormat(nav, item.Name);
+                    sb.Append(ul);
+                    foreach (var Permission in item.Permissions.OrderBy(b => b.ModuleType.Index))
+                    {
+                        sb.Append(li);
+                        sb.AppendFormat(nav, Permission.ModuleType.Name);
+                        sb.Append(ul);
+
+                        foreach (var m in Permission.ModuleType.Modules.OrderBy(b => b.Index))
+                        {
+                            sb.AppendFormat(href, m.Name, m.Url);
+                        }
+
+                        sb.Append(ulend);
+                        sb.Append(liend);
+                    }
+                    sb.Append(ulend);
+                    sb.Append(liend);
+                }
+            }
+            else
+            {
+                foreach (var Permission in list.First().Permissions.OrderBy(b => b.ModuleType.Index))
                 {
                     sb.Append(li);
                     sb.AppendFormat(nav, Permission.ModuleType.Name);
                     sb.Append(ul);
 
-                    foreach(var m in Permission.ModuleType.Modules.OrderBy(b=>b.Index))
+                    foreach (var m in Permission.ModuleType.Modules.OrderBy(b => b.Index))
                     {
                         sb.AppendFormat(href, m.Name, m.Url);
                     }
@@ -124,8 +146,6 @@
                     sb.Append(ulend);
                     sb.Append(liend);
                 }
-                sb.Append(ulend);
-                sb.Append(liend);
             }
 
 

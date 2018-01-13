@@ -86,7 +86,12 @@
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IModuleTypeService, ModuleTypeService>();
             services.AddTransient<IPermissionService, PermissionService>();
-            
+            services.AddTransient<ISyllabusService, SyllabusService>();
+            services.AddTransient<ISyllabusPeriodService, SyllabusPeriodService>();
+            services.AddTransient<ISyllabusLogService, SyllabusLogService>();
+            services.AddTransient<ISyllabusBookService, SyllabusBookService>();
+            services.AddTransient<ISyllabusApprovalService, SyllabusApprovalService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

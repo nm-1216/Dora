@@ -1,16 +1,9 @@
-//----------------------------------------------------------------------------------------------------------------------------
-// <copyright file="TeaProInfo.cs" company="Os.Brain">Copyright (c) Os.Brain. All rights reserved.</copyright>
-// <author>Craze</author>
-// <datetime>2017/12/19 23:56:45</datetime>
-// <discription>
-// </discription>
-//----------------------------------------------------------------------------------------------------------------------------
-
 namespace Dora.Domain.Entities.School
 {
     using System;
     using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
+    using Dora.Domain.Entities.Application;
 
     /// <summary>
     /// Syllabus 教学大纲
@@ -35,55 +28,16 @@ namespace Dora.Domain.Entities.School
         public virtual string CourseId { get; set; }
 
         /// <summary>
-        /// Gets or sets 先修课程代码一 
+        /// 分院---分配给系
         /// </summary>
-        public virtual string BefCouCode1 { get; set; } = string.Empty;
+        public virtual string GroupId { get; set; }
 
         /// <summary>
-        /// Gets or sets 先修课程名称一 
+        /// 系----分配给教师
         /// </summary>
-        public virtual string BefCouName1 { get; set; } = string.Empty;
+        public virtual string TeacherId { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Gets or sets 先修课程代码二 
-        /// </summary>
-        public virtual string BefCouCode2 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程名称二 
-        /// </summary>
-        public virtual string BefCouName2 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程代码三 
-        /// </summary>
-        public virtual string BefCouCode3 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程名称三 
-        /// </summary>
-        public virtual string BefCouName3 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程代码四 
-        /// </summary>
-        public virtual string BefCouCode4 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程名称四
-        /// </summary>
-        public virtual string BefCouName4 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程代码五 
-        /// </summary>
-        public virtual string BefCouCode5 { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets 先修课程名称五
-        /// </summary>
-        public virtual string BefCouName5 { get; set; } = string.Empty;
-
+        #region property
         /// <summary>
         /// Gets or sets 教学目标 
         /// </summary>
@@ -108,13 +62,15 @@ namespace Dora.Domain.Entities.School
         /// Gets or sets 教学方法建议 
         /// </summary>
         public virtual string Pro { get; set; } = string.Empty;
+        #endregion
 
         /// <summary>
-        /// Gets or sets 提交时间 
+        /// 版本
         /// </summary>
-        public virtual DateTime? SubTime { get; set; }
+        public virtual string Version { get; set; }
 
 
+        #region File
         /// <summary>
         /// Gets or sets 课程大纲文件路径 
         /// </summary>
@@ -125,12 +81,7 @@ namespace Dora.Domain.Entities.School
         /// Gets or sets 课程组讨论会议纪要路径 
         /// </summary>
         public virtual string MeeSumPath { get; set; } = string.Empty;
-
-
-        /// <summary>
-        /// Gets or sets 使用状态 
-        /// </summary>
-        public virtual int? UseSta { get; set; }
+        #endregion
 
 
         /// <summary>
@@ -150,21 +101,25 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual string AudName { get; set; } = string.Empty;
 
-
         /// <summary>
         /// Gets or sets 审核结果 
         /// </summary>
         public virtual int? AudRes { get; set; }
 
         /// <summary>
-        /// 版本
-        /// </summary>
-        public virtual string Version { get; set; }
-
-        /// <summary>
         /// 课程
         /// </summary>
         public virtual Course Course { get; set; }
+
+        /// <summary>
+        /// 院系
+        /// </summary>
+        public virtual Group Group { get; set; }
+
+        /// <summary>
+        /// 编写老师
+        /// </summary>
+        public virtual Teacher Teacher { get; set; }
 
         /// <summary>
         /// 建议选用教材及教学参考资料
@@ -173,11 +128,7 @@ namespace Dora.Domain.Entities.School
         public virtual ICollection<SyllabusApproval> SyllabusApprovals { get; set; }
         public virtual ICollection<SyllabusLog> SyllabusLogs { get; set; }
         public virtual ICollection<SyllabusPeriod> SyllabusPeriods { get; set; }
-
-
-
         #endregion
-
     }
 }
 

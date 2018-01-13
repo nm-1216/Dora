@@ -3,7 +3,9 @@
     using Dora.Domain.Entities.School;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public abstract class BaseUserController<T> : Controller
@@ -30,6 +32,29 @@
             this._roleManager = roleManager;
         }
 
+        protected async Task<string> ReadCookies(string key)
+        {
+            string value = string.Empty;
+            if (HttpContext.Request.Cookies.ContainsKey(key))
+            {
+                HttpContext.Request.Cookies.TryGetValue(key, out value);
+                return value;
+            }
+            else
+            {
+                await WriteCookies();
+                return await ReadCookies(key);
+            }
+        }
+
+        protected async Task WriteCookies()
+        {
+            var user = await GetCurrentUserAsync();
+            user = _userManager.Users.Include(b => b.Student).Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
+            string value = user.Teacher != null ? user.Teacher.Name : user.Student != null ? user.Student.Name : user.UserName;
+            HttpContext.Response.Cookies.Append("SchoolUser-Name", value);
+            HttpContext.Response.Cookies.Append("SchoolUser-PageSize", user.PageSize.ToString());
+        }
 
         /// <summary>
         /// 获取用户

@@ -57,7 +57,9 @@ namespace Dora.Database
             builder.AddConfiguration(new CourseProfessionalMap());
             builder.AddConfiguration(new ProfessionalMap());
             builder.AddConfiguration(new PublicClassRoomMap());
-            
+            builder.AddConfiguration(new InfomationMap());
+
+
             builder.AddConfiguration(new TrainingLabMap());
             builder.AddConfiguration(new TrainingLabDeviceMap());
             builder.AddConfiguration(new TrainingProjectMap());

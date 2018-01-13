@@ -1,11 +1,11 @@
-﻿using Dora.Domain.Entities.School;
-using Dora.Infrastructure.Infrastructures.Interfaces;
-using Dora.Infrastructure.Services;
-using Dora.Services.School.Interfaces;
-
-namespace Dora.Services.School
+﻿namespace Dora.Services.School
 {
-    public partial class ProfessionalService : BaseService<Professional>, IProfessionalService// : IBaseService<Professional>
+    using Dora.Domain.Entities.School;
+    using Dora.Infrastructure.Infrastructures.Interfaces;
+    using Dora.Infrastructure.Services;
+    using Dora.Services.School.Interfaces;
+
+    public partial class ProfessionalService : BaseService<Professional>, IProfessionalService
     {
         public ProfessionalService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

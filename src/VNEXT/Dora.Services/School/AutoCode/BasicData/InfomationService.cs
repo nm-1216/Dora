@@ -5,9 +5,9 @@
     using Dora.Infrastructure.Services;
     using Dora.Services.School.Interfaces;
 
-    public partial class ClassService : BaseService<Class>, IClassService
+    public partial class InfomationService : BaseService<Infomation>, IInfomationService
     {
-        public ClassService(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public InfomationService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
     }

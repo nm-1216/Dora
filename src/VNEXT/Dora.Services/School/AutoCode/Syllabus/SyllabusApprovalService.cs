@@ -5,9 +5,9 @@ using Dora.Services.School.Interfaces;
 
 namespace Dora.Services.School
 {
-    public class SyllabusApprovalService1 : BaseService<SyllabusApproval>, ISyllabusApprovalService
+    public class SyllabusApprovalService : BaseService<SyllabusApproval>, ISyllabusApprovalService
     {
-        public SyllabusApprovalService1(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public SyllabusApprovalService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
     }

@@ -25,8 +25,8 @@ namespace Dora.Domain.Entities.School
 
     public enum YesOrNo : int
     {
-        Yes=1,
-        No=0
+        Yes = 1,
+        No = 0
     }
     public enum OrganizationType : int
     {
@@ -78,10 +78,10 @@ namespace Dora.Domain.Entities.School
 
     public enum TrainingLabDeviceStatus : int
     {
-        正常=1,
-        待维修=2,
-        停用=3,
-        报废=0
+        正常 = 1,
+        待维修 = 2,
+        停用 = 3,
+        报废 = 0
     }
 
     public enum BasicDataType : int
@@ -149,4 +149,9 @@ namespace Dora.Domain.Entities.School
         校内实训中心 = 12
     }
 
+    public enum InfomationType : int
+    {
+        校级教学通知发布 = 1,
+        校级教学管理制度上传 = 2
+    }
 }

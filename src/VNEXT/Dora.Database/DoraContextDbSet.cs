@@ -44,6 +44,7 @@ namespace Dora.Database
         public DbSet<PublicClassRoom> PublicClassRooms { get; set; }
         public DbSet<TrainingLabDevice> TrainingLabDevices { get; set; }
         public DbSet<TrainingProject> TrainingProjects { get; set; }
+        public DbSet<Infomation> Infomations { get; set; }
 
 
         #endregion

@@ -13,9 +13,10 @@ using System;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180112133736_init20180112_hwx_4")]
+    partial class init20180112_hwx_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,36 +297,6 @@ namespace dora.school.Migrations
                     b.HasIndex("ProfessionalId");
 
                     b.ToTable("School_CourseProfessional");
-                });
-
-            modelBuilder.Entity("Dora.Domain.Entities.School.Infomation", b =>
-                {
-                    b.Property<string>("InfomationId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreateTime");
-
-                    b.Property<string>("CreateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<int>("InfomationType");
-
-                    b.Property<string>("Summary");
-
-                    b.Property<string>("Title");
-
-                    b.Property<DateTime>("UpdateTime");
-
-                    b.Property<string>("UpdateUser")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.HasKey("InfomationId");
-
-                    b.ToTable("School_Infomations");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.Module", b =>

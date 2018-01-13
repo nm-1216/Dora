@@ -1,0 +1,55 @@
+﻿@model Dora.Core.PageList<Infomation>
+
+@{
+    ViewData["Title"] = "信息管理";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding-top:10px;">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <p class="form-control-static">代码或名称</p>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
+                </div>
+                <button type="submit" class="btn btn-info">search</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>标题</th>
+                            <th>分类</th>
+                            <th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.InfomationType</td>
+                                <td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+        @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
+    </form>
+</div>
+
+
+@section scripts{
+
+}
+

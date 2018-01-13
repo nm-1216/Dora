@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Dora.Domain.Entities.School;
-using Dora.Infrastructure.Services.Interfaces;
-
-namespace Dora.Services.School.Interfaces
+﻿namespace Dora.Services.School.Interfaces
 {
+    using Dora.Domain.Entities.School;
+    using Dora.Infrastructure.Services.Interfaces;
+
     public partial interface ITrainingLabService : IBaseService<TrainingLab>
     {
     }

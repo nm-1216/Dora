@@ -9,6 +9,7 @@
 namespace Dora.Domain.Entities.School
 {
     using Dora.Infrastructure.Domains;
+    using System.Collections.Generic;
 
     /// <summary>
     /// TeaInfo 实体类
@@ -58,6 +59,10 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual SchoolUser SchoolUser { get; set; }
 
+        /// <summary>
+        /// 课程教学大纲
+        /// </summary>
+        public virtual ICollection<Syllabus> Syllabuss { get; set; }
 
 
         #endregion
