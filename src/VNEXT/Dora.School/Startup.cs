@@ -91,6 +91,7 @@
             services.AddTransient<ISyllabusLogService, SyllabusLogService>();
             services.AddTransient<ISyllabusBookService, SyllabusBookService>();
             services.AddTransient<ISyllabusApprovalService, SyllabusApprovalService>();
+            services.AddTransient<IInfomationService, InfomationService>();
 
         }
 

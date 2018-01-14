@@ -1,0 +1,51 @@
+﻿@model Infomation
+
+@{
+    ViewData["Title"] = "添加信息";
+}
+<style>
+    .ck-editor__editable {
+        min-height: 400px;
+    }
+</style>
+
+<div class="container-fluid">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="InfomationId" />
+        <div class="form-group">
+            <label for="exampleInputName2">标题</label>
+            <input asp-for="Title" class="form-control" /><span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail2">分类</label>
+            <select class="form-control" name="infomationType" asp-items="@ViewBag.infomationType"></select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail2">摘要</label>
+
+            <textarea asp-for="Summary"  class="form-control"></textarea><span asp-validation-for="Summary" class="text-danger"></span>
+        </div>
+        <div class="form-group" style="">
+            <label for="exampleInputEmail2">正文</label>
+            <textarea name="content" id="editor" asp-for="Content"></textarea>
+        </div>
+
+        
+        <div class="text-right" style="padding-bottom:50px;">
+            <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/ckeditor/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+    .create( document.querySelector( '#editor' ), {
+		ckfinder: {
+            uploadUrl: '/BaseData/Ckeditor'
+        }
+    } )
+    .catch( error => {
+        console.log( error );
+    } );
+</script>

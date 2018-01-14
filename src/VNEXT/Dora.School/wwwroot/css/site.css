@@ -12,6 +12,20 @@
     /*定义要引入字体文件的路径*/
 }
 
+@font-face {
+    font-family: Noton;
+    /*为引入的字体命名*/
+    src: url(SourceHanSansCN-Normal.otf);
+    /*定义要引入字体文件的路径*/
+}
+
+@font-face {
+    font-family: Notol;
+    /*为引入的字体命名*/
+    src: url(NotoSansCJK-Light.otf);
+    /*定义要引入字体文件的路径*/
+}
+
 html, body {
     min-height: 100%;
 }

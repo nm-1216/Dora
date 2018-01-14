@@ -1,0 +1,43 @@
+﻿@model Infomation
+
+@{
+    ViewData["Title"] = "添加信息";
+}
+<style>
+    .ck-editor__editable {
+        min-height: 400px;
+    }
+</style>
+
+<div class="container-fluid">
+    <h1>
+        
+    </h1>
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+    </div>
+
+    <div class="well well-lg">
+        @Model.Summary
+    </div>
+
+    <div>
+        @Html.Raw(Model.Content)
+    </div>
+
+    
+    
+</div>
+
+<script src="~/lib/ckeditor/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/BaseData/Ckeditor'
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+</script>
