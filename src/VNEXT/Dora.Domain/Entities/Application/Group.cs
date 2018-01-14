@@ -11,6 +11,7 @@ namespace Dora.Domain.Entities.Application
     using System;
     using System.Collections.Generic;
     using Infrastructure.Domains;
+    using Newtonsoft.Json;
 
     public class Group : Group<string>
     {
@@ -55,7 +56,7 @@ namespace Dora.Domain.Entities.Application
         public virtual TKey ParentId { get; set; }
 
         #endregion
-
+        [JsonIgnoreAttribute]
         public virtual Group<TKey> Parent { get; set; }
 
         public virtual ICollection<Group<TKey>> Childs { get; set; }
