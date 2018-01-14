@@ -44,6 +44,7 @@ namespace Dora.School.Controllers
         public JsonResult GetGroup()
         {
             var list = _GroupService.GetAll();
+            list.ForEachAsync(b => b.Parent = null);
             return Json(list); 
         }
     }
