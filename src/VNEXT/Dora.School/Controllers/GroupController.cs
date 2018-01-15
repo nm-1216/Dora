@@ -19,6 +19,8 @@ namespace Dora.School.Controllers
     using NPOI.HSSF.UserModel;
     using System.Threading.Tasks;
     using Dora.Services.Application.Interfaces;
+    using Dora.Domain.Entities.Application;
+    using Newtonsoft.Json;
 
     [Authorize]
     public class GroupController : Controller
@@ -27,25 +29,60 @@ namespace Dora.School.Controllers
         private IGroupService _GroupService;
 
         public GroupController(
-           ILoggerFactory loggerFactory ,
+           ILoggerFactory loggerFactory,
            IGroupService groupService
             )
-        { 
+        {
             this._logger = loggerFactory.CreateLogger<GroupController>();
             _GroupService = groupService;
         }
 
         public IActionResult Index()
         {
-           var list =  _GroupService.GetAll();
+            var list = _GroupService.GetAll();
             return View(list);
         }
 
-        public JsonResult GetGroup()
+        public String GetGroup()
         {
-            var list = _GroupService.GetAll();
+           var group = _GroupService.GetAll().ToList().Where(r=> r.Parent == null).FirstOrDefault();
             //list.ForEachAsync(b => b.Parent = null);
-            return Json(list); 
+
+            List<Tree> list = new List<Tree>();
+            Tree tr = new Tree();
+            tr.id = Convert.ToInt32(group.GroupId);
+            tr.name = group.GroupName;
+            tr.pId =0;
+            list.Add(tr);
+
+            AddChilds(group, list);
+            string content =    JsonConvert.SerializeObject(list);
+
+            return content;
+        }
+
+        private class Tree
+        {
+            public int id;
+            public int pId;
+            public string name; 
+        }
+
+        private void AddChilds(Group<string> group, List<Tree> list)
+        {
+            foreach (var item in group.Childs)
+            {
+                Tree tr = new Tree();
+                tr.id = Convert.ToInt32(item.GroupId);
+                tr.name = item.GroupName;
+                tr.pId = Convert.ToInt32(group.GroupId);
+                list.Add(tr);
+                 
+                if (item.Childs != null)
+                {
+                    AddChilds(item, list);
+                }
+            } 
         }
     }
 }
