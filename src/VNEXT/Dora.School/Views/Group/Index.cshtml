@@ -4,22 +4,37 @@
     ViewData["Title"] = "Index";
     Layout = "_Layout";
 }
-
+@section styles{  
+<link href="~/js/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+}
 <h2>Index</h2>
-<div id="continer"></div>
+<div id="continer">
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="tree" class="ztree"></div>
+        
+        </div>
+    </div>
+</div>
 
-@section scripts{
+@section scripts{ 
+<script src="~/js/zTree_v3/js/jquery.ztree.core.min.js"></script>
     <script type="text/javascript">
         var setting = {
-            isSimpleData: true,              //数据是否采用简单 Array 格式，默认false  
-            treeNodeKey: "id",               //在isSimpleData格式下，当前节点id属性  
-            treeNodeParentKey: "pId",        //在isSimpleData格式下，当前节点的父节点id属性  
-            showLine: true,                  //是否显示节点间的连线  
-            checkable: true                  //每个节点上是否显示 CheckBox  
-        };  
-
+            isSimpleData: true,              //数据是否采用简单 Array 格式，默认false
+            treeNodeKey: "id",               //在isSimpleData格式下，当前节点id属性
+            treeNodeParentKey: "pId",        //在isSimpleData格式下，当前节点的父节点id属性
+            showLine: true,                  //是否显示节点间的连线
+            checkable: true                  //每个节点上是否显示 CheckBox
+        };
+        var treeNodes = [
+            { "id": 1, "pId": 0, "name": "test1" },
+            { "id": 11, "pId": 1, "name": "test11" },
+            { "id": 12, "pId": 1, "name": "test12" },
+            { "id": 111, "pId": 11, "name": "test111" },
+        ]; 
+        var zTree;  
         $(function () { 
-
             //JQuery的 Ajax 请求
             $.ajax({
                 type: "Post",
@@ -28,26 +43,23 @@
                 dataType: "json",
                 success: function (result) {
                     if (result) {
-                        zTree = $("#tree").zTree(setting, result);  
-                        
+                        alert(result);
+                        zTree = $("#tree").zTree(setting, treeNodes); 
                     }
                     else {
                         alert("失败");
                     }
                 },
-                complete: function (XMLHttpRequest, textStatus) {
-                    //alert("complete");
+                complete: function (XMLHttpRequest, textStatus) { 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("error");
-                    // alert(XMLHttpRequest);
-                    // alert(errorThrown);
-                    // alert(textStatus);
+                    alert("error"); 
                 }
             });
 
         });
 
- 
-    </script>
+
+</script>
+
 }
