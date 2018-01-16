@@ -21,18 +21,13 @@
 <script src="~/js/zTree_v3/js/jquery.ztree.core.min.js"></script>
     <script type="text/javascript">
         var setting = {
-            isSimpleData: true,              //数据是否采用简单 Array 格式，默认false
-            treeNodeKey: "id",               //在isSimpleData格式下，当前节点id属性
-            treeNodeParentKey: "pId",        //在isSimpleData格式下，当前节点的父节点id属性
-            showLine: true,                  //是否显示节点间的连线
-            checkable: true                  //每个节点上是否显示 CheckBox
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
         };
-        var treeNodes = [
-            { "id": 1, "pId": 0, "name": "test1" },
-            { "id": 11, "pId": 1, "name": "test11" },
-            { "id": 12, "pId": 1, "name": "test12" },
-            { "id": 111, "pId": 11, "name": "test111" },
-        ]; 
+        
         var zTree;  
         $(function () { 
             //JQuery的 Ajax 请求
@@ -42,9 +37,10 @@
                 data: "",
                 dataType: "json",
                 success: function (result) {
-                    if (result) {
-                        alert(result);
-                        zTree = $("#tree").zTree(setting, treeNodes); 
+                    if (result) { 
+                        zTree= $.fn.zTree.init($("#tree"), setting, result);
+
+                        alert(zTree.getSelectedNodes()[0].myAttr);
                     }
                     else {
                         alert("失败");
