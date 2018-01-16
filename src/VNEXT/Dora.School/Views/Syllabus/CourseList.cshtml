@@ -42,7 +42,6 @@
                         <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="课程编码或课程名">
                     </div>
                 </div>
-
                 <button type="submit" class="btn btn-info">检索</button>
             </div>
             <div class="col-sm-2 col-sm-offset-4"><button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入大纲分配任务',$('#importDiv'))">导入大纲分配任务</button></div>
@@ -73,7 +72,7 @@
                                 <td>@item.Syllabuss.Count()</td>
                                 <td class="text-right">
                                     <a data-content-id="@item.CourseId" class="btn btn-info btn-xs btnTask">下发任务</a>
-                                    <a data-content-id="@item.CourseId" class="btn btn-info btn-xs btnTask">重新修订</a>
+                                    <a data-content-id="@item.CourseId" class="btn btn-info btn-xs btnRestTask">重新修订</a>
                                 </td>
                             </tr>
                         }

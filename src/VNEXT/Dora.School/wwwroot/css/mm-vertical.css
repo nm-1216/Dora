@@ -1,17 +1,15 @@
 .sidebar-nav {
-    background: #0c3647;
-    font-family: 'Notol';
-    font-size:10pt;
+    background: #212529;
 }
 .sidebar-nav ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    background: #084e5e;
+    background: #343a40;
 }
 
 .sidebar-nav .metismenu {
-    background: #0c3647;
+    background: #212529;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -50,7 +48,7 @@
     position: relative;
     display: block;
     padding: 13px 15px;
-    color: #ffffff;
+    color: #adb5bd;
     outline-width: 0;
     transition: all .3s ease-out;
 }
@@ -62,14 +60,11 @@
 .sidebar-nav .metismenu ul ul a {
     padding: 10px 15px 10px 45px;
 }
-    .sidebar-nav .metismenu a:hover,
-    .sidebar-nav .metismenu a:focus,
-    .sidebar-nav .metismenu a:active {
-        color: #fff;
-        text-decoration: none;
-        background: #0a8093;
-    }
 
-    .sidebar-nav .metismenu .has-arrow {
-        font-size:11pt;
-    }
+.sidebar-nav .metismenu a:hover,
+.sidebar-nav .metismenu a:focus,
+.sidebar-nav .metismenu a:active {
+    color: #f8f9fa;
+    text-decoration: none;
+    background: #0b7285;
+}
