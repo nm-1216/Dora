@@ -53,6 +53,7 @@ namespace Dora.School.Controllers
             tr.id = Convert.ToInt32(group.GroupId);
             tr.name = group.GroupName;
             tr.pId =0;
+            tr.myAttr = "sd";
             list.Add(tr);
 
             AddChilds(group, list);
@@ -65,7 +66,8 @@ namespace Dora.School.Controllers
         {
             public int id;
             public int pId;
-            public string name; 
+            public string name;
+            public string myAttr;
         }
 
         private void AddChilds(Group<string> group, List<Tree> list)
