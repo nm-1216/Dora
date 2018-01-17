@@ -4,30 +4,61 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="container-fluid">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>@Html.DisplayNameFor(model => model.TermId)</td>
-                <td>@Html.DisplayNameFor(model => model.StartTime)</td>
-                <td>@Html.DisplayNameFor(model => model.EndTime)</td>
-                <td>@Html.DisplayNameFor(model => model.IsDefault)</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Html.DisplayFor(model => model.TermId)</td>
-                <td>@Html.DisplayFor(model => model.StartTime)</td>
-                <td>@Html.DisplayFor(model => model.EndTime)</td>
-                <td>@Html.DisplayFor(model => model.IsDefault)</td>
-            </tr>
-        </tbody>
-    </table>
+<style>
+    .box11 {
+        margin: 15px 0;
+    }
 
-    <div class="row" style="padding:10px 0 20px 0;">
-        
-        <div class="col-sm-1">
+        .box11>div {
+            background-color: #c6c4c4;
+            text-align: center;
+            padding:15px 0
+        }
+
+            .box11 div.title {
+                font-size: 16px;
+                font-weight: bold;
+            }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.TermId)</td>
+                        <td>@Html.DisplayNameFor(model => model.StartTime)</td>
+                        <td>@Html.DisplayNameFor(model => model.EndTime)</td>
+                        <td>@Html.DisplayNameFor(model => model.IsDefault)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.DisplayFor(model => model.TermId)</td>
+                        <td>@Html.DisplayFor(model => model.StartTime)</td>
+                        <td>@Html.DisplayFor(model => model.EndTime)</td>
+                        <td>@Html.DisplayFor(model => model.IsDefault)</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+
+
 </div>
 
+<div class="container-fluid">
+    <div class="row" style="padding:10px 0 20px 0;">
+        @foreach (Dora.ViewModels.TermWeek item in ViewBag.TermWeeks)
+        {
+            <div class="box11 col-sm-2">
+                <div>
+                    <div class="title">第 @item.index 周</div>
+                    <div style="margin-top:8px">@item.StartTime.ToString("yy/MM/dd") - @item.EndTime.ToString("yy/MM/dd")</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

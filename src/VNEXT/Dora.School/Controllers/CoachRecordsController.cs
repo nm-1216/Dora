@@ -3,6 +3,7 @@
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    [Authorize]
     public class CoachRecordsController : BaseUserController<CoachRecordsController>
     {
         private readonly ICoachRecordService _coachRecordService;

@@ -13,7 +13,9 @@
     using Dora.Core;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Dora.ViewModels.Extensions;
+    using Microsoft.AspNetCore.Authorization;
 
+    [Authorize]
     public class InfomationController : BaseUserController<InfomationController>
     {
         private readonly IInfomationService _infomationService;
