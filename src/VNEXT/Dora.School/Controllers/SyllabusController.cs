@@ -4,10 +4,15 @@
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -19,14 +24,17 @@
     {
         private ISyllabusService _SyllabusService;
         private ICourseService _CourseService;
+        private ITeacherService _teacherService;
 
         public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
         , ISyllabusService SyllabusService
         , ICourseService CourseService
+        , ITeacherService teacherService
         ) : base(roleManager, userManager, loggerFactory)
         {
             _SyllabusService = SyllabusService;
             _CourseService = CourseService;
+            _teacherService = teacherService;
         }
 
 
@@ -36,7 +44,7 @@
             ViewData["searchKey"] = searchKey;
             var user = await GetCurrentUserAsync();
 
-            var list = new PageList<Course>(_CourseService.GetAll().Include(b=>b.Syllabuss)
+            var list = new PageList<Course>(_CourseService.GetAll().Include(b => b.Syllabuss)
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.CourseId.Contains(searchKey) ||
@@ -46,9 +54,46 @@
             return View(list);
         }
 
-        public IActionResult Create(string courseId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="courseId">课程编码</param>
+        /// <param name="isRestTask">是否修订</param>
+        /// <returns></returns>
+        public async Task<IActionResult> Create(string courseId, bool isRestTask)
         {
-            return View();
+            var course = await _CourseService.GetAll().Include(b => b.Syllabuss).FirstOrDefaultAsync(b => b.CourseId == courseId);
+
+            if (course != null)
+            {
+                ///是修订
+                if (isRestTask)
+                {
+                    course.Syllabuss.Add(new Syllabus() { });
+                    await _CourseService.Update(course);
+                    return Json(new AjaxResult("操作成功") { result = 1 });
+                }
+                else
+                {
+                    if (course.Syllabuss.Count() > 0)
+                    {
+                        return Json(new AjaxResult("操作失败，数据已存在") { result = 0 });
+                    }
+                    else
+                    {
+                        course.Syllabuss.Add(new Syllabus() { });
+                        await _CourseService.Update(course);
+                        return Json(new AjaxResult("操作成功") { result = 1 });
+                    }
+                }
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败，课程不存在") { result = 0 });
+            }
+
+
+
         }
         #endregion
 
@@ -57,17 +102,87 @@
         {
             return View();
         }
-        public IActionResult SetTeacher(string syllabusId, string teacherId)
+
+        public async Task<IActionResult> SetTeacher(string syllabusId, string teacherId, int page = 1)
         {
-            return View();
+
+            if (!string.IsNullOrEmpty(syllabusId) && !string.IsNullOrEmpty(teacherId))
+            {
+                var model = _SyllabusService.Find(b => b.SyllabusId == syllabusId);
+                model.TeacherId = teacherId;
+                await _SyllabusService.Update(model);
+            }
+
+            var teachers = _teacherService.GetAll().Select(b => new SelectListItem() { Value = b.TeacherId, Text = b.Name }).ToList();
+            teachers.Insert(0, new SelectListItem() { Text = "==请选择教师==", Value = "" });
+            ViewBag.teachers = teachers;
+
+            var user = await GetCurrentUserAsync();
+            ///var list= ;
+
+            var list = new PageList<Syllabus>(_SyllabusService.GetAll()
+                .Include(b => b.Teacher)
+                .Include(b => b.Group)
+                .Include(b => b.Course)
+                .OrderByDescending(o => o.CreateTime), page, user.PageSize);
+
+            return View(list);
+
         }
+
         #endregion
 
 
         #region 修改大纲
-        public IActionResult Edit(Syllabus model)
+        /// <summary>
+        /// 编辑教学大纲
+        /// </summary>
+        /// <param name="id">课程ID或者大纲ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Edit(string id)
         {
-            return View();
+            var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
+
+            ViewBag.msg = "";
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromServices]IHostingEnvironment env, Syllabus model, IList<IFormFile> files)
+        {
+            var _files = string.Empty;
+
+            if (files != null && files.Count > 0)
+            {
+                var file = files[0];
+                _files = BaseDataController.SaveFile(env, "Syllabus", file);
+            }
+
+            var item = _SyllabusService.Find(b => b.SyllabusId == model.SyllabusId);
+
+            item.ConReq = model.ConReq;
+            item.EvaWay = model.EvaWay;
+            item.PraCon = model.PraCon;
+            item.Pro = model.Pro;
+            item.Tar = model.Tar;
+            item.Version = model.Version;
+            item.UpdateTime = DateTime.Now;
+
+            if (!string.IsNullOrEmpty(_files))
+            {
+                item.TeaProPath = _files;
+            }
+
+            await _SyllabusService.Update(item);
+
+            var v = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == model.SyllabusId);
+
+            ViewBag.msg = "保存成功";
+
+            return View(v);
         }
         #endregion
 
@@ -79,23 +194,21 @@
         /// 各教师大纲列表(用于查询大纲)
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await GetCurrentUserAsync();
+            var list = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).Where(b => b.TeacherId == user.Id);
+
+            return View(list);
         }
 
-
-
-        /// <summary>
-        /// 编辑教学大纲
-        /// </summary>
-        /// <param name="id">课程ID或者大纲ID</param>
-        /// <returns></returns>
-        public IActionResult Edit(string id)
+        public IActionResult Details(string id)
         {
-            var model = _SyllabusService.Find(b => b.SyllabusId == id || b.CourseId == id);
+            var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
 
             return View(model);
         }
+
+
     }
 }
