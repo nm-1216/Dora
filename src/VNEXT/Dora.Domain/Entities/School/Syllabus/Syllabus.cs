@@ -17,10 +17,13 @@ namespace Dora.Domain.Entities.School
 
         #region Public Properties
 
+        #region 主外键
+
         /// <summary>
         /// Gets or sets 教学大纲编号 
         /// </summary>
         public virtual string SyllabusId { get; set; }
+
 
         /// <summary>
         /// Gets or sets 课程信息表自增主键 
@@ -35,7 +38,9 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 系----分配给教师
         /// </summary>
-        public virtual string TeacherId { get; set; } = string.Empty;
+        public virtual string TeacherId { get; set; }
+
+        #endregion
 
         #region property
         /// <summary>
@@ -62,6 +67,8 @@ namespace Dora.Domain.Entities.School
         /// Gets or sets 教学方法建议 
         /// </summary>
         public virtual string Pro { get; set; } = string.Empty;
+
+
         #endregion
 
         /// <summary>

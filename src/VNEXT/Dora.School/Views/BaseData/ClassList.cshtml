@@ -1,36 +1,8 @@
 ﻿@model Dora.Core.PageList<Class>
 
 @{
-    ViewData["Title"] = "诊改支撑平台";
-    Layout = "_Layout";
+    ViewData["Title"] = "班级信息管理";
 }
-
-<style>
-    body .demo-class .layui-layer-title {
-        background: #000;
-        color: #fff;
-        border: none;
-    }
-
-    body .imgbox {
-        padding-bottom: 10px;
-    }
-
-        body .imgbox img {
-            width: 100%;
-        }
-
-    body .col-lg-1 {
-        padding: 10px;
-    }
-
-    .row1 > div > div {
-        background: #ddd;
-        height: 60px;
-        padding-top: 8px;
-        text-align: center;
-    }
-</style>
 
 <div id="importDiv" style="display:none">
     <form id="AjaxForm1" name="AjaxForm1" action="~/BaseData/ImportClass" enctype="multipart/form-data" method="post">
@@ -63,17 +35,18 @@
 
         <div class="row" style="padding-top:10px;">
             <div class="col-lg-6">
-                    <div class="form-group">
-                        <p class="form-control-static">班级编码或班级名</p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">检索条件</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="班级编码或班级名">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
-                    </div>
-                    <button type="submit" class="btn btn-info">检索</button>
+                </div>
+                <button type="submit" class="btn btn-info">检索</button>
             </div>
-            <div class="col-sm-1 col-sm-offset-4"><button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入班级',$('#importDiv'))">导入</button></div>
-            <div class="col-sm-1"><button type="button" class="btn btn-block btn-primary">导出</button></div>
-
+            <div class="col-sm-2 col-sm-offset-4 text-right">
+                <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入班级',$('#importDiv'))"> 导 入 </button>
+                <button type="button" class="btn btn-primary"> 导 出 </button>
+            </div>
         </div>
 
         <div class="row" style="margin-top:15px;">
@@ -88,13 +61,13 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                    {
-                    <tr>
-                        <td>@item.ClassId</td>
-                        <td>@item.Name</td>
-                        <td>@(item.Students==null?0:item.Students.Count)</td>
-                    </tr>
-                    }
+                        {
+                            <tr>
+                                <td>@item.ClassId</td>
+                                <td>@item.Name</td>
+                                <td>@(item.Students == null ? 0 : item.Students.Count)</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -118,7 +91,7 @@
             success: function (r) {
                 layer.closeAll('loading');
                 console.log(r)
-                if (r.result==1) {
+                if (r.result == 1) {
                     console.log(1)
                     jQuery("#grid-table").trigger("reloadGrid");
                     if (r.data != null) {

@@ -171,18 +171,14 @@ namespace Dora.School.Controllers
         {
 
             var uploaded = 1;
-            //var fileName = string.Empty;
             var url = string.Empty;
-
-            //HashTable<String, Object> map = new HashTable<String, Object>();
-
-            //string Callback = @"{"uploaded": 1,"fileName": "","url": ""}";
 
             var CKEditorFuncNum = Request.Query["CKEditorFuncNum"];
 
             var filename = ContentDispositionHeaderValue.Parse(upload.ContentDisposition).FileName.Trim('"');
             var extname = filename.Substring(filename.LastIndexOf("."), filename.Length - filename.LastIndexOf("."));
             var NewFile = System.Guid.NewGuid().ToString() + extname;
+
 
             filename = _hostingEnvironment.WebRootPath + $@"\upload\{NewFile}";
             using (FileStream fs = System.IO.File.Create(filename))
@@ -194,6 +190,31 @@ namespace Dora.School.Controllers
             url = "http://localhost:56417/upload/" + NewFile;
             //return Content(string.Format(Callback, CKEditorFuncNum, url), ContentType);
             return Json(new { uploaded = uploaded, fileName = NewFile, url = url });
+        }
+
+        public static string SaveFile(IHostingEnvironment hostingEnvironment, string dir, IFormFile upload)
+        {
+
+            var filename = ContentDispositionHeaderValue.Parse(upload.ContentDisposition).FileName.Trim('"');
+            var extname = filename.Substring(filename.LastIndexOf("."), filename.Length - filename.LastIndexOf("."));
+            var NewFile = System.Guid.NewGuid().ToString() + extname;
+            filename = hostingEnvironment.WebRootPath + $@"\upload\{dir}\{NewFile}";
+
+
+            var path = Path.Combine(hostingEnvironment.WebRootPath, "upload", dir);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            using (FileStream fs = System.IO.File.Create(filename))
+            {
+                upload.CopyTo(fs);
+                fs.Flush();
+            }
+
+            return $@"/upload/{dir}/{NewFile}";
         }
 
         #region 组织架构

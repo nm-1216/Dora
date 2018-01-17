@@ -45,7 +45,6 @@
                 <button type="submit" class="btn btn-info">检索</button>
             </div>
             <div class="col-sm-2 col-sm-offset-4"><button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入大纲分配任务',$('#importDiv'))">导入大纲分配任务</button></div>
-
         </div>
 
         <div class="row" style="margin-top:15px;">
@@ -71,8 +70,14 @@
                                 <td>@item.Nature</td>
                                 <td>@item.Syllabuss.Count()</td>
                                 <td class="text-right">
-                                    <a data-content-id="@item.CourseId" class="btn btn-info btn-xs btnTask">下发任务</a>
-                                    <a data-content-id="@item.CourseId" class="btn btn-info btn-xs btnRestTask">重新修订</a>
+                                    @if (item.Syllabuss.Count() <= 0)
+                                    {
+                                        <a data-content-id="@item.CourseId" data-content-isRestTask="0" class="btn btn-info btn-xs btnTask">下发任务</a>
+                                    }
+                                    else
+                                    {
+                                        <a data-content-id="@item.CourseId" data-content-isRestTask="1" class="btn btn-info btn-xs btnRestTask">重新修订</a>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -131,6 +136,61 @@
         function AjaxForm1Submit() {
             $("#AjaxForm1").ajaxSubmit(options);
         }
+
+        $('.btnTask').on('click', function () {
+            console.log('btnDel')
+            var id = $(this).attr('data-content-id');
+            var isRestTask = $(this).attr('data-content-isRestTask');
+
+            layer.confirm('数据不可恢复，确认要下发任务吗？', {
+                btn: ['确定', '取消']
+            }, function () {
+
+                $.ajax({
+                    url: '/Syllabus/Create',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        courseId: id,
+                        isRestTask: isRestTask
+                    },
+                    timeout: 5000,
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        console.log(xhr)
+                        console.log('发送前')
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data)
+                        console.log(textStatus)
+                        console.log(jqXHR)
+                        if (data.result == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {
+                                time: 2000, end: function () {
+                                    location.href = location.href;
+                                }
+                            }
+                            )
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, textStatus) {
+                        console.log('错误')
+                        console.log(xhr)
+                        console.log(textStatus)
+                    },
+                    complete: function () {
+                        console.log('结束')
+                    }
+                })
+            }, function () {
+                return
+            });
+        })
+
+        
     </script>
 }
 
