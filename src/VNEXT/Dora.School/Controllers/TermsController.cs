@@ -102,6 +102,8 @@
             var week = (int)model.StartTime.DayOfWeek;
 
             //周末是一个星期的最后一天
+            if (week == 0)
+            { }
 
 
             //TermWeek
