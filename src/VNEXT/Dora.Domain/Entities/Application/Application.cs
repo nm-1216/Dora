@@ -8,54 +8,44 @@
 
 //namespace Dora.Domain.Entities.Application
 //{
-//    using System;
-//    using System.Collections.Generic;
 //    using Infrastructure.Domains;
+//    using System;
 
-//    public class Application : Application<string>
+
+//    /// <summary>
+//    /// Applications 实体类
+//    /// </summary>
+//    public partial class Application : BaseEntity
 //    {
 //        public Application()
 //        {
 //            ApplicationId = Guid.NewGuid().ToString();
 //        }
 
-//        public Application(string applicationName, string description) : this()
-//        {
-//            this.ApplicationName = applicationName;
-//            this.Description = description;
-//        }
-//    }
-
-//    /// <summary>
-//    /// Applications 实体类
-//    /// </summary>
-//    public partial class Application<TKey> : BaseEntity where TKey : IEquatable<TKey>
-//    {
 //        #region Public Properties
 
 //        /// <summary>
 //        /// Gets or sets ApplicationId 
 //        /// </summary>
-//        public virtual TKey ApplicationId { get; set; }
-
+//        public virtual string ApplicationId { get; set; }
 
 //        /// <summary>
 //        /// Gets or sets ApplicationName 
 //        /// </summary>
 //        public virtual string ApplicationName { get; set; }
 
+//        /// <summary>
+//        /// Gets or sets SchoolName 
+//        /// </summary>
+//        public virtual string SchoolName { get; set; }
 
 //        /// <summary>
-//        /// Gets or sets Description 
+//        /// Gets or sets 学期 
 //        /// </summary>
-//        public virtual string Description { get; set; }
-
-
-//        public virtual int OrderBy { get; set; }
+//        public virtual string Term { get; set; }
+        
 //        #endregion
 
-//        #region virtual
-//        public virtual ICollection<Action<TKey>> Actions { get; set; }
-//        #endregion
+
 //    }
 //}

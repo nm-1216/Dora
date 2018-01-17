@@ -122,7 +122,7 @@
 
             var list = new PageList<Syllabus>(_SyllabusService.GetAll()
                 .Include(b => b.Teacher)
-                .Include(b => b.Group)
+                .Include(b => b.Organization)
                 .Include(b => b.Course)
                 .OrderByDescending(o => o.CreateTime), page, user.PageSize);
 

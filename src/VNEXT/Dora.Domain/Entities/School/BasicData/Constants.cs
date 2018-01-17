@@ -33,8 +33,7 @@ namespace Dora.Domain.Entities.School
 
         教务处 = 1,
         教学部门 = 2,
-        系 = 3,
-        专业 = 4
+        院系 = 3
     }
 
     public enum SectionType : int

@@ -1,0 +1,33 @@
+﻿@model Dora.Domain.Entities.School.Term
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.TermId)</td>
+                <td>@Html.DisplayNameFor(model => model.StartTime)</td>
+                <td>@Html.DisplayNameFor(model => model.EndTime)</td>
+                <td>@Html.DisplayNameFor(model => model.IsDefault)</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.TermId)</td>
+                <td>@Html.DisplayFor(model => model.StartTime)</td>
+                <td>@Html.DisplayFor(model => model.EndTime)</td>
+                <td>@Html.DisplayFor(model => model.IsDefault)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row" style="padding:10px 0 20px 0;">
+        
+        <div class="col-sm-1">
+        </div>
+    </div>
+</div>
+

@@ -618,6 +618,8 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
+                    b.Property<int>("Gread");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -632,7 +634,7 @@ namespace dora.school.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<int>("Year");
+                    b.Property<int>("Years");
 
                     b.HasKey("ProfessionalId");
 
@@ -809,9 +811,9 @@ namespace dora.school.Migrations
 
                     b.Property<string>("EvaWay");
 
-                    b.Property<string>("GroupId");
-
                     b.Property<string>("MeeSumPath");
+
+                    b.Property<string>("OrganizationId");
 
                     b.Property<string>("PraCon");
 
@@ -839,7 +841,7 @@ namespace dora.school.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("OrganizationId");
 
                     b.HasIndex("TeacherId");
 
@@ -1251,6 +1253,34 @@ namespace dora.school.Migrations
                     b.HasIndex("TeachingTaskId");
 
                     b.ToTable("School_TeachingTaskDetail");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.Term", b =>
+                {
+                    b.Property<string>("TermId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<bool>("IsDefault");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("TermId");
+
+                    b.ToTable("School_Terms");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.TrainingLab", b =>
@@ -1835,9 +1865,9 @@ namespace dora.school.Migrations
                         .WithMany("Syllabuss")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("Dora.Domain.Entities.Application.Group", "Group")
+                    b.HasOne("Dora.Domain.Entities.School.Organization", "Organization")
                         .WithMany()
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("OrganizationId");
 
                     b.HasOne("Dora.Domain.Entities.School.Teacher", "Teacher")
                         .WithMany("Syllabuss")

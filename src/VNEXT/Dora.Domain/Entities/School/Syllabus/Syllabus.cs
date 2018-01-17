@@ -33,7 +33,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 分院---分配给系
         /// </summary>
-        public virtual string GroupId { get; set; }
+        public virtual string OrganizationId { get; set; }
 
         /// <summary>
         /// 系----分配给教师
@@ -121,7 +121,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 院系
         /// </summary>
-        public virtual Group Group { get; set; }
+        public virtual Organization Organization { get; set; }
 
         /// <summary>
         /// 编写老师

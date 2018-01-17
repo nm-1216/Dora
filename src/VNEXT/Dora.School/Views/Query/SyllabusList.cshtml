@@ -1,0 +1,41 @@
+﻿@model Dora.Core.PageList<Syllabus>
+
+@{
+    ViewData["Title"] = "课程教学大纲查询";
+}
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="margin-top:15px;">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>课程</th>
+                            <th>教师</th>
+                            <th>院系</th>
+                            <th>完成时间</th>
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(string.Format("({0}) {1}", item.CourseId.Trim(), item.Course.Name.Trim()))</td>
+                                <td>@(item.Teacher != null ? (string.Format("({0}) {1}", item.TeacherId.Trim(), item.Teacher.Name.Trim())) : "")</td>
+                                <td>@(item.Organization != null ? item.Organization.Name : "")</td>
+                                <th>@item.UpdateTime.ToString("yyyy-MM-dd")</th>
+                                <td class="text-right">
+                                    <a data-content-id="@item.SyllabusId" data-content-isRestTask="1" class="btn btn-info btn-xs btnSetTeacher">预览</a>
+                                    <a data-content-id="@item.SyllabusId" data-content-isRestTask="1" class="btn btn-info btn-xs btnSetTeacher">下载</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+        @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
+    </form>
+</div>

@@ -10,6 +10,7 @@ namespace Dora.Domain.Entities.School
 {
     using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
+    using System;
 
     /// <summary>
     /// Professional 专业
@@ -29,12 +30,17 @@ namespace Dora.Domain.Entities.School
         public virtual string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 年限
+        /// 年级
         /// </summary>
-        public virtual int Year { get; set; }
+        public virtual int Gread { get; set; } = DateTime.Now.Year;
 
         /// <summary>
-        /// Gets or sets 组织架构ID 所属部门
+        /// 年限
+        /// </summary>
+        public virtual int Years { get; set; } = 4;
+
+        /// <summary>
+        /// Gets or sets 组织架构ID 所属院系
         /// </summary>
         public virtual string OrganizationId { get; set; }
 

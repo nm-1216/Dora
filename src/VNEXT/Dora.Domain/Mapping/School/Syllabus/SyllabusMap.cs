@@ -22,7 +22,7 @@
 
             ///Relationships
             builder.HasOne(b => b.Course).WithMany(b => b.Syllabuss).HasForeignKey(b => b.CourseId);
-            builder.HasOne(b => b.Group).WithMany().HasForeignKey(b => b.GroupId);
+            builder.HasOne(b => b.Organization).WithMany().HasForeignKey(b => b.OrganizationId);
             builder.HasOne(b => b.Teacher).WithMany(b => b.Syllabuss).HasForeignKey(b => b.TeacherId);
 
 

@@ -2,21 +2,21 @@
 
 @{
     ViewData["Title"] = "专业管理";
-    Layout = "_Layout";
 }
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
         <div class="row" style="padding-top:10px;">
             <div class="col-lg-12">
-                    <div class="form-group">
-                        <p class="form-control-static">代码或名称</p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">搜索条件</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="代码或名称">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
-                    </div>
-                    <button type="submit" class="btn btn-info">search</button>
-               
+                </div>
+
+                <button type="submit" class="btn btn-info">search</button>
+
             </div>
         </div>
         <div class="row">
@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th>专业代码</th>
+                            <th>年级</th>
                             <th>教学分院</th>
                             <th>专业名称</th>
                             <th>年限</th>
@@ -33,15 +34,16 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-            {
-                    <tr>
-                        <td>@item.ProfessionalId</td>
-                        <td>@item.Department.Name</td>
-                        <td>@item.Name</td>
-                        <td>@item.Year</td>
-                        <td>@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    </tr>
-                    }
+                        {
+                            <tr>
+                                <td>@item.ProfessionalId</td>
+                                <td>@item.Gread</td>
+                                <td>@item.Department.Name</td>
+                                <td>@item.Name</td>
+                                <td>@item.Years</td>
+                                <td>@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

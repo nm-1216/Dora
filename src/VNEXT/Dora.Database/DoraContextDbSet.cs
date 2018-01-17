@@ -45,6 +45,7 @@ namespace Dora.Database
         public DbSet<TrainingLabDevice> TrainingLabDevices { get; set; }
         public DbSet<TrainingProject> TrainingProjects { get; set; }
         public DbSet<Infomation> Infomations { get; set; }
+        public DbSet<Term> Terms { get; set; }
 
 
         #endregion
