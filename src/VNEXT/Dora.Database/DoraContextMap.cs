@@ -109,6 +109,9 @@ namespace Dora.Database
             #region TeachingPlan
             builder.AddConfiguration(new TeachingTaskMap());
             builder.AddConfiguration(new TeachingTaskDetailMap());
+            builder.AddConfiguration(new TeachingTaskClassMap());
+            builder.AddConfiguration(new TeachingTaskTeacherMap());
+
 
             #endregion
             #region TrainingPlan

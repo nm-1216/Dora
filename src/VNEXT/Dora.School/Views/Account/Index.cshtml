@@ -1,19 +1,90 @@
-﻿@model SchoolUser
+﻿@model IEnumerable<SchoolRole>
 @{
     ViewData["Title"] = "User infomation";
+    Layout = "_Layout_1";
 }
-<div class="container-fluid">
+<style>
+    .imgbox img {
+        width: 70%;
+        display:block;
+        margin:0 auto;
+    }
 
-    <h2>@ViewData["Title"].</h2>
+    .imgItem {
+        padding: 20px 0 20px 0;
+        text-align: center;
+        /*border-bottom: 2pt solid #dddce3;*/
+        font-size: 10pt;
+        color: #0c3647;
+        font-weight: normal;
+    }
 
+    .wapper {
+        background-color: #fff;
+    }
 
-    <form method="post" asp-action="ChangePassword" class="form-horizontal">
-        <input type="hidden" asp-for="Id" />
-        <h4>user infomation.</h4>
-        <hr />
-        
-    </form>
+    .RoleName {
+        width: 25%;
+        position: absolute;
+        top: -30px;
+        left: -30%;
+        border: 2px solid #0c3647;
+        text-align: center;
+        font-size: 23pt;
+        color: #0c3647;
+        font-weight: bold;
+    }
 
-</div>
+    .ModuleType {
+        text-align: left;
+        padding: 20px 0 20px 0;
+        width: 23%;
+        font-size: 15pt;
+        color: #0c3647;
+        font-weight: bold;
+    }
 
+        .ModuleType img {
+            width: 40%;
+            display:block;
+        }
+</style>
+<br />
+<br />
+<br />
+@foreach (var role in Model)
+{
 
+    <div class="container" style="width:60%;position:relative">
+        <div class="RoleName">
+            @role.Name
+        </div>
+        @foreach (var Permission in role.Permissions.OrderBy(b => b.ModuleType.Index))
+        {
+            <div class="container-fluid" style="position:relative;">
+                <div class="row">
+                    <div class="col-lg-1 ModuleType" style="">
+                        <img src="@Permission.ModuleType.Ico" />
+                        @Permission.ModuleType.Name
+                    </div>
+                    <div class="col-lg-1" style="width:77%;padding:0">
+                        <div class="container-fluid" style="position:relative">
+                            <div class="row imgbox">
+                                @foreach (var item in Permission.ModuleType.Modules.OrderBy(b => b.Index))
+                                {
+                                    <a href="@item.Url">
+                                        <div class="imgItem col-lg-3 col-sm-3 col-xs-3">
+                                            <img src="@item.Ico" />
+                                            @item.Name
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}

@@ -29,6 +29,8 @@
             this._ModuleTypeService = moduleTypeService;
         }
 
+
+
         public IActionResult Index(string moduleTypeId, string searchKey)
         {
             ViewData["searchKey"] = searchKey;
@@ -53,6 +55,8 @@
                 .Where(b => (string.IsNullOrEmpty(moduleTypeId) || b.ModuleTypeId == moduleTypeId) && (string.IsNullOrEmpty(searchKey) || b.Name.Contains(searchKey)))
                 .OrderBy(b => b.ModuleType.Discription).ThenBy(b => b.ModuleType.Index).ThenBy(b => b.Index));
         }
+
+
 
         public async Task<IActionResult> Delete(string id)
         {
@@ -165,13 +169,39 @@
             return Json(new AjaxResult("操作成功") { result = 1 });
         }
 
-        public async Task<IActionResult> AddModuleType(string name, string discription, int index = 1)
+        public async Task<IActionResult> AddModuleType([FromServices]IHostingEnvironment env, string name, string discription, IList<IFormFile> files, int index = 1)
         {
+            string Ico = string.Empty;
+            foreach (var file in files)
+            {
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
 
-            var model = _ModuleTypeService.Find(b => b.Name == name);
+                if (!fileExtension.Equals(".jpg") && !fileExtension.Equals(".png") && !fileExtension.Equals(".gif"))
+                {
+                    return Json(new AjaxResult("文件格式不正确") { result = 0 });
+                }
+
+                var dir = Path.Combine(env.WebRootPath, "upload", "module");
+                var guid = Guid.NewGuid();
+                var fileName = Path.Combine(env.WebRootPath, "upload", "module", guid + fileExtension).ToLower();
+
+                Ico = string.Format("/upload/module/{0}{1}", guid, fileExtension);
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+            }
+
+            var model = _ModuleTypeService.Find(b => b.Name == name && b.Discription == discription);
             if (model == null)
             {
-                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name, Discription = discription, Index = index > 0 ? index : 1 });
+                await _ModuleTypeService.Add(new Domain.Entities.School.ModuleType() { Name = name, Discription = discription, Ico = Ico, Index = index > 0 ? index : 1 });
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
             else
@@ -179,5 +209,86 @@
                 return Json(new AjaxResult("操作失败，数据已存在") { result = 0 });
             }
         }
+
+        public async Task<IActionResult> EditModuleType([FromServices]IHostingEnvironment env, ModuleType model, IList<IFormFile> files)
+        {
+            string Ico = string.Empty;
+
+            foreach (var file in files)
+            {
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                if (!fileExtension.Equals(".jpg") && !fileExtension.Equals(".png") && !fileExtension.Equals(".gif"))
+                {
+                    return Json(new AjaxResult("文件格式不正确") { result = 0 });
+                }
+
+                var dir = Path.Combine(env.WebRootPath, "upload", "module");
+
+                var guid = Guid.NewGuid();
+
+                var fileName = Path.Combine(env.WebRootPath, "upload", "module", guid + fileExtension).ToLower();
+
+                Ico = string.Format("/upload/module/{0}{1}", guid, fileExtension);
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+            }
+
+            var item = _ModuleTypeService.Find(b => b.ModuleTypeId == model.ModuleTypeId);
+
+            if (item != null)
+            {
+                if (!string.IsNullOrEmpty(model.Name))
+                    item.Name = model.Name;
+
+                if (!string.IsNullOrEmpty(model.Discription))
+                    item.Discription = model.Discription;
+
+
+                item.UpdateTime = DateTime.Now;
+
+                if (!string.IsNullOrEmpty(Ico))
+                    item.Ico = Ico;
+
+                if (model.Index > 0)
+                    item.Index = model.Index;
+
+                await _ModuleTypeService.Update(item);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
+        public async Task<IActionResult> DeleteModuleType(string id)
+        {
+            var model = _ModuleTypeService.Find(b => b.ModuleTypeId == id);
+            if (model != null)
+            {
+                await _ModuleTypeService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+        
+        public IActionResult ModuleTypeList(string searchKey)
+        {
+            return View(_ModuleTypeService.GetAll().Where(b=> string.IsNullOrEmpty(searchKey) || b.Discription.Contains(searchKey)).OrderBy(b => b.Discription).ThenBy(b => b.Index));
+        }
+
+
     }
 }

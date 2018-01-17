@@ -25,7 +25,17 @@
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await GetCurrentUserAsync());
+            var user = await GetCurrentUserAsync();
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var list = _roleManager.Roles
+                .Include(b => b.Permissions)
+                .ThenInclude(c => c.ModuleType)
+                .ThenInclude(d => d.Modules)
+                .Where(b => roles.Contains(b.Name))
+                .OrderBy(b => b.Index);
+
+            return View(list);
         }
         #endregion
 

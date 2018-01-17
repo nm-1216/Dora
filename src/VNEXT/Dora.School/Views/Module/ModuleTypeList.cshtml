@@ -1,58 +1,25 @@
-﻿@model IEnumerable<Module>
+﻿@model IEnumerable<ModuleType>
 
 @{
     ViewData["Title"] = "模块管理";
 }
 
 <div class="EditDiv" style="display:none">
-    <form id="EditModule" method="post" enctype="multipart/form-data" asp-action="Edit">
-        <input type="hidden" id="EditDivModuleId" name="ModuleId" />
+    <form id="EditModule" method="post" enctype="multipart/form-data" asp-action="EditModuleType">
+        <input type="hidden" id="EditDivModuleTypeId" name="ModuleTypeId" />
         <table class="table-striped table">
             <thead>
                 <tr>
-                    <th>分类</th>
-                    <th>名称:</th>
-                    <th>路径:</th>
-                    <th>排序:</th>
+                    <th>名称</th>
+                    <th>分组（排序优先级最高）</th>
+                    <th>排序</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><select class="form-control" id="EditDivType" name="ModuleTypeId" asp-items="@ViewBag.moduleType"></select> </td>
-                    <td><input id="EditDivUame" name="name" type="text" class="form-control" /></td>
-                    <td><input id="EditDivUrl" name="url" type="text" class="form-control" /></td>
-                    <td><input id="EditDivIndex" name="index" type="text" class="form-control" /></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><input name="files" type="file" class="" /></td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-center">
-                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-</div>
-
-<div class="AddDiv" style="display:none">
-    <form id="AddModule" method="post" enctype="multipart/form-data" asp-action="AddModule">
-        <table class="table-striped table">
-            <thead>
-                <tr>
-                    <th>分类</th>
-                    <th>名称:</th>
-                    <th>路径:</th>
-                    <th>排序:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><select class="form-control" name="moduleType" asp-items="@ViewBag.moduleType"></select> </td>
-                    <td><input name="name" type="text" class="form-control" /></td>
-                    <td><input name="url" type="text" class="form-control" /></td>
-                    <td><input name="index" value="1" type="number" class="form-control" /></td>
+                    <td><input id="EditDivName" type="text" name="Name" class="form-control" /></td>
+                    <td><input id="EditDivDiscription" type="text" name="Discription" class="form-control" /></td>
+                    <td><input id="EditDivIndex" type="number" value="1" name="Index" class="form-control" /></td>
                 </tr>
                 <tr>
                     <td colspan="4"><input name="files" type="file" class="" /></td>
@@ -68,13 +35,13 @@
 </div>
 
 <div class="AddTypeDiv" style="display:none">
-    <form id="AddModuleType" class="" method="post" asp-action="AddModuleType">
+    <form id="AddModuleType" class="" method="post" enctype="multipart/form-data" asp-action="AddModuleType">
         <table class="table-striped table">
             <thead>
                 <tr>
-                    <th>名称:</th>
-                    <th>分组（排序优先级最高）:</th>
-                    <th>排序:</th>
+                    <th>名称</th>
+                    <th>分组（排序优先级最高）</th>
+                    <th>排序</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +49,9 @@
                     <td><input type="text" name="name" class="form-control" /></td>
                     <td><input type="text" name="discription" class="form-control" /></td>
                     <td><input type="number" value="1" name="index" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><input name="files" type="file" class="" /></td>
                 </tr>
                 <tr>
                     <td colspan="3" class="text-center">
@@ -95,40 +65,28 @@
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
-
         <div class="row" style="padding:10px 0 20px 0;">
             <div class="col-sm-8">
                 <div class="form-group">
                     <div class="input-group">
-                        <div class="input-group-addon">名称</div>
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="请输入名称">
+                        <div class="input-group-addon">分组</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="请输入分组">
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">分类</div>
-                        <select class="form-control" name="ModuleTypeId" asp-items="@ViewBag.moduleTypeForSearch"></select>
-                    </div>
-                </div>
+                </div>               
                 <button type="submit" class="btn btn-info">检索</button>
             </div>
-
             <div class="col-sm-4 text-right">
-                <a class="btn btn-success" asp-action="ModuleTypeList">分类管理</a>
                 <button class="btn btn-danger" type="button" onclick="DivLayer(1,'添加分类',$('.AddTypeDiv'))">添加分类</button>
-                <button class="btn btn-danger" type="button" onclick="DivLayer(2,'添加模块',$('.AddDiv'),'800px','300px')">添加模块</button>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-12">
                 <table class="table-striped table">
                     <thead>
                         <tr>
                             <th style="width:50px">排序</th>
-                            <th>分类</th>
+                            <th>分组</th>
                             <th>名称</th>
-                            <th>路径</th>
                             <th>图片</th>
                             <th class="text-right">操作</th>
                         </tr>
@@ -138,13 +96,12 @@
                         {
                             <tr>
                                 <td>@item.Index</td>
-                                <td>@string.Format("{1}-{0}", item.ModuleType.Name, item.ModuleType.Discription)</td>
+                                <td>@item.Discription</td>
                                 <td>@item.Name</td>
-                                <td>@item.Url</td>
                                 <td>@item.Ico.Replace("/upload/module/", "")</td>
                                 <td class="text-right">
-                                    <a data-content-id="@item.ModuleId" data-content-type="@item.ModuleTypeId" data-content-name="@item.Name" data-content-url="@item.Url" data-content-index="@item.Index" class="btn btn-primary btn-xs btnEdit">修改</a>
-                                    <a data-content-id="@item.ModuleId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                    <a data-content-id="@item.ModuleTypeId" data-content-name="@item.Name" data-content-discription="@item.Discription" data-content-index="@item.Index" class="btn btn-primary btn-xs btnEdit">修改</a>
+                                    <a data-content-id="@item.ModuleTypeId" class="btn btn-danger btn-xs btnDel">删除</a>
                                 </td>
                             </tr>
                         }
@@ -152,8 +109,6 @@
                 </table>
             </div>
         </div>
-
-
     </form>
 </div>
 
@@ -180,7 +135,7 @@
                     layer.closeAll();
                     layer.msg(data.msg, {
                         time: 2000, end: function () {
-                            //location.href = location.href;
+                            location.href = location.href;
                         }
                     }
                     )
@@ -201,7 +156,7 @@
                 }, function () {
 
                     $.ajax({
-                        url: '/Module/Delete',
+                        url: '/Module/DeleteModuleType',
                         type: 'POST',
                         async: true,
                         data: {
@@ -244,11 +199,10 @@
             })
 
             $('.btnEdit').on('click', function () {
-                $('#EditDivModuleId').val($(this).attr('data-content-id'));
-                $('#EditDivUame').val($(this).attr('data-content-name'));
-                $('#EditDivUrl').val($(this).attr('data-content-url'));
+                $('#EditDivModuleTypeId').val($(this).attr('data-content-id'));
+                $('#EditDivName').val($(this).attr('data-content-name'));
+                $('#EditDivDiscription').val($(this).attr('data-content-discription'));
                 $('#EditDivIndex').val($(this).attr('data-content-index'));
-                $('#EditDivType').val($(this).attr('data-content-type'));
 
                 DivLayer(1, '编辑模块', $('.EditDiv'), '800px', '300px')
             })
@@ -256,3 +210,4 @@
 
     </script>
 }
+

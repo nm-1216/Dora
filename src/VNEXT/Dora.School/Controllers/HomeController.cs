@@ -17,6 +17,8 @@ namespace Dora.School.Controllers
             _signInManager = signInManager;
         }
 
+
+
         #region Index
         public IActionResult Index()
         {

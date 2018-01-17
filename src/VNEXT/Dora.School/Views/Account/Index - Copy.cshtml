@@ -1,0 +1,19 @@
+﻿@model SchoolUser
+@{
+    ViewData["Title"] = "User infomation";
+}
+<div class="container-fluid">
+
+    <h2>@ViewData["Title"].</h2>
+
+
+    <form method="post" asp-action="ChangePassword" class="form-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <h4>user infomation.</h4>
+        <hr />
+        
+    </form>
+
+</div>
+
+
