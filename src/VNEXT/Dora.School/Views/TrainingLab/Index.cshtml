@@ -3,9 +3,7 @@
     ViewData["Title"] = "实训室管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
-
+ 
 <div class="CreateDiv" style="display:none">
     <form id="AddTrainingLabRoom" asp-action="Create" method="post">
 
@@ -120,7 +118,8 @@
                             <th>所在楼号</th>
                             <th>所在房间号</th>
                             <th>面积</th>
-                            <th>座位数</th>
+                            <th>管理员</th>
+                            <th>类别</th>
                             <th>当前使用状态</th>
                             <th class="text-right">操作</th>
                         </tr>
@@ -136,18 +135,20 @@
                                 <td>@item.BuildingNo</td>
                                 <td>@item.RoomNo</td>
                                 <td>@item.Area</td>
-                                <td>@item.SeatNum</td>
+                                <td>@item.Management</td>
+                                <td>@item.Type</td>
                                 <td>@item.Status</td>
                                 <td class="text-right">
-                                    <a data-content-id="@item.TrainingLabRoomId" data-content-name="@item.Name"
+                                    <a data-content-id="@item.TrainingLabId" data-content-name="@item.Name"
                                        data-content-School="@item.School"
                                        data-content-BuildingNo="@item.BuildingNo"
                                        data-content-RoomNo="@item.RoomNo"
                                        data-content-Area="@item.Area"
-                                       data-content-SeatNum="@item.SeatNum"
+                                       data-content-Management="@item.Management"
                                        data-content-Status="@item.Status"
+                                       data-content-Type="@item.Type"
                                        class="btn btn-primary btn-xs btnEdit">修改</a>
-                                    <a data-content-id="@item.TrainingLabRoomId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                    <a data-content-id="@item.TrainingLabId" class="btn btn-danger btn-xs btnDel">删除</a>
                                 </td>
                             </tr>
                         }
@@ -240,16 +241,17 @@
                 $('#EditDivBuildingNo').val($(this).attr('data-content-BuildingNo'));
                 $('#EditDivRoomNo').val($(this).attr('data-content-RoomNo'));
                 $('#EditDivArea').val($(this).attr('data-content-Area'));
-                $('#EditDivSeatNum').val($(this).attr('data-content-SeatNum'));
+                $('#EditDivManagement').val($(this).attr('data-content-Management'));
+                $('#EditDivType').val($(this).attr('data-content-Type'));
                 $('#EditDivBase').val($(this).attr('data-content-Base'));
                 $('#EditDivSeatCenter').val($(this).attr('data-content-Center'));
 
-                DivLayer(1, '编辑实训室信息', $('.EditDiv'), '500px', '300px')
+                DivLayer(1, '编辑实训室信息', $('.EditDiv'), '600px', '400px')
             })
             $('.btnAdd').on('click', function () {
                 $('#CreateDivName').val('')
                 $('#CreateDivIndex').val('')
-                DivLayer(1, '新添实训室信息', $('.CreateDiv'), '500px', '300px')
+                DivLayer(1, '新添实训室信息', $('.CreateDiv'), '600px', '400px')
             })
 
 
