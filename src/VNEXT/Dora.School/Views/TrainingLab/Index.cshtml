@@ -1,0 +1,259 @@
+﻿
+@{
+    ViewData["Title"] = "实训室管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div class="CreateDiv" style="display:none">
+    <form id="AddTrainingLabRoom" asp-action="Create" method="post">
+
+        <table class="table table-striped" style="">
+            <thead>
+                <tr>
+                    <th>教室名称：</th>
+                    <th>面积：</th>
+                    <th>所在楼号：</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="CreateDivName" name="Name" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivArea" name="Area" type="number" class="form-control" /></td>
+                    <td><input id="CreateDivBuildingNo" name="BuildingNo" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th>所在房间号：</th>
+                    <th>所在校区：</th>
+                    <th>管理员：</th>
+                </tr>
+                <tr>
+                    <td><input id="CreateDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivManagement" name="Management" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr>
+                    <th>类别：</th>
+                    <th>所属基地：</th>
+                    <th>所属中心：</th>
+                </tr>
+                <tr>
+                    <td><input id="CreateDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div class="EditDiv" style="display:none">
+    <form id="AddTrainingLabRoom" asp-action="Create" method="post">
+        <input type="hidden" id="EditDivId" name="TrainingLabRoomId" /> 
+        <table class="table table-striped" style="">
+            <thead>
+                <tr>
+                    <th>教室名称：</th>
+                    <th>面积：</th>
+                    <th>所在楼号：</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="CreateDivName" name="Name" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivArea" name="Area" type="number" class="form-control" /></td>
+                    <td><input id="CreateDivBuildingNo" name="BuildingNo" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th>所在房间号：</th>
+                    <th>所在校区：</th>
+                    <th>管理员：</th>
+                </tr>
+                <tr>
+                    <td><input id="CreateDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivManagement" name="Management" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr>
+                    <th>类别：</th>
+                    <th>所属基地：</th>
+                    <th>所属中心：</th>
+                </tr>
+                <tr>
+                    <td><input id="CreateDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding-top:10px;">
+            <div class="col-sm-1 col-sm-offset-11">
+                <a class="btn btn-block btn-danger btnAdd">添加</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr> 
+                            <th>教室名称</th>
+                            <th>所属基地</th>
+                            <th>所属中心</th>
+                            <th>所在校区</th>
+                            <th>所在楼号</th>
+                            <th>所在房间号</th>
+                            <th>面积</th>
+                            <th>座位数</th>
+                            <th>当前使用状态</th>
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Base</td>
+                                <td>@item.Center</td>
+                                <td>@item.School</td>
+                                <td>@item.BuildingNo</td>
+                                <td>@item.RoomNo</td>
+                                <td>@item.Area</td>
+                                <td>@item.SeatNum</td>
+                                <td>@item.Status</td>
+                                <td class="text-right">
+                                    <a data-content-id="@item.TrainingLabRoomId" data-content-name="@item.Name"
+                                       data-content-School="@item.School"
+                                       data-content-BuildingNo="@item.BuildingNo"
+                                       data-content-RoomNo="@item.RoomNo"
+                                       data-content-Area="@item.Area"
+                                       data-content-SeatNum="@item.SeatNum"
+                                       data-content-Status="@item.Status"
+                                       class="btn btn-primary btn-xs btnEdit">修改</a>
+                                    <a data-content-id="@item.TrainingLabRoomId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            var options = {
+                //target: '#output',          //把服务器返回的内容放入id为output的元素中
+                //beforeSubmit: showRequest,  //提交前的回调函数
+                success: showResponse,      //提交后的回调函数
+                //url: url,                 //默认是form的action， 如果申明，则会覆盖
+                type: 'post',               //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json',           //html(默认), xml, script, json...接受服务端返回的类型
+                //clearForm: true,          //成功提交后，清除所有表单元素的值
+                //resetForm: true,          //成功提交后，重置所有表单元素的值
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            }
+            function showResponse(responseText, statusText) {
+                console.log("responseText", responseText);
+                console.log("statusText", statusText);
+                var data = responseText;
+                if (data.result == 1) {
+                    layer.closeAll();
+                    layer.msg(data.msg, {
+                        time: 2000, end: function () {
+                            location.href = location.href;
+                        }
+                    }
+                    )
+                } else {
+                    layer.msg(data.msg);
+                }
+            };
+            $("#CreateTrainingLabRoom").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $("#EditTrainingLabRoom").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $('.btnDel').on('click', function () {
+                console.log('btnDel')
+                var id = $(this).attr('data-content-id');
+                $.ajax({
+                    url: '/TrainingLabRoom/Delete',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        id: id
+                    },
+                    timeout: 5000,
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        console.log(xhr)
+                        console.log('发送前')
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data)
+                        console.log(textStatus)
+                        console.log(jqXHR)
+                        if (data.result == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {
+                                time: 2000, end: function () {
+                                    location.href = location.href;
+                                }
+                            }
+                            )
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, textStatus) {
+                        console.log('错误')
+                        console.log(xhr)
+                        console.log(textStatus)
+                    },
+                    complete: function () {
+                        console.log('结束')
+                    }
+                })
+            })
+            $('.btnEdit').on('click', function () {
+                $('#EditDivId').val($(this).attr('data-content-id'));
+                $('#EditDivName').val($(this).attr('data-content-name'));
+                $('#EditDivSchool').val($(this).attr('data-content-School'));
+                $('#EditDivBuildingNo').val($(this).attr('data-content-BuildingNo'));
+                $('#EditDivRoomNo').val($(this).attr('data-content-RoomNo'));
+                $('#EditDivArea').val($(this).attr('data-content-Area'));
+                $('#EditDivSeatNum').val($(this).attr('data-content-SeatNum'));
+                $('#EditDivBase').val($(this).attr('data-content-Base'));
+                $('#EditDivSeatCenter').val($(this).attr('data-content-Center'));
+
+                DivLayer(1, '编辑实训室信息', $('.EditDiv'), '500px', '300px')
+            })
+            $('.btnAdd').on('click', function () {
+                $('#CreateDivName').val('')
+                $('#CreateDivIndex').val('')
+                DivLayer(1, '新添实训室信息', $('.CreateDiv'), '500px', '300px')
+            })
+
+
+        })
+
+    </script>
+}
