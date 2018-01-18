@@ -1,4 +1,4 @@
-﻿namespace Dora.School.Controllers
+﻿ namespace Dora.School.Controllers
 {
     using Dora.Core;
     using Dora.Domain.Entities.School;
@@ -13,40 +13,39 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    [Authorize]
-    public class PublicClassRoomController : BaseUserController<PublicClassRoomController>
+    public class TrainingLabController : BaseUserController<TrainingLabController>
     {
         private readonly IPermissionService _PermissionService;
         private readonly IModuleTypeService _ModuleTypeService;
-        private readonly IPublicClassRoomService _PublicClassRoomService;
+        private readonly ITrainingLabService _TrainingLabService;
 
-        public PublicClassRoomController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
+        public TrainingLabController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
       IPermissionService permissionService,
       IModuleTypeService moduleTypeService,
-      IPublicClassRoomService publicClassRoomService
+      ITrainingLabService trainingLabService
       ) : base(roleManager, userManager, loggerFactory)
         {
             _PermissionService = permissionService;
             _ModuleTypeService = moduleTypeService;
-            _PublicClassRoomService = publicClassRoomService;
+            _TrainingLabService = trainingLabService;
         }
-         
-        public  IActionResult Index()
+
+
+        public IActionResult Index()
         {
-            var list = _PublicClassRoomService.GetAll();
+            var list = _TrainingLabService.GetAll();
             return View(list);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PublicClassRoom model)
+        public async Task<IActionResult> Create(TrainingLab model)
         {
             if (ModelState.IsValid)
             {
-                model.PublicClassRoomId = Guid.NewGuid().ToString();
-                await _PublicClassRoomService.Add(model);
+                model.TrainingLabId = Guid.NewGuid().ToString();
+                await _TrainingLabService.Add(model);
             }
 
             return Json(new AjaxResult("操作成功") { result = 1 });
@@ -54,11 +53,11 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(PublicClassRoom model)
+        public async Task<IActionResult> Edit(TrainingLab model)
         {
-            var item =  _PublicClassRoomService.Find(r=> r.PublicClassRoomId == model.PublicClassRoomId);
+            var item = _TrainingLabService.Find(r => r.TrainingLabId == model.TrainingLabId);
 
-             
+
             if (item != null)
             {
                 item.Name = model.Name;
@@ -66,24 +65,12 @@
                 item.BuildingNo = model.BuildingNo;
                 item.RoomNo = model.RoomNo;
                 item.Area = model.Area;
-                item.SeatNum = model.SeatNum; 
+                item.Management = model.Management;
+                item.Type = model.Type;
+                item.Base = model.Base;
+                item.Center = model.Center; 
 
-                await _PublicClassRoomService.Update(item);
-                return Json(new AjaxResult("操作成功") { result = 1 });
-            }
-            else
-            {
-                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
-            }
-        } 
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var model =  _PublicClassRoomService.Find(r => r.PublicClassRoomId == id);
-            if (model != null)
-            {
-                await _PublicClassRoomService.Remove(model);
+                await _TrainingLabService.Update(item);
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
             else
@@ -92,6 +79,19 @@
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var model = _TrainingLabService.Find(r => r.TrainingLabId == id);
+            if (model != null)
+            {
+                await _TrainingLabService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
     }
-
 }
