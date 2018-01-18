@@ -5,44 +5,46 @@
 }
  
 <div class="CreateDiv" style="display:none">
-    <form id="AddTrainingLabRoom" asp-action="Create" method="post">
+    <form id="CreateTrainingLabRoom" asp-action="Create" method="post">
 
         <table class="table table-striped" style="">
             <thead>
                 <tr>
-                    <th>教室名称：</th>
+                    <th>名称：</th>
+                    <th>房间号：</th>
                     <th>面积：</th>
-                    <th>所在楼号：</th>
+                    <th>类别：</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input id="CreateDivName" name="Name" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
                     <td><input id="CreateDivArea" name="Area" type="number" class="form-control" /></td>
+                    <td><input id="CreateDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr>
+                    <th>校区：</th>
+                    <th>中心：</th>
+                    <th>基地：</th>
+                    <th>楼号：</th>
+                </tr>
+                <tr>
+                    <td><input id="CreateDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="CreateDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
                     <td><input id="CreateDivBuildingNo" name="BuildingNo" type="text" class="form-control" /></td>
                 </tr>
                 <tr>
-                    <th>所在房间号：</th>
-                    <th>所在校区：</th>
                     <th>管理员：</th>
+                    <th colspan="3"></th>
                 </tr>
                 <tr>
-                    <td><input id="CreateDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
                     <td><input id="CreateDivManagement" name="Management" type="text" class="form-control" maxlength="256" /></td>
+                    <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <th>类别：</th>
-                    <th>所属基地：</th>
-                    <th>所属中心：</th>
-                </tr>
-                <tr>
-                    <td><input id="CreateDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
@@ -51,45 +53,47 @@
     </form>
 </div>
 
-<div class="EditDiv" style="display:none">
-    <form id="AddTrainingLabRoom" asp-action="Create" method="post">
-        <input type="hidden" id="EditDivId" name="TrainingLabRoomId" /> 
+<div class="EditDiv" style="display:none"> 
+    <form id="EditTrainingLabRoom" asp-action="Edit" method="post">
+        <input type="hidden" id="EditDivId" name="TrainingLabId" /> 
         <table class="table table-striped" style="">
             <thead>
                 <tr>
-                    <th>教室名称：</th>
+                    <th>名称：</th>
+                    <th>房间号：</th>
                     <th>面积：</th>
-                    <th>所在楼号：</th>
+                    <th>类别：</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><input id="CreateDivName" name="Name" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivArea" name="Area" type="number" class="form-control" /></td>
-                    <td><input id="CreateDivBuildingNo" name="BuildingNo" type="text" class="form-control" /></td>
+                    <td><input id="EditDivName" name="Name" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivArea" name="Area" type="number" class="form-control" /></td>
+                    <td><input id="EditDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
                 </tr>
                 <tr>
-                    <th>所在房间号：</th>
-                    <th>所在校区：</th>
+                    <th>校区：</th>
+                    <th>中心：</th>
+                    <th>基地：</th>
+                    <th>楼号：</th>
+                </tr>
+                <tr>
+                    <td><input id="EditDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivBuildingNo" name="BuildingNo" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
                     <th>管理员：</th>
+                    <th colspan="3"></th> 
                 </tr>
                 <tr>
-                    <td><input id="CreateDivRoomNo" name="RoomNo" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivSchool" name="School" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivManagement" name="Management" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivManagement" name="Management" type="text" class="form-control" maxlength="256" /></td>
+                    <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <th>类别：</th>
-                    <th>所属基地：</th>
-                    <th>所属中心：</th>
-                </tr>
-                <tr>
-                    <td><input id="CreateDivType" name="Type" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivBase" name="Base" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="CreateDivCenter" name="Center" type="text" class="form-control" maxlength="256" /></td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                     </td>
                 </tr>
@@ -111,12 +115,12 @@
                 <table class="table-striped table">
                     <thead>
                         <tr> 
-                            <th>教室名称</th>
-                            <th>所属基地</th>
-                            <th>所属中心</th>
-                            <th>所在校区</th>
-                            <th>所在楼号</th>
-                            <th>所在房间号</th>
+                            <th>名称</th>
+                            <th>基地</th>
+                            <th>中心</th>
+                            <th>校区</th>
+                            <th>楼号</th>
+                            <th>房间号</th>
                             <th>面积</th>
                             <th>管理员</th>
                             <th>类别</th>
@@ -196,7 +200,7 @@
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');
                 $.ajax({
-                    url: '/TrainingLabRoom/Delete',
+                    url: '/TrainingLab/Delete',
                     type: 'POST',
                     async: true,
                     data: {
@@ -246,12 +250,12 @@
                 $('#EditDivBase').val($(this).attr('data-content-Base'));
                 $('#EditDivSeatCenter').val($(this).attr('data-content-Center'));
 
-                DivLayer(1, '编辑实训室信息', $('.EditDiv'), '600px', '400px')
+                DivLayer(1, '编辑实训室信息', $('.EditDiv'), '700px', '400px')
             })
             $('.btnAdd').on('click', function () {
                 $('#CreateDivName').val('')
                 $('#CreateDivIndex').val('')
-                DivLayer(1, '新添实训室信息', $('.CreateDiv'), '600px', '400px')
+                DivLayer(1, '新添实训室信息', $('.CreateDiv'), '700px', '400px')
             })
 
 
