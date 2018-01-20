@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -148,9 +149,6 @@
             var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
 
             ViewBag.msg = "";
-
-            var SyllabusBook = _SyllabusBookService.Where(r => r.SyllabusId == id);
-            ViewBag.SyllabusBook = SyllabusBook;
              
             return View(model);
         }
@@ -214,10 +212,15 @@
             return View(model);
         }
 
-        //public IActionResult SyllabusBook(string id)
-        //{ 
-        //    return View(model);
-        //}
+        [HttpPost]
+        public string GetSyllabusBooks(string id)
+        {
+            //  var SyllabusBook = _SyllabusService.GetAll().Include(b => b.SyllabusBooks).FirstOrDefault(r => r.SyllabusId == id).SyllabusBooks;
+
+            var SyllabusBook = _SyllabusBookService.GetAll().Where(r => r.SyllabusId == id);
+            string json = JsonConvert.SerializeObject(SyllabusBook);
+            return json;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
