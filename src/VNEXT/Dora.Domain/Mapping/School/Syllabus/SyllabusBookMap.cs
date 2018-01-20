@@ -10,7 +10,7 @@
         public override void ConfigureDerived(EntityTypeBuilder<SyllabusBook> builder)
         {
             ///Primary Key
-            builder.HasKey(b => new { b.SyllabusId });
+            builder.HasKey(b => new { b.SyllabusBookId });
 
             ///Properties
             //builder.Property(b => b.Name).HasMaxLength(Constants.INT256).IsRequired();
