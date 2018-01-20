@@ -23,16 +23,19 @@
     public class SyllabusController : BaseUserController<SyllabusController>
     {
         private ISyllabusService _SyllabusService;
+        private ISyllabusBookService _SyllabusBookService;
         private ICourseService _CourseService;
         private ITeacherService _teacherService;
 
         public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
-        , ISyllabusService SyllabusService
+        , ISyllabusService SyllabusService,
+          ISyllabusBookService SyllabusBookService
         , ICourseService CourseService
         , ITeacherService teacherService
         ) : base(roleManager, userManager, loggerFactory)
         {
             _SyllabusService = SyllabusService;
+            _SyllabusBookService = SyllabusBookService;
             _CourseService = CourseService;
             _teacherService = teacherService;
         }
@@ -146,7 +149,9 @@
 
             ViewBag.msg = "";
 
-
+            var SyllabusBook = _SyllabusBookService.Where(r => r.SyllabusId == id);
+            ViewBag.SyllabusBook = SyllabusBook;
+             
             return View(model);
         }
 
@@ -207,6 +212,42 @@
             var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
 
             return View(model);
+        }
+
+        //public IActionResult SyllabusBook(string id)
+        //{ 
+        //    return View(model);
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(SyllabusBook model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.SyllabusBookId = Guid.NewGuid().ToString();
+                await _SyllabusBookService.Add(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,数据格式有误") { result = 0 });
+            }
+        }
+         
+        [HttpPost]
+        public async Task<IActionResult> DeleteSyllabusBook(string id)
+        {
+            var model = _SyllabusBookService.Find(r => r.SyllabusBookId == id);
+            if (model != null)
+            {
+                await _SyllabusBookService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
         }
 
 

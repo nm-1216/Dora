@@ -1,6 +1,7 @@
 ﻿@model Syllabus
 @{
     ViewData["Title"] = "课程教学大纲维护";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -35,7 +36,7 @@
                             <td><input class="form-control" asp-for="Version" /></td>
                             <td><input class="form-control" asp-for="Course.Period" disabled /></td>
                             <td><input class="form-control" asp-for="Course.Credit" disabled /></td>
-                            <td><input type="file" name="files"/></td>
+                            <td><input type="file" name="files" /></td>
                         </tr>
                         <tr>
                             <td colspan="4">
@@ -46,7 +47,8 @@
                 </table>
 
                 <div style="padding-bottom:15px;text-align:right">
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" />
+                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook"
+                           onclick="" data-content-id="@Model.SyllabusId" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" />
@@ -67,12 +69,12 @@
                     <div class="tab-pane fade" id="tab2"><textarea id="tab2-editor" asp-for="ConReq"></textarea></div>
                     <div class="tab-pane fade" id="tab4"><textarea id="tab4-editor" asp-for="PraCon"></textarea></div>
                     <div class="tab-pane fade" id="tab5"><textarea id="tab5-editor" asp-for="EvaWay"></textarea></div>
-                    <div class="tab-pane fade" id="tab6"><textarea id="tab6-editor" ></textarea></div>
+                    <div class="tab-pane fade" id="tab6"><textarea id="tab6-editor"></textarea></div>
                     <div class="tab-pane fade" id="tab7"><textarea id="tab7-editor" asp-for="Pro"></textarea></div>
                 </div>
 
                 <div class="text-right" style="height:100px;">
-                    
+
                 </div>
 
             </form>
@@ -80,10 +82,186 @@
     </div>
 </div>
 
+<!--建议选用教材Start-->
+<div class="DivSyllabusBook" style="display:none">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabsb1" data-toggle="tab">添加</a></li>
+        <li><a href="#tabsb2" data-toggle="tab">列表</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tabsb1">
+            <form id="CreateSyllabusBook" asp-action="Create" method="post">
+                <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" />
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>教材名称：</th>
+                            <th>编著者：</th>
+                            <th>版次：</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input id="Name" name="Name" class="form-control" /></td>
+                            <td><input id="Compiler" name="Compiler" class="form-control" /></td>
+                            <td><input id="Edition" name="Edition" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <th>出版社：</th>
+                            <th>出版时间：</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td><input name="Press" class="form-control" /></td>
+                            <td><input name="PreTime" class="form-control" /></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="tabsb2">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>教材名称</th>
+                        <th>编著者</th>
+                        <th>版次</th>
+                        <th>出版社</th>
+                        <th>出版时间</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.SyllabusBook != null)
+                    {
+                        foreach (var item in ViewBag.SyllabusBook)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Compiler</td>
+                                <td>@item.Edition</td>
+                                <td>@item.Press</td>
+                                <td>@item.PreTime</td>
+                                <td class="text-right">
+                                    <a data-content-id="@item.SyllabusBookId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr></tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<!--建议选用教材End-->
+
 @section scripts{
+    <script type="text/javascript">
+     
+
+        $(function () {
+            var options = {
+                //target: '#output',          //把服务器返回的内容放入id为output的元素中
+                //beforeSubmit: showRequest,  //提交前的回调函数
+                success: showResponse,      //提交后的回调函数
+                //url: url,                 //默认是form的action， 如果申明，则会覆盖
+                type: 'post',               //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json',           //html(默认), xml, script, json...接受服务端返回的类型
+                //clearForm: true,          //成功提交后，清除所有表单元素的值
+                //resetForm: true,          //成功提交后，重置所有表单元素的值
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            }
+            function showResponse(responseText, statusText) { 
+                console.log("responseText", responseText);
+                console.log("statusText", statusText);
+                var data = responseText;
+                if (data.result == 1) { 
+                    layer.closeAll();
+                    layer.msg(data.msg, {
+                        time: 2000, end: function () {
+                            location.href = location.href;
+                        }
+                    }
+                    )
+                } else {
+                    layer.msg(data.msg);
+                }
+            };
+            $("#CreateSyllabusBook").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $('.btnDel').click(function () {
+                console.log('btnDel')
+                var id = $(this).attr('data-content-id'); 
+                $.ajax({
+                    url: '/Syllabus/DeleteSyllabusBook',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        id: id
+                    },
+                    timeout: 5000,
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        console.log(xhr)
+                        console.log('发送前')
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data)
+                        console.log(textStatus)
+                        console.log(jqXHR)
+                        if (data.result == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {
+                                time: 2000, end: function () {
+                                    location.href = location.href;
+                                }
+                            }
+                            )
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, textStatus) {
+                        console.log('错误')
+                        console.log(xhr)
+                        console.log(textStatus)
+                    },
+                    complete: function () {
+                        console.log('结束')
+                    }
+                })
+            })
+            $('#btnSyllabusBook').click(function () {
+                var id = $(this).attr('data-content-id');
+                DivLayer(1, '建议选用教材', $('.DivSyllabusBook'), '580px', '460px')
+               // IFreamLayer(1, '建议选用教材', "/Syllabus/SyllabusBook?id="+id, '580px', '460px')
+            })
+        })
+    </script>
     <script src="~/lib/ckeditor/classic/ckeditor.js"></script>
-    <script>
-        $(function () { 
+    <script type="text/javascript">
+
+        $(function () {
+
+
             ClassicEditor
                 .create(document.querySelector('#tab1-editor'), {
                     ckfinder: {
@@ -140,10 +318,11 @@
                 });
 
             var iii = '@ViewBag.msg';
-            if (iii != '')
-            { 
+            if (iii != '') {
                 layer.msg(iii);
             }
         })
+
+
     </script>
 }
