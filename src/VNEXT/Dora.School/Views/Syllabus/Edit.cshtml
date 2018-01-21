@@ -168,9 +168,9 @@
 @section scripts{
     <script type="text/javascript">
 
-        function delSyllabusBook(id) {
+        function delSyllabusBook(id,sid) {
             console.log('btnDel')
-            alert(id);
+            alert(sid);
             $.ajax({
                 url: '/Syllabus/DeleteSyllabusBook',
                 type: 'POST',
@@ -189,13 +189,9 @@
                     console.log(textStatus)
                     console.log(jqXHR)
                     if (data.result == 1) {
-                        layer.closeAll();
-                        layer.msg(data.msg, {
-                            time: 2000, end: function () {
-                                location.href = location.href;
-                            }
-                        }
-                        )
+                        //layer.closeAll();
+                        $('#ViewSyllabusBookList').click();
+                        layer.msg(data.msg);
                     } else {
                         layer.msg(data.msg);
                     }
@@ -242,49 +238,49 @@
                 }
             };
             $("#CreateSyllabusBook").submit(function () { $(this).ajaxSubmit(options); return false; });
-            $('.btnDel').click(function () {
-                console.log('btnDel')
-                var id = $(this).attr('data-content-id');
-                alert(id);
-                $.ajax({
-                    url: '/Syllabus/DeleteSyllabusBook',
-                    type: 'POST',
-                    async: true,
-                    data: {
-                        id: id
-                    },
-                    timeout: 5000,
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        console.log(xhr)
-                        console.log('发送前')
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data)
-                        console.log(textStatus)
-                        console.log(jqXHR)
-                        if (data.result == 1) {
-                            layer.closeAll();
-                            layer.msg(data.msg, {
-                                time: 2000, end: function () {
-                                    location.href = location.href;
-                                }
-                            }
-                            )
-                        } else {
-                            layer.msg(data.msg);
-                        }
-                    },
-                    error: function (xhr, textStatus) {
-                        console.log('错误')
-                        console.log(xhr)
-                        console.log(textStatus)
-                    },
-                    complete: function () {
-                        console.log('结束')
-                    }
-                })
-            })
+            //$('.btnDel').click(function () {
+            //    console.log('btnDel')
+            //    var id = $(this).attr('data-content-id');
+            //    alert(id);
+            //    $.ajax({
+            //        url: '/Syllabus/DeleteSyllabusBook',
+            //        type: 'POST',
+            //        async: true,
+            //        data: {
+            //            id: id
+            //        },
+            //        timeout: 5000,
+            //        dataType: 'json',
+            //        beforeSend: function (xhr) {
+            //            console.log(xhr)
+            //            console.log('发送前')
+            //        },
+            //        success: function (data, textStatus, jqXHR) {
+            //            console.log(data)
+            //            console.log(textStatus)
+            //            console.log(jqXHR)
+            //            if (data.result == 1) {
+            //               // layer.closeAll();
+            //                layer.msg(data.msg, {
+            //                    time: 2000, end: function () {
+            //                        location.href = location.href;
+            //                    }
+            //                }
+            //                )
+            //            } else {
+            //                layer.msg(data.msg);
+            //            }
+            //        },
+            //        error: function (xhr, textStatus) {
+            //            console.log('错误')
+            //            console.log(xhr)
+            //            console.log(textStatus)
+            //        },
+            //        complete: function () {
+            //            console.log('结束')
+            //        }
+            //    })
+            //})
 
             $('#btnSyllabusBook').click(function () {
                 var id = $(this).attr('data-content-id');
@@ -314,7 +310,7 @@
                                 html += "<td>" + result[i].Press + "</td>";
                                 html += "<td>" + result[i].PreTime + "</td>";
                                 html += " <td><a data-content-id='" + result[i].SyllabusBookId
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusBook('" + result[i].SyllabusBookId + "')\">删除</a></td>";//
+                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusBook('" + result[i].SyllabusBookId + "','" + result[i].SyllabusId + "')\">删除</a></td>";//
                                 html += "</tr>";
                             }
                             $("#tabsb2 tbody").html(html);
