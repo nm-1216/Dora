@@ -90,6 +90,7 @@
             services.AddTransient<ISyllabusPeriodService, SyllabusPeriodService>();
             services.AddTransient<ISyllabusLogService, SyllabusLogService>();
             services.AddTransient<ISyllabusBookService, SyllabusBookService>();
+            services.AddTransient<ISyllabusFirstCourseService, SyllabusFirstCourseService>();
             services.AddTransient<ISyllabusApprovalService, SyllabusApprovalService>();
             services.AddTransient<IInfomationService, InfomationService>();
             services.AddTransient<ICoachRecordService, CoachRecordService>();

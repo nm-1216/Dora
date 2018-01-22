@@ -10,8 +10,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
+    using Microsoft.Extensions.Logging; 
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -26,6 +25,7 @@
         private ISyllabusService _SyllabusService;
         private ISyllabusBookService _SyllabusBookService;
         private ISyllabusPeriodService _SyllabusPeriodService;
+        private ISyllabusFirstCourseService _SyllabusFirstCourseService;
         private ICourseService _CourseService;
         private ITeacherService _teacherService;
 
@@ -33,6 +33,7 @@
         , ISyllabusService SyllabusService
         , ISyllabusBookService SyllabusBookService
         , ISyllabusPeriodService SyllabusPeriodService
+        , ISyllabusFirstCourseService SyllabusFirstCourseService
         , ICourseService CourseService
         , ITeacherService teacherService
         ) : base(roleManager, userManager, loggerFactory)
@@ -40,6 +41,7 @@
             _SyllabusService = SyllabusService;
             _SyllabusBookService = SyllabusBookService;
             _SyllabusPeriodService = SyllabusPeriodService;
+            _SyllabusFirstCourseService = SyllabusFirstCourseService;
             _CourseService = CourseService;
             _teacherService = teacherService;
         }
@@ -152,7 +154,7 @@
             var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
 
             ViewBag.msg = "";
-             
+
             return View(model);
         }
 
@@ -215,14 +217,14 @@
             return View(model);
         }
 
+        #region 建议选用教材
         [HttpPost]
-        public string GetSyllabusBooks(string id)
+        public IActionResult GetSyllabusBooks(string id)
         {
             //  var SyllabusBook = _SyllabusService.GetAll().Include(b => b.SyllabusBooks).FirstOrDefault(r => r.SyllabusId == id).SyllabusBooks;
 
             var SyllabusBook = _SyllabusBookService.GetAll().Where(r => r.SyllabusId == id);
-            string json = JsonConvert.SerializeObject(SyllabusBook);
-            return json;
+            return Json(SyllabusBook);
         }
 
         [HttpPost]
@@ -255,15 +257,14 @@
                 return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
             }
         }
-         
-        [HttpPost]
-        public string GetSyllabusPeriod(string id)
-        {
-            //  var SyllabusBook = _SyllabusService.GetAll().Include(b => b.SyllabusBooks).FirstOrDefault(r => r.SyllabusId == id).SyllabusBooks;
+        #endregion
 
-            var SyllabusBook = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id);
-            string json = JsonConvert.SerializeObject(SyllabusBook);
-            return json;
+        #region 课程学时分配
+        [HttpPost]
+        public IActionResult GetSyllabusPeriod(string id)
+        { 
+            var SyllabusPeriod = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id); 
+            return Json(SyllabusPeriod);
         }
 
         [HttpPost]
@@ -296,5 +297,62 @@
                 return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
             }
         }
+        #endregion
+
+
+        #region 先修课程
+
+        /// <summary>
+        /// 根据搜索框内容，筛选出课程列表
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IActionResult GetCourses(string name)
+        {
+            //课程列表
+            var Courses = _CourseService.GetAll().Where(r => r.Name.Contains(name));
+            return Json(Courses);
+        }
+
+        [HttpPost]
+        public IActionResult GetSyllabusFirstCourse(string id)
+        {
+            var SyllabusFirstCourse = _SyllabusFirstCourseService.GetAll().Where(r => r.SyllabusId == id).Select(r => r.Course);
+            return Json(SyllabusFirstCourse);
+        }
+         
+        [HttpPost]
+        public async Task<IActionResult> AddSyllabusFirstCourse(string id, string sid)
+        {
+            var item = _SyllabusFirstCourseService.Find(r => r.CourseId == id && r.SyllabusId == sid);
+            if (item == null)
+            {
+                SyllabusFirstCourse model = new SyllabusFirstCourse();
+                model.CourseId = id;
+                model.SyllabusId = sid;
+                await _SyllabusFirstCourseService.Add(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else 
+            {
+                return Json(new AjaxResult("该课程已添加") { result = 0 });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSyllabusFirstCourse(string id, string sid)
+        {
+            var model = _SyllabusFirstCourseService.Find(r => r.CourseId == id && r.SyllabusId == sid);
+            if (model != null)
+            {
+                await _SyllabusFirstCourseService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+        #endregion
     }
 }
