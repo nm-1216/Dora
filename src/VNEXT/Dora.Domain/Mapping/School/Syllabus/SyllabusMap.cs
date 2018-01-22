@@ -30,6 +30,7 @@
             builder.HasMany(b => b.SyllabusApprovals).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);
             builder.HasMany(b => b.SyllabusLogs).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);
             builder.HasMany(b => b.SyllabusPeriods).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);
+            builder.HasMany(b => b.SyllabusFirstCourse).WithOne(b => b.Syllabus).HasForeignKey(b => b.SyllabusId);
 
         }
     }

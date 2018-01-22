@@ -21,7 +21,7 @@
             builder.ToTable("School_SyllabusFirstCourse");
 
             /////Relationships
-            //builder.HasOne(b => b.Department).WithMany().HasForeignKey(b => b.DepID);
+            builder.HasOne(b => b.Course).WithMany().HasForeignKey(b => b.CourseId);
             //builder.HasOne(b => b.Professional).WithMany().HasForeignKey(b => b.SpeID);
             //builder.HasOne(b => b.PersonnelTraining).WithMany().HasForeignKey(b => b.PersonnelTrainingId);
         }
