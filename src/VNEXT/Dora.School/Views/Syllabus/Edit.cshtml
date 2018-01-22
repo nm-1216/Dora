@@ -49,7 +49,7 @@
                 <div style="padding-bottom:15px;text-align:right">
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook"
                            onclick="" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" />
+                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" />
                     <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
@@ -140,23 +140,7 @@
                         <th class="text-right">操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @*@if (ViewBag.SyllabusBook != null)
-                    {
-                        foreach (var item in ViewBag.SyllabusBook)
-                        {
-                            <tr>
-                                <td>@item.Name</td>
-                                <td>@item.Compiler</td>
-                                <td>@item.Edition</td>
-                                <td>@item.Press</td>
-                                <td>@item.PreTime</td>
-                                <td class="text-right">
-                                    <a data-content-id="@item.SyllabusBookId" class="btn btn-danger btn-xs btnDel">删除</a>
-                                </td>
-                            </tr>
-                        }
-                    } *@
+                <tbody> 
                 </tbody>
             </table>
 
@@ -164,13 +148,74 @@
     </div>
 </div>
 <!--建议选用教材End-->
+<!--课程学时分配Start-->
+<div class="DivSyllabusPeriod" style="display:none">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabkc1" data-toggle="tab">添加</a></li>
+        <li><a href="#tabkc2" data-toggle="tab" id="ViewSyllabusPeriodList" data-content-id="@Model.SyllabusId">列表</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tabkc1">
+            <form id="CreateSyllabusPeriod" asp-action="CreateSyllabusPeriod" method="post">
+                <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" />
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>单元序号：</th>
+                            <th>课程内容：</th>
+                            <th>讲授课时：</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input name="UnitOrdNum" class="form-control" /></td>
+                            <td><input name="CouCon" class="form-control" /></td>
+                            <td><input name="TeaPer" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <th>实验课时：</th> 
+                            <th colspan="2"></th>
+                        </tr>
+                        <tr>
+                            <td><input name="ExpPer" class="form-control" /></td> 
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="tabkc2"> 
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>单元序号</th>
+                        <th>课程内容</th>
+                        <th>讲授课时</th>
+                        <th>实验课时</th> 
+                        <th class="text-right">操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<!--课程学时分配End-->
 
 @section scripts{
     <script type="text/javascript">
 
+        //删除一条建议选用教材
         function delSyllabusBook(id,sid) {
-            console.log('btnDel')
-            alert(sid);
+            console.log('btnDel') 
             $.ajax({
                 url: '/Syllabus/DeleteSyllabusBook',
                 type: 'POST',
@@ -191,6 +236,46 @@
                     if (data.result == 1) {
                         //layer.closeAll();
                         $('#ViewSyllabusBookList').click();
+                        layer.msg(data.msg);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function (xhr, textStatus) {
+                    console.log('错误')
+                    console.log(xhr)
+                    console.log(textStatus)
+                },
+                complete: function () {
+                    console.log('结束')
+                }
+            })
+
+        }
+
+        //删除一条课程学时分配
+        function delSyllabusPeriod(id, sid) {
+            console.log('btnDel') 
+            $.ajax({
+                url: '/Syllabus/DeleteSyllabusPeriod',
+                type: 'POST',
+                async: true,
+                data: {
+                    id: id
+                },
+                timeout: 5000,
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+                    if (data.result == 1) {
+                        //layer.closeAll();
+                        $('#ViewSyllabusPeriodList').click();
                         layer.msg(data.msg);
                     } else {
                         layer.msg(data.msg);
@@ -237,51 +322,9 @@
                     layer.msg(data.msg);
                 }
             };
+            //建议选用教材Start
             $("#CreateSyllabusBook").submit(function () { $(this).ajaxSubmit(options); return false; });
-            //$('.btnDel').click(function () {
-            //    console.log('btnDel')
-            //    var id = $(this).attr('data-content-id');
-            //    alert(id);
-            //    $.ajax({
-            //        url: '/Syllabus/DeleteSyllabusBook',
-            //        type: 'POST',
-            //        async: true,
-            //        data: {
-            //            id: id
-            //        },
-            //        timeout: 5000,
-            //        dataType: 'json',
-            //        beforeSend: function (xhr) {
-            //            console.log(xhr)
-            //            console.log('发送前')
-            //        },
-            //        success: function (data, textStatus, jqXHR) {
-            //            console.log(data)
-            //            console.log(textStatus)
-            //            console.log(jqXHR)
-            //            if (data.result == 1) {
-            //               // layer.closeAll();
-            //                layer.msg(data.msg, {
-            //                    time: 2000, end: function () {
-            //                        location.href = location.href;
-            //                    }
-            //                }
-            //                )
-            //            } else {
-            //                layer.msg(data.msg);
-            //            }
-            //        },
-            //        error: function (xhr, textStatus) {
-            //            console.log('错误')
-            //            console.log(xhr)
-            //            console.log(textStatus)
-            //        },
-            //        complete: function () {
-            //            console.log('结束')
-            //        }
-            //    })
-            //})
-
+            
             $('#btnSyllabusBook').click(function () {
                 var id = $(this).attr('data-content-id');
                 DivLayer(1, '建议选用教材', $('.DivSyllabusBook'), '580px', '460px')
@@ -326,7 +369,55 @@
                     }
                 });
             })
+            //建议选用教材End
+
+            //课程学时分配Start
+            $("#CreateSyllabusPeriod").submit(function () { $(this).ajaxSubmit(options); return false; });
+
+            $('#btnSyllabusPeriod').click(function () {
+                var id = $(this).attr('data-content-id');
+                DivLayer(1, '课程学时分配', $('.DivSyllabusPeriod'), '580px', '460px') 
+            })
+
+            //设置“课程学时分配”中，每次点击tab中的“列表”，查询数据
+            $('#ViewSyllabusPeriodList').click(function () {
+                var id = $(this).attr('data-content-id');
+                $.ajax({
+                    type: "Post",
+                    url: "/Syllabus/GetSyllabusPeriod",
+                    data: {
+                        id: id
+                    },
+                    dataType: "json",
+                    success: function (result) { 
+                        if (result != undefined) {
+                            var html = "";
+                            for (var i = 0; i < result.length; i++) {
+                                html += "<tr>";
+                                html += "<td>" + result[i].UnitOrdNum + "</td>";
+                                html += "<td>" + result[i].CouCon + "</td>";
+                                html += "<td>" + result[i].TeaPer + "</td>";
+                                html += "<td>" + result[i].ExpPer + "</td>"; 
+                                html += " <td><a data-content-id='" + result[i].SyllabusPeriodId
+                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusPeriod('" + result[i].SyllabusPeriodId + "','" + result[i].SyllabusId + "')\">删除</a></td>";//
+                                html += "</tr>";
+                            }
+                            $("#tabkc2 tbody").html(html);
+                        }
+                        else {
+                            alert("失败");
+                        }
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("error");
+                    }
+                });
+            })
+            //课程学时分配End
         })
+
     </script>
     <script src="~/lib/ckeditor/classic/ckeditor.js"></script>
     <script type="text/javascript">

@@ -25,18 +25,21 @@
     {
         private ISyllabusService _SyllabusService;
         private ISyllabusBookService _SyllabusBookService;
+        private ISyllabusPeriodService _SyllabusPeriodService;
         private ICourseService _CourseService;
         private ITeacherService _teacherService;
 
         public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
-        , ISyllabusService SyllabusService,
-          ISyllabusBookService SyllabusBookService
+        , ISyllabusService SyllabusService
+        , ISyllabusBookService SyllabusBookService
+        , ISyllabusPeriodService SyllabusPeriodService
         , ICourseService CourseService
         , ITeacherService teacherService
         ) : base(roleManager, userManager, loggerFactory)
         {
             _SyllabusService = SyllabusService;
             _SyllabusBookService = SyllabusBookService;
+            _SyllabusPeriodService = SyllabusPeriodService;
             _CourseService = CourseService;
             _teacherService = teacherService;
         }
@@ -252,7 +255,46 @@
                 return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
             }
         }
+         
+        [HttpPost]
+        public string GetSyllabusPeriod(string id)
+        {
+            //  var SyllabusBook = _SyllabusService.GetAll().Include(b => b.SyllabusBooks).FirstOrDefault(r => r.SyllabusId == id).SyllabusBooks;
 
+            var SyllabusBook = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id);
+            string json = JsonConvert.SerializeObject(SyllabusBook);
+            return json;
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSyllabusPeriod(SyllabusPeriod model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.SyllabusPeriodId = Guid.NewGuid().ToString();
+                await _SyllabusPeriodService.Add(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,数据格式有误") { result = 0 });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSyllabusPeriod(string id)
+        {
+            var model = _SyllabusPeriodService.Find(r => r.SyllabusPeriodId == id);
+            if (model != null)
+            {
+                await _SyllabusPeriodService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
     }
 }
