@@ -1,20 +1,12 @@
-//----------------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextbookInfo.cs" company="Os.Brain">Copyright (c) Os.Brain. All rights reserved.</copyright>
-// <author>Craze</author>
-// <datetime>2017/12/19 23:57:27</datetime>
-// <discription>
-// </discription>
-//----------------------------------------------------------------------------------------------------------------------------
-
 namespace Dora.Domain.Entities.School
 {
     using System;
     using Dora.Infrastructure.Domains;
 
-    /// <summary>
-    /// TextbookInfo 先修课程
-    /// </summary>
-    public partial class SyllabusFirstCourse : BaseEntity
+	/// <summary>
+	/// SyllabusFirstCourse 先修课程
+	/// </summary>
+	public partial class SyllabusFirstCourse : BaseEntity
     {
         public SyllabusFirstCourse() : base()
         {

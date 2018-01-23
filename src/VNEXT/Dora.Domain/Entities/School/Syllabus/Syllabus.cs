@@ -137,7 +137,7 @@ namespace Dora.Domain.Entities.School
         public virtual ICollection<SyllabusPeriod> SyllabusPeriods { get; set; }
         public virtual ICollection<SyllabusFirstCourse> SyllabusFirstCourse { get; set; }
         public virtual ICollection<SyllabusProfessional> SyllabusProfessional { get; set; }
-
+        public virtual ICollection<SyllabusTeacher> SyllabusTeacher { get; set; }
         
         #endregion
     }

@@ -22,8 +22,8 @@
     [Authorize]
     public class SyllabusController : BaseUserController<SyllabusController>
     {
-        private ISyllabusService _SyllabusService;
-        private ISyllabusBookService _SyllabusBookService;
+        private readonly ISyllabusService _SyllabusService;
+        private readonly ISyllabusBookService _SyllabusBookService;
         private ISyllabusPeriodService _SyllabusPeriodService;
         private ISyllabusFirstCourseService _SyllabusFirstCourseService;
         private ISyllabusProfessionalService _SyllabusProfessionalService;
@@ -40,6 +40,7 @@
         , IProfessionalService ProfessionalService
         , ICourseService CourseService
         , ITeacherService teacherService
+		, ISyllabusLogService syllabusLogService
         ) : base(roleManager, userManager, loggerFactory)
         {
             _SyllabusService = SyllabusService;
@@ -84,7 +85,7 @@
                 ///是修订
                 if (isRestTask)
                 {
-                    course.Syllabuss.Add(new Syllabus() { });
+                    course.Syllabuss.Add(new Syllabus() { SyllabusLogs=new List<SyllabusLog>(){new SyllabusLog(){ Memo="创建课程教学大纲" }} });
                     await _CourseService.Update(course);
                     return Json(new AjaxResult("操作成功") { result = 1 });
                 }
@@ -96,7 +97,7 @@
                     }
                     else
                     {
-                        course.Syllabuss.Add(new Syllabus() { });
+						course.Syllabuss.Add(new Syllabus() { SyllabusLogs = new List<SyllabusLog>() { new SyllabusLog() { Memo = "创建课程教学大纲" } } });
                         await _CourseService.Update(course);
                         return Json(new AjaxResult("操作成功") { result = 1 });
                     }
@@ -118,6 +119,13 @@
             return View();
         }
 
+        /// <summary>
+        /// Sets the teacher().
+        /// </summary>
+        /// <returns>The teacher.</returns>
+        /// <param name="syllabusId">Syllabus identifier.</param>
+        /// <param name="teacherId">Teacher identifier.</param>
+        /// <param name="page">Page.</param>
         public async Task<IActionResult> SetTeacher(string syllabusId, string teacherId, int page = 1)
         {
 

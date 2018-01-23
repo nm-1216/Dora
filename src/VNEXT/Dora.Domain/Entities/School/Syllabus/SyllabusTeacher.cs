@@ -4,11 +4,11 @@ namespace Dora.Domain.Entities.School
     using Dora.Infrastructure.Domains;
 
 	/// <summary>
-	/// SyllabusProfessional 适合专业
+	/// SyllabusTeacher 教师表（师资力量）
 	/// </summary>
-	public partial class SyllabusProfessional : BaseEntity
+	public partial class SyllabusTeacher : BaseEntity
     {
-        public SyllabusProfessional() : base()
+        public SyllabusTeacher() : base()
         {
 
         }
@@ -16,9 +16,9 @@ namespace Dora.Domain.Entities.School
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets 专业 ProfessionalId 
+        /// Gets or sets Code 
         /// </summary>
-        public virtual string ProfessionalId { get; set; }
+        public virtual string TeacherId { get; set; }
 
         /// <summary>
         /// Gets or sets 教学大纲编号 
@@ -31,9 +31,9 @@ namespace Dora.Domain.Entities.School
         public virtual Syllabus Syllabus { get; set; }
 
         /// <summary>
-        /// 课程
+        /// 教师
         /// </summary>
-        public virtual Professional Professional { get; set; }
+        public virtual Teacher Teacher { get; set; }
 
 
         #endregion
