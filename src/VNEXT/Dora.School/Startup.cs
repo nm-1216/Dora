@@ -96,6 +96,7 @@
             services.AddTransient<ITermService, TermService>();
             services.AddTransient<IPublicClassRoomService, PublicClassRoomService>();
             services.AddTransient<ITrainingLabService, TrainingLabService>();
+            services.AddTransient<IPersonnelTrainingService, PersonnelTrainingService>();
 
         }
 
