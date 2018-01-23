@@ -1,11 +1,3 @@
-//----------------------------------------------------------------------------------------------------------------------------
-// <copyright file="PeriodAllot.cs" company="Os.Brain">Copyright (c) Os.Brain. All rights reserved.</copyright>
-// <author>Craze</author>
-// <datetime>2017/12/19 23:51:29</datetime>
-// <discription>
-// </discription>
-//----------------------------------------------------------------------------------------------------------------------------
-
 namespace Dora.Domain.Entities.School
 {
     using Dora.Infrastructure.Domains;

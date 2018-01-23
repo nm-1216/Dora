@@ -50,7 +50,7 @@ namespace Dora.Domain.Entities.School
         public virtual BaseStatus Status { get; set; }
 
         /// <summary>
-        /// 组织架构ID 所属部门
+        /// 组织架构ID 所属院系
         /// </summary>
         public virtual Organization Department { get; set; }
 

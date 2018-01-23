@@ -96,6 +96,9 @@ namespace Dora.Database
             builder.AddConfiguration(new SyllabusBookMap());
             builder.AddConfiguration(new SyllabusLogMap());
             builder.AddConfiguration(new SyllabusPeriodMap());
+            builder.AddConfiguration(new SyllabusFirstCourseMap());
+            builder.AddConfiguration(new SyllabusProfessionalMap());
+            builder.AddConfiguration(new SyllabusTeacherMap());
 
             #endregion
             #region TeachingPlan

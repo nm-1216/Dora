@@ -29,7 +29,22 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 结束周次 
         /// </summary>
-        public virtual int? EndWeek { get; set; } 
+        public virtual int? EndWeek { get; set; }
+
+        /// <summary>
+        /// Gets or sets 教室编号 
+        /// </summary>
+        public virtual string ClaRoomCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets 星期
+        /// </summary>
+        public virtual string Week { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets 上课节次  1:表示1，2节课，2：表示3，4节课，7表示：1，2，3，4节课，8：表示5678节课
+        /// </summary>
+        public virtual SectionType Section { get; set; }
 
         /// <summary>
         /// Gets or sets 备注 

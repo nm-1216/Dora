@@ -36,16 +36,19 @@
 
         <div class="row" style="padding-top:10px;">
             <div class="col-lg-6">
-                    <div class="form-group">
-                        <p class="form-control-static">学号或姓名</p>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">搜索条件</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="学号或姓名">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="code">
-                    </div>
-                    <button type="submit" class="btn btn-info">检索</button>
+                </div>
+                <button type="submit" class="btn btn-info">检索</button>
             </div>
-            <div class="col-sm-1 col-sm-offset-4"><button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入学生',$('#importDiv'))">导入</button></div>
-            <div class="col-sm-1"><button type="button" class="btn btn-block btn-primary">导出</button></div>
+            <div class="col-sm-2 col-sm-offset-4">
+                <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入学生',$('#importDiv'))">导入</button>
+                <button type="button" class="btn btn-primary">导出</button>
+            </div>
 
         </div>
 
@@ -64,16 +67,16 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                    {
-                    <tr>
-                        <td>@item.StudentId</td>
-                        <td>@item.Name</td>
-                        <td>@item.IdCard</td>
-                        <td>@Dora.Helpers.IdCardHelper.GetBrithdayFromIdCard(item.IdCard)</td>
-                        <td>@Dora.Helpers.IdCardHelper.GetSexFromIdCard(item.IdCard)</td>
-                        <td></td>
-                    </tr>
-                    }
+                        {
+                            <tr>
+                                <td>@item.StudentId</td>
+                                <td>@item.Name</td>
+                                <td>@item.IdCard</td>
+                                <td>@Dora.Helpers.IdCardHelper.GetBrithdayFromIdCard(item.IdCard)</td>
+                                <td>@Dora.Helpers.IdCardHelper.GetSexFromIdCard(item.IdCard)</td>
+                                <td></td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -97,7 +100,7 @@
             success: function (r) {
                 layer.closeAll('loading');
                 console.log(r)
-                if (r.result==1) {
+                if (r.result == 1) {
                     console.log(1)
                     jQuery("#grid-table").trigger("reloadGrid");
                     if (r.data != null) {
