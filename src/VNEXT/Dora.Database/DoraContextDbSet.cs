@@ -77,7 +77,8 @@ namespace Dora.Database
         public DbSet<SyllabusLog> SyllabusLog { get; set; }
         public DbSet<SyllabusPeriod> SyllabusPeriod { get; set; }
         public DbSet<SyllabusFirstCourse> SyllabusFirstCourse { get; set; }
-        
+        public DbSet<SyllabusProfessional> SyllabusProfessionals { get; set; }
+
         #endregion
 
         #region TeachingPlan
