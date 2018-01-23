@@ -29,11 +29,6 @@ namespace Dora.Domain.Entities.School
         public virtual string TeachingTaskId { get; set; }
 
         /// <summary>
-        /// Gets or sets 班级 
-        /// </summary>
-        public virtual string ClassId { get; set; }
-
-        /// <summary>
         /// Gets or sets 教室编号 
         /// </summary>
         public virtual string ClaRoomCode { get; set; } = string.Empty;
@@ -48,10 +43,6 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual SectionType Section { get; set; }
 
-        /// <summary>
-        /// Gets or sets 备注 
-        /// </summary>
-        public virtual string Memo { get; set; } = string.Empty;
 
         public virtual TeachingTask TeachingTask { get; set; }
 
