@@ -3,10 +3,10 @@ namespace Dora.Domain.Entities.School
     using System;
     using Dora.Infrastructure.Domains;
 
-    /// <summary>
-    /// TextbookInfo 先修课程
-    /// </summary>
-    public partial class SyllabusTeacher : BaseEntity
+	/// <summary>
+	/// SyllabusTeacher 教师表（师资力量）
+	/// </summary>
+	public partial class SyllabusTeacher : BaseEntity
     {
         public SyllabusTeacher() : base()
         {
