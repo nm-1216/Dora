@@ -12,7 +12,7 @@ namespace Dora.Domain.Entities.School
     using Dora.Infrastructure.Domains;
 
     /// <summary>
-    /// TextbookInfo 先修课程
+    /// TextbookInfo 教材对应专业
     /// </summary>
     public partial class SyllabusProfessional : BaseEntity
     {
@@ -39,7 +39,7 @@ namespace Dora.Domain.Entities.School
         public virtual Syllabus Syllabus { get; set; }
 
         /// <summary>
-        /// 课程
+        /// 专业
         /// </summary>
         public virtual Professional Professional { get; set; }
 

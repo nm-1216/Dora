@@ -26,7 +26,9 @@
         private ISyllabusBookService _SyllabusBookService;
         private ISyllabusPeriodService _SyllabusPeriodService;
         private ISyllabusFirstCourseService _SyllabusFirstCourseService;
+        private ISyllabusProfessionalService _SyllabusProfessionalService;
         private ICourseService _CourseService;
+        private IProfessionalService _ProfessionalService;
         private ITeacherService _teacherService;
 
         public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
@@ -34,6 +36,8 @@
         , ISyllabusBookService SyllabusBookService
         , ISyllabusPeriodService SyllabusPeriodService
         , ISyllabusFirstCourseService SyllabusFirstCourseService
+        , ISyllabusProfessionalService SyllabusProfessionalService
+        , IProfessionalService ProfessionalService
         , ICourseService CourseService
         , ITeacherService teacherService
         ) : base(roleManager, userManager, loggerFactory)
@@ -42,6 +46,8 @@
             _SyllabusBookService = SyllabusBookService;
             _SyllabusPeriodService = SyllabusPeriodService;
             _SyllabusFirstCourseService = SyllabusFirstCourseService;
+            _SyllabusProfessionalService = SyllabusProfessionalService;
+            _ProfessionalService = ProfessionalService;
             _CourseService = CourseService;
             _teacherService = teacherService;
         }
@@ -244,9 +250,9 @@
         }
          
         [HttpPost]
-        public async Task<IActionResult> DeleteSyllabusBook(string id)
+        public async Task<IActionResult> DeleteSyllabusBook(string id, string sid)
         {
-            var model = _SyllabusBookService.Find(r => r.SyllabusBookId == id);
+            var model = _SyllabusBookService.Find(r => r.SyllabusBookId == id && r.SyllabusId == sid);
             if (model != null)
             {
                 await _SyllabusBookService.Remove(model);
@@ -284,9 +290,9 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteSyllabusPeriod(string id)
+        public async Task<IActionResult> DeleteSyllabusPeriod(string id, string sid)
         {
-            var model = _SyllabusPeriodService.Find(r => r.SyllabusPeriodId == id);
+            var model = _SyllabusPeriodService.Find(r => r.SyllabusPeriodId == id && r.SyllabusId == sid);
             if (model != null)
             {
                 await _SyllabusPeriodService.Remove(model);
@@ -314,6 +320,11 @@
             return Json(Courses);
         }
 
+        /// <summary>
+        /// 取已添加的课程
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult GetSyllabusFirstCourse(string id)
         {
@@ -321,6 +332,12 @@
             return Json(SyllabusFirstCourse);
         }
          
+        /// <summary>
+        /// 添加一条课程
+        /// </summary>
+        /// <param name="id">课程id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddSyllabusFirstCourse(string id, string sid)
         {
@@ -339,6 +356,12 @@
             }
         }
 
+        /// <summary>
+        /// 删除一条课程
+        /// </summary>
+        /// <param name="id">课程id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteSyllabusFirstCourse(string id, string sid)
         {
@@ -346,6 +369,79 @@
             if (model != null)
             {
                 await _SyllabusFirstCourseService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+        #endregion
+
+
+        #region 设置对应专业
+
+        /// <summary>
+        /// 根据搜索框内容，筛选出专业列表
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IActionResult GetProfessionals(string name)
+        {
+            //专业列表
+            var Professionals = _ProfessionalService.GetAll().Where(r => r.Name.Contains(name));
+            return Json(Professionals);
+        }
+
+        /// <summary>
+        /// 取已添加的专业
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult GetSyllabusProfessional(string id)
+        {
+            var SyllabusProfessional = _SyllabusProfessionalService.GetAll().Where(r => r.SyllabusId == id).Select(r => r.Professional);
+            return Json(SyllabusProfessional);
+        }
+
+        /// <summary>
+        /// 添加一条专业
+        /// </summary>
+        /// <param name="id">专业id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddSyllabusProfessional(string id, string sid)
+        {
+            var item = _SyllabusProfessionalService.Find(r => r.ProfessionalId == id && r.SyllabusId == sid);
+            if (item == null)
+            {
+                SyllabusProfessional model = new SyllabusProfessional();
+                model.ProfessionalId = id;
+                model.SyllabusId = sid;
+                await _SyllabusProfessionalService.Add(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("该专业已添加") { result = 0 });
+            }
+        }
+
+        /// <summary>
+        /// 删除一条专业
+        /// </summary>
+        /// <param name="id">专业id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteSyllabusProfessional(string id, string sid)
+        {
+            var model = _SyllabusProfessionalService.Find(r => r.ProfessionalId == id && r.SyllabusId == sid);
+            if (model != null)
+            {
+                await _SyllabusProfessionalService.Remove(model);
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
             else

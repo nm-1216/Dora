@@ -51,7 +51,7 @@
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook"
                            onclick="" data-content-id="@Model.SyllabusId" />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" />
+                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业"  id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId"  />
                     <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程"  id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId"  />
                     <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
                     <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="送审" />
@@ -229,7 +229,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" class="form-control" name="searchKey" id="searchKey" placeholder="code">
+                                <input type="text" class="form-control" name="searchKey" id="searchKey" placeholder="请输入关键字">
                             </td>
                             <td>
                                 <button class="btn btn-info" id="btnSearchCourses">search</button>
@@ -271,6 +271,66 @@
 </div>
 </div>
 <!--设置先修课程End-->
+
+<!--设置对应专业Start-->
+<div class="DivSyllabusProfessional" style="display:none">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabzy1" data-toggle="tab">添加</a></li>
+        <li><a href="#tabzy2" data-toggle="tab" id="ViewSyllabusProfessionalList" data-content-id="@Model.SyllabusId">列表</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="tabzy1">
+            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusProfessional_SyllabusId" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="3">专业：</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
+                        </td>
+                        <td>
+                            <button class="btn btn-info" id="btnSearchProfessionals">search</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>专业</th>
+                                        <th class="text-right">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="tab-pane fade" id="tabzy2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>专业</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<!--设置对应专业End-->
 @section scripts{
 <script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
     <script type="text/javascript">
@@ -283,7 +343,8 @@
                 type: 'POST',
                 async: true,
                 data: {
-                    id: id
+                    id: id,
+                    sid: sid
                 },
                 timeout: 5000,
                 dataType: 'json',
@@ -323,7 +384,8 @@
                 type: 'POST',
                 async: true,
                 data: {
-                    id: id
+                    id: id,
+                    sid: sid
                 },
                 timeout: 5000,
                 dataType: 'json',
@@ -377,8 +439,7 @@
                     console.log(textStatus)
                     console.log(jqXHR)
                     if (data.result == 1) {
-                        //$('#ViewSyllabusPeriodList').click();
-                        $('#btnSearchCourses').click();
+                        //$('#ViewSyllabusPeriodList').click(); 
                         layer.msg(data.msg);
                     } else {
                         layer.msg(data.msg);
@@ -436,7 +497,88 @@
             })
 
         }
-      
+
+        //添加一条对应专业
+        function addSyllabusProfessional(id, sid) {
+            console.log('btnAdd')
+            $.ajax({
+                url: '/Syllabus/AddSyllabusProfessional',
+                type: 'POST',
+                async: true,
+                data: {
+                    id: id,
+                    sid: sid
+                },
+                timeout: 5000,
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+                    if (data.result == 1) {
+                        //$('#ViewSyllabusPeriodList').click(); 
+                        layer.msg(data.msg);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function (xhr, textStatus) {
+                    console.log('错误')
+                    console.log(xhr)
+                    console.log(textStatus)
+                },
+                complete: function () {
+                    console.log('结束')
+                }
+            })
+
+        }
+
+        //删除一条对应专业
+        function delSyllabusProfessional(id, sid) {
+            console.log('btnDel')
+            $.ajax({
+                url: '/Syllabus/DeleteSyllabusProfessional',
+                type: 'POST',
+                async: true,
+                data: {
+                    id: id
+                    , sid: sid
+                },
+                timeout: 5000,
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+                    if (data.result == 1) {
+                        //layer.closeAll();
+                        $('#ViewSyllabusProfessionalList').click();
+                        layer.msg(data.msg);
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function (xhr, textStatus) {
+                    console.log('错误')
+                    console.log(xhr)
+                    console.log(textStatus)
+                },
+                complete: function () {
+                    console.log('结束')
+                }
+            })
+
+        }
+
 
         $(function () {
             var options = {
@@ -637,6 +779,85 @@
             })
             //先修课程End
 
+
+
+            //对应专业Start 
+
+            //弹出div
+            $('#btnSyllabusProfessional').click(function () {
+                var id = $(this).attr('data-content-id');
+                DivLayer(1, '先修专业', $('.DivSyllabusProfessional'), '580px', '460px')
+            })
+
+            //根据搜索内容加载列表
+            $('#btnSearchProfessionals').click(function () {
+                var name = $("#ProfessionalsearchKey").val();
+                var SyllabusId = $("#DivSyllabusProfessional_SyllabusId").val();
+                $.ajax({
+                    type: "Post",
+                    url: "/Syllabus/GetProfessionals",
+                    data: {
+                        name: name
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined) {
+                            var html = "";
+                            $.each(result, function (i, item) { 
+                                html += "<tr>";
+                                html += "<td>" + item.name + "</td>";
+                                html += " <td><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusProfessional('" + item.professionalId + "','" + SyllabusId + "')\">添加</a></td>";// 
+                                html += "</tr>";
+                            })
+                            $("#tabzy1 tbody tbody").html(html);
+                        }
+                        else {
+                            alert("失败");
+                        }
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("error");
+                    }
+                });
+            })
+
+
+            //设置“先修专业”中，每次点击tab中的“列表”，查询数据
+            $('#ViewSyllabusProfessionalList').click(function () {
+                var id = $(this).attr('data-content-id');
+                $.ajax({
+                    type: "Post",
+                    url: "/Syllabus/GetSyllabusProfessional",
+                    data: {
+                        id: id
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined) {
+                            var html = "";
+                            $.each(result, function (i, item) {
+                                html += "<tr>";
+                                html += "<td>" + item.name + "</td>";
+                                html += " <td><a  "
+                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusProfessional('" + item.professionalId + "','" + id + "')\">删除</a></td>";//
+                                html += "</tr>";
+                            })
+                            $("#tabzy2 tbody").html(html);
+                        }
+                        else {
+                            alert("失败");
+                        }
+                    },
+                    complete: function (XMLHttpRequest, textStatus) {
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("error");
+                    }
+                });
+            })
+            //对应专业End
         })
 
     </script>
