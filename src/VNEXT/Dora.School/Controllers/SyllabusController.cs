@@ -27,9 +27,10 @@
         private ISyllabusPeriodService _SyllabusPeriodService;
         private ISyllabusFirstCourseService _SyllabusFirstCourseService;
         private ISyllabusProfessionalService _SyllabusProfessionalService;
+        private ISyllabusTeacherService _SyllabusTeacherService;
         private ICourseService _CourseService;
         private IProfessionalService _ProfessionalService;
-        private ITeacherService _teacherService;
+        private ITeacherService _TeacherService;
 
         public SyllabusController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
         , ISyllabusService SyllabusService
@@ -37,6 +38,7 @@
         , ISyllabusPeriodService SyllabusPeriodService
         , ISyllabusFirstCourseService SyllabusFirstCourseService
         , ISyllabusProfessionalService SyllabusProfessionalService
+        , ISyllabusTeacherService SyllabusTeacherService
         , IProfessionalService ProfessionalService
         , ICourseService CourseService
         , ITeacherService teacherService
@@ -48,9 +50,10 @@
             _SyllabusPeriodService = SyllabusPeriodService;
             _SyllabusFirstCourseService = SyllabusFirstCourseService;
             _SyllabusProfessionalService = SyllabusProfessionalService;
+            _SyllabusTeacherService = SyllabusTeacherService;
             _ProfessionalService = ProfessionalService;
             _CourseService = CourseService;
-            _teacherService = teacherService;
+            _TeacherService = teacherService;
         }
 
 
@@ -136,7 +139,7 @@
                 await _SyllabusService.Update(model);
             }
 
-            var teachers = _teacherService.GetAll().Select(b => new SelectListItem() { Value = b.TeacherId, Text = b.Name }).ToList();
+            var teachers = _TeacherService.GetAll().Select(b => new SelectListItem() { Value = b.TeacherId, Text = b.Name }).ToList();
             teachers.Insert(0, new SelectListItem() { Text = "==请选择教师==", Value = "" });
             ViewBag.teachers = teachers;
 
@@ -458,5 +461,79 @@
             }
         }
         #endregion
+
+
+        #region 设置对应任课老师
+
+        /// <summary>
+        /// 根据搜索框内容，筛选出任课老师列表
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public IActionResult GetTeachers(string name)
+        {
+            //任课老师列表
+            var Teachers = _TeacherService.GetAll().Where(r => r.Name.Contains(name));
+            return Json(Teachers);
+        }
+
+        /// <summary>
+        /// 取已添加的任课老师
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult GetSyllabusTeacher(string id)
+        {
+            var SyllabusTeacher = _SyllabusTeacherService.GetAll().Where(r => r.SyllabusId == id).Select(r => r.Teacher);
+            return Json(SyllabusTeacher);
+        }
+
+        /// <summary>
+        /// 添加一条任课老师
+        /// </summary>
+        /// <param name="id">任课老师id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddSyllabusTeacher(string id, string sid)
+        {
+            var item = _SyllabusTeacherService.Find(r => r.TeacherId == id && r.SyllabusId == sid);
+            if (item == null)
+            {
+                SyllabusTeacher model = new SyllabusTeacher();
+                model.TeacherId = id;
+                model.SyllabusId = sid;
+                await _SyllabusTeacherService.Add(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("该任课老师已添加") { result = 0 });
+            }
+        }
+
+        /// <summary>
+        /// 删除一条任课老师
+        /// </summary>
+        /// <param name="id">任课老师id</param>
+        /// <param name="sid">SyllabusId</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeleteSyllabusTeacher(string id, string sid)
+        {
+            var model = _SyllabusTeacherService.Find(r => r.TeacherId == id && r.SyllabusId == sid);
+            if (model != null)
+            {
+                await _SyllabusTeacherService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+        #endregion
+
     }
 }
