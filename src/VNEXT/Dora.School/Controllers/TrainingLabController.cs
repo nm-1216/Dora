@@ -1,17 +1,12 @@
-﻿ namespace Dora.School.Controllers
+﻿namespace Dora.School.Controllers
 {
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     public class TrainingLabController : BaseUserController<TrainingLabController>
     {
