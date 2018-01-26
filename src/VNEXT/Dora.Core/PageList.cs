@@ -31,7 +31,7 @@ namespace Dora.Core
 
             this.PageCount = RecordCount % PageSize == 0 ? num : num + 1;
 
-            this.AddRange(source.Skip((currPage - 1) * pageSize).Take(PageSize));
+            this.AddRange(source.Skip((CurrPage - 1) * PageSize).Take(PageSize));
         }
 
     }
