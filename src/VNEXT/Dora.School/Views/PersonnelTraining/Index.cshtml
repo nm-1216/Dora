@@ -18,7 +18,7 @@
             </div>
 
             <div class="col-sm-4 text-right">
-                <a class="btn btn-success" asp-action="Add">添加</a>
+                <a class="btn btn-success" asp-action="Create">添加</a>
             </div>
         </div>
 
@@ -33,6 +33,7 @@
                             <th>毕业要求</th>
                             <th>录取年份</th>
                             <th>创建时间</th>
+                            <th>使用状态</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +46,7 @@
                                 <td>@item.GraReq</td>
                                 <td>@item.Year</td>
                                 <td>@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td><span class="@((int)item.Status==0?"bg-danger":"bg-success")">@item.Status.ToString()</span></td>
                             </tr>
                         }
                     </tbody>

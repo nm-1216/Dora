@@ -100,6 +100,7 @@
             services.AddTransient<IPublicClassRoomService, PublicClassRoomService>();
             services.AddTransient<ITrainingLabService, TrainingLabService>();
             services.AddTransient<IPersonnelTrainingService, PersonnelTrainingService>();
+            services.AddTransient<IOrganizationService, OrganizationService>();
 
         }
 
@@ -113,7 +114,7 @@
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //app.UseBrowserLink();
+                app.UseBrowserLink();
             }
             else
             {

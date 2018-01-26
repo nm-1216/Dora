@@ -10,6 +10,7 @@ namespace Dora.Domain.Entities.School
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using Dora.Infrastructure.Domains;
 
     /// <summary>
@@ -28,6 +29,8 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 所属专业(组织架构表) 
         /// </summary>
+        [Display(Name = "专业")]
+        [Required]
         public virtual string OrganizationId { get; set; }
 
 
@@ -35,6 +38,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 学制 
         /// </summary>
+        [Display(Name = "学制")]
         public virtual string LenOfSch { get; set; } = string.Empty;
 
 
@@ -77,6 +81,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 录取年份 
         /// </summary>
+        [Display(Name ="录取年份")]
         public virtual string Year { get; set; } = string.Empty;
 
 
@@ -95,12 +100,14 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 培养方案文件路径 
         /// </summary>
+        [Display(Name ="培养方案")]
         public virtual string CulProPath { get; set; } = string.Empty;
 
 
         /// <summary>
         /// Gets or sets 审议会议纪要路径 
         /// </summary>
+        [Display(Name = "审议会议纪要")]
         public virtual string MeeSumPath { get; set; } = string.Empty;
 
 
