@@ -47,16 +47,17 @@
                     </tbody>
                 </table>
 
-                <div style="padding-bottom:15px;text-align:right">
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId" />
-                    <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
-                    <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="送审" />
-                    <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
-                </div>
+                <div style="padding-bottom:15px;text-align:right"> 
+                        <button type="button" class="btn btn-danger btn-sm" onclick="DivLayer(1,'导入教学任务',$('#importDiv'))">导入</button> 
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook" data-content-id="@Model.SyllabusId" />
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId" />
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId" />
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId" />
+                        <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
+                        <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="送审" />
+                        <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
+                    </div>
 
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">教学目标</a></li>
@@ -82,6 +83,33 @@
         </div>
     </div>
 </div>
+
+<!--导入Start-->
+<div id="importDiv" style="display:none">
+    <form id="AjaxForm1" name="AjaxForm1" action="~/Syllabus/ImportTeachingTask" enctype="multipart/form-data" method="post">
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <input type="file" name="files" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>约束：</b><br />
+                    1，第一行表头必须固定，不支持随意调换列。<br />
+                    2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
+                    2，<a href="~/template/student.xlsx">下载模板</a>
+                </td>
+            </tr>
+        </table>
+        <ol id="msgul"></ol>
+    </form>
+</div><!--导入End-->
 
 <!--建议选用教材Start-->
 <div class="DivSyllabusBook" style="display:none">
@@ -394,6 +422,54 @@
 @section scripts{
 <script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
     <script type="text/javascript">
+        //导入数据
+        var import_options = {
+            beforeSend: function () {
+                $('#msgul').html('')
+                layer.load(3, { shade: 0.8 });
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+            },
+            dataType: 'json',
+            success: function (r) {
+                layer.closeAll('loading');
+                console.log(r)
+                if (r.result == 1) {
+                    console.log(1)
+                    jQuery("#grid-table").trigger("reloadGrid");
+                    if (r.data != null) {
+                        console.log(2)
+                        layer.msg(r.message + ",但是有重复数据");
+                        for (var i = 0; i < r.data.length; i++)
+                            $('#msgul').append(r.data[i])
+                    }
+                    else {
+                        console.log(3)
+                        layer.msg(r.msg, {
+                            time: 2000, end: function () {
+                                layer.closeAll();
+                                location.href = location.href;
+                            }
+                        })
+                    }
+                }
+                else {
+                    console.log(4)
+                    var msg = r.msg;
+                    layer.msg(msg);
+                }
+            },
+            complete: function (xhr) {
+            }
+        }
+
+        function AjaxForm1Submit() {
+            $("#AjaxForm1").ajaxSubmit(import_options);
+        }
+
+
+
+
 
         //删除一条建议选用教材
         function delSyllabusBook(id,sid) {

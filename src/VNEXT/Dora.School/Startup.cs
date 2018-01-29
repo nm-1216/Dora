@@ -101,7 +101,8 @@
             services.AddTransient<ITrainingLabService, TrainingLabService>();
             services.AddTransient<IPersonnelTrainingService, PersonnelTrainingService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
-
+            services.AddTransient<ITeachingTaskService, TeachingTaskService>();
+             
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

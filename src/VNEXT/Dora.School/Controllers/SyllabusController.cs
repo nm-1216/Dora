@@ -48,7 +48,7 @@
         , IProfessionalService ProfessionalService
         , ICourseService CourseService
         , ITeacherService teacherService
-         ,IClassService classService
+         , IClassService classService
          , ITeachingTaskService teachingTaskService
         , ISyllabusLogService syllabusLogService
         ) : base(roleManager, userManager, loggerFactory)
@@ -62,6 +62,7 @@
             _ProfessionalService = ProfessionalService;
             _CourseService = CourseService;
             _TeacherService = teacherService;
+            _ClassService = classService;
             _TeachingTaskService = teachingTaskService;
         }
 
@@ -596,7 +597,7 @@
                     var Section = GetValue(row.GetCell(8));
                     var Memo = GetValue(row.GetCell(9));
 
-                    if (!course.Equals("课程") || !term.Equals("老师") || !term.Equals("学期")
+                    if (!course.Equals("课程") || !term.Equals("学期") || !term.Equals("学期")
                        || !classes.Equals("班级") || !BegWeek.Equals("开始周次") || !EndWeek.Equals("结束周次")
                        || !ClaRoomCode.Equals("教室编号") || !Week.Equals("星期") || !Section.Equals("上课节次")
                        || !Memo.Equals("备注"))
@@ -627,7 +628,7 @@
                             && !string.IsNullOrEmpty(ClaRoomCode) && !string.IsNullOrEmpty(Week) && !string.IsNullOrEmpty(Section))//备注可以为空
                         {
                             var model = _CourseService.Find(r => r.CourseId == course);
-                            if (model != null)
+                            if (model == null)
                                 continue;
 
                             //课程(列表)
