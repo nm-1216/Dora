@@ -7,7 +7,7 @@
         /// <summary>
         /// Gets or sets 
         /// </summary>
-        public virtual string CourseId { get; set; }
+        public string ClassId { get; set; }
 
         /// <summary>
         /// Gets or sets 
@@ -17,7 +17,7 @@
         /// <summary>
         /// Gets or sets 
         /// </summary>
-        public virtual Course Course { get; set; }
+        public virtual Class Class { get; set; }
 
         /// <summary>
         /// Gets or sets  

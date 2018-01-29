@@ -10,7 +10,7 @@
         public override void ConfigureDerived(EntityTypeBuilder<TeachingTaskClass> builder)
         {
             ///Primary Key
-            builder.HasKey(b => new { b.TeachingTaskId, b.CourseId });
+            builder.HasKey(b => new { b.TeachingTaskId, b.ClassId });
 
             ///Properties
             //builder.Property(b => b.Name).HasMaxLength(Constants.INT256).IsRequired();
@@ -21,7 +21,7 @@
             builder.ToTable("School_TeachingTaskClass");
 
             ///Relationships
-            builder.HasOne(b => b.Course).WithMany().HasForeignKey(b => b.CourseId);
+            builder.HasOne(b => b.Class).WithMany().HasForeignKey(b => b.ClassId);
 
         }
     }

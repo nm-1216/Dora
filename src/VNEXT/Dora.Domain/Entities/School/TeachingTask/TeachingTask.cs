@@ -2,12 +2,17 @@ namespace Dora.Domain.Entities.School
 {
     using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
+    using System;
 
     /// <summary>
     /// TeachingTask 教学任务
     /// </summary>
     public partial class TeachingTask : BaseEntity
     {
+        public TeachingTask():base()
+        {
+            TeachingTaskId = Guid.NewGuid().ToString();
+        }
 
         #region Public Properties
 
@@ -54,7 +59,17 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 课程
         /// </summary>
-        public virtual ICollection<TeachingTaskClass> Courses { get; set; }
+        public virtual string CourseId { get; set; }
+
+        /// <summary>
+        /// 课程
+        /// </summary>
+        public virtual Course Course { get; set; }
+
+        /// <summary>
+        /// 班级
+        /// </summary>
+        public virtual ICollection<TeachingTaskClass> Classes { get; set; }
 
         /// <summary>
         /// Gets or sets TIID 此授课计划对应的维护人员

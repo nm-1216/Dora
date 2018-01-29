@@ -98,7 +98,7 @@
                 ///是修订
                 if (isRestTask)
                 {
-                    course.Syllabuss.Add(new Syllabus() { SyllabusLogs=new List<SyllabusLog>(){new SyllabusLog(){ Memo="创建课程教学大纲" }} });
+                    course.Syllabuss.Add(new Syllabus() { SyllabusLogs = new List<SyllabusLog>() { new SyllabusLog() { Memo = "创建课程教学大纲" } } });
                     await _CourseService.Update(course);
                     return Json(new AjaxResult("操作成功") { result = 1 });
                 }
@@ -110,7 +110,7 @@
                     }
                     else
                     {
-						course.Syllabuss.Add(new Syllabus() { SyllabusLogs = new List<SyllabusLog>() { new SyllabusLog() { Memo = "创建课程教学大纲" } } });
+                        course.Syllabuss.Add(new Syllabus() { SyllabusLogs = new List<SyllabusLog>() { new SyllabusLog() { Memo = "创建课程教学大纲" } } });
                         await _CourseService.Update(course);
                         return Json(new AjaxResult("操作成功") { result = 1 });
                     }
@@ -269,7 +269,7 @@
                 return Json(new AjaxResult("操作失败,数据格式有误") { result = 0 });
             }
         }
-         
+
         [HttpPost]
         public async Task<IActionResult> DeleteSyllabusBook(string id, string sid)
         {
@@ -289,8 +289,8 @@
         #region 课程学时分配
         [HttpPost]
         public IActionResult GetSyllabusPeriod(string id)
-        { 
-            var SyllabusPeriod = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id); 
+        {
+            var SyllabusPeriod = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id);
             return Json(SyllabusPeriod);
         }
 
@@ -352,7 +352,7 @@
             var SyllabusFirstCourse = _SyllabusFirstCourseService.GetAll().Where(r => r.SyllabusId == id).Select(r => r.Course);
             return Json(SyllabusFirstCourse);
         }
-         
+
         /// <summary>
         /// 添加一条课程
         /// </summary>
@@ -371,7 +371,7 @@
                 await _SyllabusFirstCourseService.Add(model);
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
-            else 
+            else
             {
                 return Json(new AjaxResult("该课程已添加") { result = 0 });
             }
@@ -547,6 +547,8 @@
 
         public async Task<IActionResult> ImportTeachingTask([FromServices]IHostingEnvironment env, IList<IFormFile> files)
         {
+            var _list = new List<TeachingTask>();
+
             foreach (var file in files)
             {
                 var fileExtension = Path.GetExtension(file.FileName).ToLower();
@@ -597,19 +599,28 @@
                     var Section = GetValue(row.GetCell(8));
                     var Memo = GetValue(row.GetCell(9));
 
-                    if (!course.Equals("课程") || !term.Equals("学期") || !term.Equals("学期")
-                       || !classes.Equals("班级") || !BegWeek.Equals("开始周次") || !EndWeek.Equals("结束周次")
-                       || !ClaRoomCode.Equals("教室编号") || !Week.Equals("星期") || !Section.Equals("上课节次")
-                       || !Memo.Equals("备注"))
+                    if (!course.Equals("课程")
+                    || !term.Equals("学期")
+                    || !term.Equals("学期")
+                    || !classes.Equals("班级")
+                    || !BegWeek.Equals("开始周次")
+                    || !EndWeek.Equals("结束周次")
+                    || !ClaRoomCode.Equals("教室编号")
+                    || !Week.Equals("星期")
+                    || !Section.Equals("上课节次")
+                    || !Memo.Equals("备注"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
                     }
+
+
 
                     int rowCount = sheet.LastRowNum;
                     for (int i = 1; i <= rowCount; i++)
                     {
                         row = sheet.GetRow(i);
-                        if (row == null) continue;
+                        if (row == null)
+                            continue;
 
                         course = GetValue(row.GetCell(0));
                         teacher = GetValue(row.GetCell(1));
@@ -622,76 +633,48 @@
                         Section = GetValue(row.GetCell(8));
                         Memo = GetValue(row.GetCell(9));
 
+                        if (string.IsNullOrEmpty(course))
+                            continue;
 
-                        if (!string.IsNullOrEmpty(course) && !string.IsNullOrEmpty(teacher) && !string.IsNullOrEmpty(term)
-                            && !string.IsNullOrEmpty(classes) && !string.IsNullOrEmpty(BegWeek) && !string.IsNullOrEmpty(EndWeek)
-                            && !string.IsNullOrEmpty(ClaRoomCode) && !string.IsNullOrEmpty(Week) && !string.IsNullOrEmpty(Section))//备注可以为空
+                        if (!string.IsNullOrEmpty(course)
+                            && !string.IsNullOrEmpty(teacher)
+                            && !string.IsNullOrEmpty(term)
+                            && !string.IsNullOrEmpty(classes)
+                            && !string.IsNullOrEmpty(BegWeek)
+                            && !string.IsNullOrEmpty(EndWeek)
+                            && !string.IsNullOrEmpty(ClaRoomCode)
+                            && !string.IsNullOrEmpty(Week)
+                            && !string.IsNullOrEmpty(Section))//备注可以为空
                         {
-                            var model = _CourseService.Find(r => r.CourseId == course);
-                            if (model == null)
-                                continue;
+                            var _teacher = new List<TeachingTaskTeacher>();
+                            var _class = new List<TeachingTaskClass>();
 
-                            //课程(列表)
-                            var Courses = new List<TeachingTaskClass>()
-                                {
-                                    new Domain.Entities.School.TeachingTaskClass()
-                                     {
-                                    CourseId = course
-                                        }
-                                };
-
-                            //教师(多个) 
-                            var teachersList = new List<TeachingTaskTeacher>();
-                            foreach (var tid in teacher.Split(','))
+                            foreach (var item in classes.Split(','))
                             {
-                                var titem = _TeacherService.Find(r => r.TeacherId == tid);
-                                if (titem == null)
-                                    continue;
-
-                                var teachers = new Domain.Entities.School.TeachingTaskTeacher()
-                                {
-                                    TeacherId = tid
-                                };
-                                teachersList.Add(teachers);
+                                _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
                             }
 
-                            //班级(多个)，在教学任务明细中
-                            var TeachingTaskDetailList = new List<TeachingTaskDetail>();
-                            foreach (var cid in classes.Split(','))
+                            foreach (var item in teacher.Split(','))
                             {
-                                var citem = _ClassService.Find(r => r.ClassId == cid);
-                                if (citem == null)
-                                    continue;
-
-                                int index = 1;
-                                var teachingTaskDetail = new Domain.Entities.School.TeachingTaskDetail()
-                                {
-                                    TeachingTaskDetailId = index++,
-                                    ClaRoomCode = cid,
-                                    Week = Week,
-                                    Section = ((SectionType)Convert.ToInt16(Section))
-                                };
-                                TeachingTaskDetailList.Add(teachingTaskDetail);
+                                _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
                             }
-
 
                             //教学任务
-                            var TeachingTask = new Domain.Entities.School.TeachingTask()
+                            var model = new Domain.Entities.School.TeachingTask()
                             {
-                                TeachingTaskId = Guid.NewGuid().ToString(),
                                 Term = term,
-                                BegWeek = Convert.ToInt16(BegWeek),
-                                EndWeek = Convert.ToInt16(EndWeek),
+                                BegWeek = Convert.ToInt32(BegWeek),
+                                EndWeek = Convert.ToInt32(EndWeek),
                                 ClaRoomCode = ClaRoomCode,
                                 Week = Week,
-                                Section = ((SectionType)Convert.ToInt16(Section)),
+                                Section = ((SectionType)Convert.ToInt32(Section)),
                                 Memo = Memo,
-                                Courses = Courses,
-                                Teachers = teachersList,
-                                TeachingTaskDetails = TeachingTaskDetailList
+                                Classes = _class,
+                                Teachers = _teacher,
+                                CourseId = course
                             };
-                             
-                            var result = await _TeachingTaskService.Add(TeachingTask);
+
+                            _list.Add(model);
                         }
                         else
                         {
@@ -700,6 +683,8 @@
                     }
                 }
             }
+
+            var result = await _TeachingTaskService.AddRange(_list);
 
             return new JsonResult(new AjaxResult("导入成功"));
         }
