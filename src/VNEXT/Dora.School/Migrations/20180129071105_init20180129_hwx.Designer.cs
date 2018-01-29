@@ -13,9 +13,10 @@ using System;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180129071105_init20180129_hwx")]
+    partial class init20180129_hwx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1280,8 +1281,6 @@ namespace dora.school.Migrations
 
                     b.Property<string>("ClaRoomCode");
 
-                    b.Property<string>("CourseId");
-
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
@@ -1305,8 +1304,6 @@ namespace dora.school.Migrations
                     b.Property<string>("Week");
 
                     b.HasKey("TeachingTaskId");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("School_TeachingTask");
                 });
@@ -2130,13 +2127,6 @@ namespace dora.school.Migrations
                     b.HasOne("Dora.Domain.Entities.School.TeachingPlan", "TeachingPlan")
                         .WithMany("TeachingPlanLogs")
                         .HasForeignKey("TeachingPlanId");
-                });
-
-            modelBuilder.Entity("Dora.Domain.Entities.School.TeachingTask", b =>
-                {
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.TeachingTaskClass", b =>
