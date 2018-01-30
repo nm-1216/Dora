@@ -34,6 +34,7 @@
                             <th>录取年份</th>
                             <th>创建时间</th>
                             <th>使用状态</th>
+                            <th class="text-center">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,7 +47,11 @@
                                 <td>@item.GraReq</td>
                                 <td>@item.Year</td>
                                 <td>@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                <td><span class="@((int)item.Status==0?"bg-danger":"bg-success")">@item.Status.ToString()</span></td>
+                                <td><span class="@((int)item.Status==0?"label label-danger":"label label-success")">@item.Status.ToString()</span></td>
+                                <td class="text-center">
+                                    <a asp-action="Edit" asp-route-id="@item.PersonnelTrainingId" class="btn btn-primary btn-xs" role="button">编辑</a>
+                                    <a data-id="@item.PersonnelTrainingId" class="btn btn-danger btn-xs btn-delete" role="button">删除</a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -57,3 +62,35 @@
         @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
     </form>
 </div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $(".btn-delete").on('click', function () {
+                var id = $(this).attr("data-id");
+                layer.confirm("确认删除", ['确定', '取消'], function (i) {
+                    layer.close(i);
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Delete")",
+                        data: "id="+id,
+                        success: function (d) {
+                            if (d.code == "200") {
+                                layer.msg("删除成功！");
+                                window.location.reload();
+                            }
+                            else {
+                                layer.msg("删除失败！ " + d.msg);
+                            }
+                            
+                        }
+                    })
+                }, function (i) {
+                    layer.close(i);
+                });
+
+            });
+
+        })
+    </script>
+}

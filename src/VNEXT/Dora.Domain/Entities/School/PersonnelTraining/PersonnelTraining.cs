@@ -88,6 +88,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 使用状态 
         /// </summary>
+        [Required]
         public virtual BaseStatus Status { get; set; }
 
 

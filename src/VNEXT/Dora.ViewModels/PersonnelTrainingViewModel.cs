@@ -77,7 +77,8 @@ namespace Dora.ViewModels
         /// <summary>
         /// Gets or sets 使用状态 
         /// </summary>
-        public BaseStatus Status { get; set; }
+        [Required]
+        public int Status { get; set; } = -1;
 
 
         /// <summary>
