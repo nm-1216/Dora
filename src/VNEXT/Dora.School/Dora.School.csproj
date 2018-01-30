@@ -25,5 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\upload\PersonnelTrainning\" />
   </ItemGroup>
 </Project>
