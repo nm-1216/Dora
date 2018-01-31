@@ -3,6 +3,7 @@
     using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
+    using Dora.ViewModels.Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -42,9 +43,12 @@
 
         public IActionResult Index()
         {
-            return View();
+            var list = _TeachingTaskService.GetAll();
+
+            return View(list);
         }
 
+        #region 导入
         public async Task<IActionResult> ImportTeachingTask([FromServices]IHostingEnvironment env, IList<IFormFile> files)
         {
             var _list = new List<TeachingTask>();
@@ -212,6 +216,151 @@
                 return cell.StringCellValue.Trim();
             }
         }
+        #endregion
 
+        // GET: TeachingTask/Create
+        public ActionResult Create()
+        {
+            List<SelectListItem> type;
+            type = (SectionType.节1_2).ToSelectListItem();
+
+            ViewBag.SectionType = type;
+
+            return View();
+        }
+
+        // POST: TeachingTask/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(TeachingTask model, IFormCollection form)
+        {
+            try
+            {
+                string classes = form["Classes"];
+                string teacher = form["Teachers"];
+                var _teacher = new List<TeachingTaskTeacher>();
+                var _class = new List<TeachingTaskClass>();
+
+                foreach (var item in classes.Split(','))
+                {
+                    _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
+                }
+
+                foreach (var item in teacher.Split(','))
+                {
+                    _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                }
+
+                model.Classes = _class;
+                model.Teachers = _teacher;
+                await this._TeachingTaskService.Add(model);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: TeachingTask/Edit/5
+        public ActionResult Edit(string id)
+        {
+            var model = this._TeachingTaskService.Find(b => b.TeachingTaskId == id);
+            //GetAll().Include(r=> r.Teachers).Include(r=> r.Classes).Where
+
+            #region 上课节次
+            List<SelectListItem> type;
+            type = ((Enum)SectionType.节1_2).ToSelectListItem(model.Section.ToString());
+
+            ViewBag.SectionType = type;
+            #endregion
+
+            #region 教师
+            String strTeachers = "";
+            var _teachers = model.Teachers;
+            foreach (var item in _teachers)
+            {
+                strTeachers += item.TeacherId + ",";
+            }
+            ViewBag.Teacher = strTeachers.Length > 0 ? strTeachers.Substring(0, strTeachers.Length - 1) : "";
+            #endregion
+
+            #region 班级 
+            String strClasses = "";
+            var _Classes = model.Classes;
+            foreach (var item in _Classes)
+            {
+                strClasses += item.ClassId + ",";
+            }
+            ViewBag.Class = strClasses.Length > 0 ? strClasses.Substring(0, strClasses.Length - 1) : "";
+            #endregion
+
+            return View(model);
+        }
+
+        // POST: TeachingTask/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(TeachingTask model,IFormCollection form)
+        {
+            try
+            {
+                var newItem = this._TeachingTaskService.Find(b => b.TeachingTaskId == model.TeachingTaskId);
+
+                newItem.Term = model.Term;
+                newItem.BegWeek = model.BegWeek;
+                newItem.EndWeek = model.EndWeek;
+                newItem.ClaRoomCode = model.ClaRoomCode;
+                newItem.Week = model.Week;
+                newItem.Section = model.Section;
+                newItem.Memo = model.Memo;
+                newItem.CourseId = model.CourseId; 
+                newItem.UpdateTime = DateTime.Now;
+
+                string classes = form["Classes"];
+                string teacher = form["Teachers"];
+                var _teacher = new List<TeachingTaskTeacher>();
+                var _class = new List<TeachingTaskClass>();
+
+                foreach (var item in classes.Split(','))
+                {
+                    _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
+                }
+
+                foreach (var item in teacher.Split(','))
+                {
+                    _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                }
+
+                model.Classes = _class;
+                model.Teachers = _teacher;
+
+                await _TeachingTaskService.Update(newItem);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+         
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var model =  _TeachingTaskService.Find(b => b.TeachingTaskId == id);
+            if (model != null)
+            {
+                await _TeachingTaskService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
+      
     }
 }

@@ -84,33 +84,6 @@
     </div>
 </div>
 
-<!--导入Start-->
-<div id="importDiv" style="display:none">
-    <form id="AjaxForm1" name="AjaxForm1" action="~/Syllabus/ImportTeachingTask" enctype="multipart/form-data" method="post">
-        <table class="table table-striped">
-            <tr>
-                <td>
-                    <input type="file" name="files" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: center">
-                    <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>约束：</b><br />
-                    1，第一行表头必须固定，不支持随意调换列。<br />
-                    2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
-                    2，<a href="~/template/student.xlsx">下载模板</a>
-                </td>
-            </tr>
-        </table>
-        <ol id="msgul"></ol>
-    </form>
-</div><!--导入End-->
-
 <!--建议选用教材Start-->
 <div class="DivSyllabusBook" style="display:none">
     <ul class="nav nav-tabs">

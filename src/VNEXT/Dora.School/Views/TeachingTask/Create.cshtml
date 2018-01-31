@@ -1,0 +1,59 @@
+﻿@model TeachingTask
+
+@{
+    ViewData["Title"] = "添加信息";
+} 
+
+<div class="container-fluid">
+    <form asp-action="Create" method="post">
+        <table class="table table-striped" style="">
+            <thead>
+                <tr>
+                    <th>学期：</th>
+                    <th>开始周次：</th>
+                    <th>结束周次：</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="EditDivTerm" name="Term" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivArea" name="BegWeek" type="text" class="form-control" /></td>
+                    <td><input id="EditDivSeatNum" name="EndWeek" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th>教室编号：</th>
+                    <th>星期：</th>
+                    <th>上课节次：</th>
+                </tr>
+                <tr>
+                    <td><input id="EditDivRoomNo" name="ClaRoomCode" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivSchool" name="Week" type="text" class="form-control" maxlength="256" /></td>
+                    <td>
+                        <select class="form-control" name="Section" asp-items="@ViewBag.SectionType"></select></td>
+                </tr>
+                <tr>
+                    <th>课程：</th>
+                    <th>班级：<span style="font-size:10pt;color:darkgray">(多个用逗号分隔)</span></th>
+                    <th>老师：<span style="font-size:10pt;color:darkgray">(多个用逗号分隔)</span></th>
+                </tr>
+                <tr>
+                    <td><input id="EditDivCourse" name="CourseId" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivClasses" name="Classes" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivTeachers" name="Teachers" type="text" class="form-control" maxlength="256" /></td>
+                </tr>
+                <tr> 
+                    <th colspan="3">备注：</th>
+                </tr>
+                <tr>
+                    <td colspan="3"><input id="EditDivMemo" name="Memo" type="text" class="form-control" maxlength="256" /></td> 
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+         
+    </form>
+</div>
