@@ -241,14 +241,19 @@
                 var _teacher = new List<TeachingTaskTeacher>();
                 var _class = new List<TeachingTaskClass>();
 
-                foreach (var item in classes.Split(','))
+                if (!String.IsNullOrEmpty(classes))
                 {
-                    _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
+                    foreach (var item in classes.Split(','))
+                    {
+                        _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
+                    }
                 }
-
-                foreach (var item in teacher.Split(','))
+                if (!String.IsNullOrEmpty(teacher))
                 {
-                    _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                    foreach (var item in teacher.Split(','))
+                    {
+                        _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                    }
                 }
 
                 model.Classes = _class;
@@ -266,7 +271,7 @@
         // GET: TeachingTask/Edit/5
         public ActionResult Edit(string id)
         {
-            var model = this._TeachingTaskService.Find(b => b.TeachingTaskId == id);
+            var model = this._TeachingTaskService.GetAll().Include(r => r.Classes).Include(r=> r.Teachers).Where(b => b.TeachingTaskId == id).FirstOrDefault();
             //GetAll().Include(r=> r.Teachers).Include(r=> r.Classes).Where
 
             #region 上课节次
@@ -279,9 +284,12 @@
             #region 教师
             String strTeachers = "";
             var _teachers = model.Teachers;
-            foreach (var item in _teachers)
+            if (_teachers != null)
             {
-                strTeachers += item.TeacherId + ",";
+                foreach (var item in _teachers)
+                {
+                    strTeachers += item.TeacherId + ",";
+                }
             }
             ViewBag.Teacher = strTeachers.Length > 0 ? strTeachers.Substring(0, strTeachers.Length - 1) : "";
             #endregion
@@ -289,9 +297,12 @@
             #region 班级 
             String strClasses = "";
             var _Classes = model.Classes;
-            foreach (var item in _Classes)
+            if (_Classes != null)
             {
-                strClasses += item.ClassId + ",";
+                foreach (var item in _Classes)
+                {
+                    strClasses += item.ClassId + ",";
+                }
             }
             ViewBag.Class = strClasses.Length > 0 ? strClasses.Substring(0, strClasses.Length - 1) : "";
             #endregion
@@ -306,7 +317,7 @@
         {
             try
             {
-                var newItem = this._TeachingTaskService.Find(b => b.TeachingTaskId == model.TeachingTaskId);
+                var newItem = this._TeachingTaskService.GetAll().Include(r => r.Classes).Include(r => r.Teachers).Where(b => b.TeachingTaskId == model.TeachingTaskId).FirstOrDefault();
 
                 newItem.Term = model.Term;
                 newItem.BegWeek = model.BegWeek;
@@ -320,27 +331,122 @@
 
                 string classes = form["Classes"];
                 string teacher = form["Teachers"];
-                var _teacher = new List<TeachingTaskTeacher>();
-                var _class = new List<TeachingTaskClass>();
+                List<TeachingTaskTeacher> _teacher = null;
+                List<String> _class = null;
 
-                foreach (var item in classes.Split(','))
+                #region 计算出应该保存的class
+                if (!String.IsNullOrEmpty(classes))
                 {
-                    _class.Add(new TeachingTaskClass() { ClassId = item.Trim() });
+                    _class =new List<String>();
+                    foreach (var item in classes.Split(','))
+                    {
+                        _class.Add( item.Trim() );
+                    }
                 }
+                #endregion
 
-                foreach (var item in teacher.Split(','))
+                #region 找需要删除的，删掉
+                if (newItem.Classes != null)
                 {
-                    _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                    List<TeachingTaskClass> remove_class = new List<TeachingTaskClass>();
+                    foreach (var item in newItem.Classes)
+                    {
+                        if (!_class.Contains(item.ClassId))
+                        {
+                            remove_class.Add(item);
+                        }
+                    }
+                    foreach (var r in remove_class)
+                    {
+                        newItem.Classes.Remove(r);
+                    }
                 }
+                #endregion
 
-                model.Classes = _class;
-                model.Teachers = _teacher;
+                #region 找需要添加的，添加
+                List<TeachingTaskClass> add_class = new List<TeachingTaskClass>();
+                if (_class != null)
+                {
+                    foreach (var item in _class)
+                    { 
+                        if (newItem.Classes == null || newItem.Classes.Where(r => r.ClassId == item).FirstOrDefault() == null)
+                        { 
+                            add_class.Add(new TeachingTaskClass() { ClassId = item });
+                        }
+                    }
+                }
+                if (add_class.Count != 0)
+                {
+                    if (newItem.Classes == null)//有可能之前是空的
+                        newItem.Classes = new List<TeachingTaskClass>();
+
+                    foreach (var r in add_class)
+                    {
+                        newItem.Classes.Add(r);
+                    }
+                }
+                #endregion
+
+
+                #region 计算出应该保存的teacher
+                if (!String.IsNullOrEmpty(teacher))
+                {
+                    _teacher = new List<TeachingTaskTeacher>();
+                    foreach (var item in teacher.Split(','))
+                    {
+                        _teacher.Add(new TeachingTaskTeacher() { TeacherId = item.Trim() });
+                    }
+                }
+                #endregion
+
+                #region 找需要删除的，删掉
+                if (newItem.Teachers != null)
+                {
+                    List<TeachingTaskTeacher> remove_Teacher = new List<TeachingTaskTeacher>();
+                    foreach (var item in newItem.Teachers)
+                    {
+                        if (_teacher.Where(r => r.TeacherId == item.TeacherId).FirstOrDefault() == null)
+                        {
+                            remove_Teacher.Add(item);
+                        }
+                    } 
+
+                    foreach (var r in remove_Teacher)
+                    {
+                        newItem.Teachers.Remove(r);
+                    }
+                }
+                #endregion
+
+                #region 找需要添加的，添加
+                List<TeachingTaskTeacher> add_Teacher = new List<TeachingTaskTeacher>();
+                if (_teacher != null)
+                {
+                    foreach (var item in _teacher)
+                    {
+                        if (newItem.Teachers == null || newItem.Teachers.Where(r => r.TeacherId == item.TeacherId).FirstOrDefault() == null)
+                        {
+                            add_Teacher.Add(item);
+                        }
+                    }
+                }
+                if (add_Teacher.Count!=0)
+                {
+                    if (newItem.Teachers == null)//有可能之前是空的
+                        newItem.Teachers = new List<TeachingTaskTeacher>();
+
+                    foreach (var r in add_Teacher)
+                    {
+                        newItem.Teachers.Add(r);
+                    }
+                }
+                #endregion
 
                 await _TeachingTaskService.Update(newItem);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
                 return View();
             }

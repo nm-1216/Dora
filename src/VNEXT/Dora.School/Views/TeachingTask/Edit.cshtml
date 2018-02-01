@@ -1,10 +1,11 @@
-﻿
+﻿@model Dora.Domain.Entities.School.TeachingTask
 @{
     ViewData["Title"] = "修改信息"; 
 }
  
 <div class="container-fluid">
-    <form asp-action="Create" method="post">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="TeachingTaskId" />
         <table class="table table-striped" style="">
             <thead>
                 <tr>
@@ -15,9 +16,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input id="EditDivTerm" name="Term" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="EditDivArea" name="BegWeek" type="text" class="form-control" /></td>
-                    <td><input id="EditDivSeatNum" name="EndWeek" type="text" class="form-control" /></td>
+                    <td><input id="EditDivTerm" name="Term" type="text" class="form-control" maxlength="256" value="@Model.Term" /></td>
+                    <td><input id="EditDivArea" name="BegWeek" type="text" class="form-control"  value="@Model.BegWeek"/></td>
+                    <td><input id="EditDivSeatNum" name="EndWeek" type="text" class="form-control" value="@Model.EndWeek" /></td>
                 </tr>
                 <tr>
                     <th>教室编号：</th>
@@ -25,8 +26,8 @@
                     <th>上课节次：</th>
                 </tr>
                 <tr>
-                    <td><input id="EditDivRoomNo" name="ClaRoomCode" type="text" class="form-control" maxlength="256" /></td>
-                    <td><input id="EditDivSchool" name="Week" type="text" class="form-control" maxlength="256" /></td>
+                    <td><input id="EditDivRoomNo" name="ClaRoomCode" type="text" class="form-control" maxlength="256"  value="@Model.ClaRoomCode"/></td>
+                    <td><input id="EditDivSchool" name="Week" type="text" class="form-control" maxlength="256"  value="@Model.Week"/></td>
                     <td>
                         <select class="form-control" name="Section" asp-items="@ViewBag.SectionType"></select>
                     </td>
@@ -37,7 +38,7 @@
                     <th>老师：<span style="font-size:10pt;color:darkgray">(多个用逗号分隔)</span></th>
                 </tr>
                 <tr>
-                    <td><input id="EditDivCourse" name="CourseId" type="text" class="form-control" maxlength="256"/></td>
+                    <td><input id="EditDivCourse" name="CourseId" type="text" class="form-control" maxlength="256" value="@Model.CourseId"/></td>
                     <td><input id="EditDivClasses" name="Classes" type="text" class="form-control" maxlength="256"  value="@ViewBag.Class"/></td>
                     <td><input id="EditDivTeachers" name="Teachers" type="text" class="form-control" maxlength="256" value="@ViewBag.Teacher" /></td>
                 </tr>
@@ -45,7 +46,7 @@
                     <th colspan="3">备注：</th>
                 </tr>
                 <tr>
-                    <td colspan="3"><input id="EditDivMemo" name="Memo" type="text" class="form-control" maxlength="256" /></td>
+                    <td colspan="3"><input id="EditDivMemo" name="Memo" type="text" class="form-control" maxlength="256"  value="@Model.Memo"/></td>
                 </tr>
                 <tr>
                     <td colspan="3" class="text-center">
