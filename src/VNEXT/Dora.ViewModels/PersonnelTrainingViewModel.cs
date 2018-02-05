@@ -74,11 +74,14 @@ namespace Dora.ViewModels
         public string Year { get; set; } = string.Empty;
 
 
-        /// <summary>
-        /// Gets or sets 使用状态 
-        /// </summary>
+        ///// <summary>
+        ///// Gets or sets 使用状态 
+        ///// </summary>
+        //[Required]
+        //public int Status { get; set; } = -1;
+
         [Required]
-        public int Status { get; set; } = -1;
+        public BaseStatus? Status { get; set; }
 
 
         /// <summary>
@@ -92,6 +95,8 @@ namespace Dora.ViewModels
         /// </summary>
         [Display(Name = "培养方案")]
         public IFormFile CulProPath { get; set; }
+        [Display(Name = "培养方案")]
+        public string SCulProPath { get; set; }
 
 
         /// <summary>
@@ -99,7 +104,8 @@ namespace Dora.ViewModels
         /// </summary>
         [Display(Name = "审议会议纪要")]
         public IFormFile MeeSumPath { get; set; }
-
+        [Display(Name = "审议会议纪要")]
+        public string SMeeSumPath { get; set; }
 
         /// <summary>
         /// Gets or sets 提交状态 
@@ -123,5 +129,10 @@ namespace Dora.ViewModels
         /// Gets or sets 审核结果 
         /// </summary>
         public int? AudRes { get; set; }
+
+        /// <summary>
+        /// 此班级所属的 专业 
+        /// </summary>
+        public virtual Organization Professional { get; set; }
     }
 }

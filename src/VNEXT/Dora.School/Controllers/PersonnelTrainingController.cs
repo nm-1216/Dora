@@ -15,6 +15,8 @@ using Dora.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Dora.ViewModels.Extensions;
+using System.IO;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Dora.School.Controllers
 {
@@ -48,16 +50,13 @@ namespace Dora.School.Controllers
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var professionals = _organizationService.GetAll().Select(b => new SelectListItem() { Value = b.OrganizationId, Text = b.Name }).ToList();
+            var professionals = await _organizationService.GetAll()
+                .Select(b => new SelectListItem() { Value = b.OrganizationId, Text = b.Name })
+                .ToListAsync();
             professionals.Insert(0, new SelectListItem() { Text = "==请选择专业==", Value = "" });
             ViewBag.Organizations = professionals;
-
-            List<SelectListItem> liststatuss;
-            liststatuss = (BaseStatus.无效).ToSelectListItem();
-            liststatuss.Insert(0, new SelectListItem() { Text = "==请选择使用状态==", Value = "" });
-            ViewBag.Statuss = liststatuss;
 
             return View(new PersonnelTrainingViewModel());
         }
@@ -110,22 +109,16 @@ namespace Dora.School.Controllers
                 ModelState.AddModelError("", "专业人才培养方案保存失败");
             }
 
-            var professionals = _organizationService.GetAll()
+            var professionals = await _organizationService.GetAll()
                 .Select(b => new SelectListItem()
                 {
                     Value = b.OrganizationId,
                     Text = b.Name,
                     Selected = b.OrganizationId == model.OrganizationId
                 })
-                .ToList();
+                .ToListAsync();
             professionals.Insert(0, new SelectListItem() { Text = "==请选择专业==", Value = "" });
             ViewBag.Organizations = professionals;
-
-            List<SelectListItem> status;
-            status = (BaseStatus.无效).ToSelectListItem("无效");
-            status.ForEach(m => m.Selected = m.Value == ((int)model.Status).ToString());
-            status.Insert(0, new SelectListItem() { Text = "==请选择使用状态==", Value = "" });
-            ViewBag.Statuss = status;
 
             return View(model);
         }
@@ -151,12 +144,6 @@ namespace Dora.School.Controllers
             professionals.Insert(0, new SelectListItem() { Text = "==请选择专业==", Value = "" });
             ViewBag.Organizations = professionals;
 
-            List<SelectListItem> status;
-            status = (BaseStatus.无效).ToSelectListItem();
-            status.ForEach(m => m.Selected = m.Value == ((int)model.Status).ToString());
-            status.Insert(0, new SelectListItem() { Text = "==请选择使用状态==", Value = "" });
-            ViewBag.Statuss = status;
-
             var viewModel = new PersonnelTrainingViewModel
             {
                 PersonnelTrainingId = model.PersonnelTrainingId,
@@ -165,7 +152,7 @@ namespace Dora.School.Controllers
                 Year = model.Year,
                 CulProPath = null,
                 MeeSumPath = null,
-                Status = (int)model.Status
+                Status = model.Status
 
             };
 
@@ -221,20 +208,14 @@ namespace Dora.School.Controllers
                 ModelState.AddModelError("", "专业人才培养方案修改失败");
             }
 
-            var professionals = _organizationService.GetAll().Select(b => new SelectListItem()
+            var professionals = await _organizationService.GetAll().Select(b => new SelectListItem()
             {
                 Value = b.OrganizationId,
                 Text = b.Name,
                 Selected = b.OrganizationId == vmodel.OrganizationId
-            }).ToList();
+            }).ToListAsync();
             professionals.Insert(0, new SelectListItem() { Text = "==请选择专业==", Value = "" });
             ViewBag.Organizations = professionals;
-
-            List<SelectListItem> status;
-            status = (BaseStatus.无效).ToSelectListItem();
-            status.ForEach(m => m.Selected = m.Value == ((int)vmodel.Status).ToString());
-            status.Insert(0, new SelectListItem() { Text = "==请选择使用状态==", Value = "" });
-            ViewBag.Statuss = status;
 
             return View(vmodel);
         }
@@ -242,12 +223,14 @@ namespace Dora.School.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            bool exists = await _personnelTrainingService.GetAll().AnyAsync(m => m.PersonnelTrainingId == id);
+            bool exists = await _personnelTrainingService.GetAll()
+                .AnyAsync(m => m.PersonnelTrainingId == id);
             if (!exists)
             {
                 RedirectToAction(nameof(Index));
             }
-            var model = await _personnelTrainingService.GetAll().Where(m => m.PersonnelTrainingId == id).FirstAsync();
+            var model = await _personnelTrainingService.GetAll()
+                .Where(m => m.PersonnelTrainingId == id).FirstAsync();
             bool success = await _personnelTrainingService.Remove(model);
             if (success)
             {
@@ -255,5 +238,84 @@ namespace Dora.School.Controllers
             }
             return Json(new { code = "-200", msg = "FAIL" });
         }
+    
+
+        public async Task<IActionResult> Details(string id)
+        {
+            bool exists = await _personnelTrainingService.GetAll()
+                .AnyAsync(m => m.PersonnelTrainingId == id);
+            if (!exists)
+            {
+                RedirectToAction(nameof(Index));
+            }
+            var model = await _personnelTrainingService.GetAll().Include(m=>m.Professional)
+                .Where(m => m.PersonnelTrainingId == id).FirstAsync();
+
+            PersonnelTrainingViewModel personnelTrainingViewModel = new PersonnelTrainingViewModel
+            {
+                OrganizationId = model.OrganizationId,
+                Professional = model.Professional,
+                LenOfSch = model.LenOfSch,
+                Year = model.Year,
+                SCulProPath = model.CulProPath,
+                SMeeSumPath = model.MeeSumPath,
+                Status = model.Status
+            };
+
+            return View(personnelTrainingViewModel);
+        }
+
+        public async Task<IActionResult> Download(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return Content("文件无效");
+            }
+
+            path = Path.Combine(_hostingEnvironment.ContentRootPath, "wwwroot", path.TrimStart('/'));
+
+            if (!System.IO.File.Exists(path))
+            {
+                return Content("文件不存在");
+            }
+
+            var extension = Path.GetExtension(path).ToLower();
+            var provider = new FileExtensionContentTypeProvider();
+            var mime = provider.Mappings[extension];
+
+            MemoryStream memory = new MemoryStream();
+            using (FileStream stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Seek(0, SeekOrigin.Begin);
+            return File(memory, mime, Path.GetFileName(path));
+        }
+
+
+        //private string GetContentType(string path)
+        //{
+        //    var types = GetMimeTypes();
+        //    var extension = Path.GetExtension(path).ToLower();
+        //    return types[extension];
+        //}
+
+        //private Dictionary<string, string> GetMimeTypes()
+        //{
+        //    return new Dictionary<string, string>
+        //    {
+        //        {".txt", "text/plain"},
+        //        {".pdf", "application/pdf"},
+        //        {".doc", "application/vnd.ms-word"},
+        //        {".docx", "application/vnd.ms-word"},
+        //        {".xls", "application/vnd.ms-excel"},
+        //        {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},  
+        //        {".png", "image/png"},
+        //        {".jpg", "image/jpeg"},
+        //        {".jpeg", "image/jpeg"},
+        //        {".gif", "image/gif"},
+        //        {".csv", "text/csv"}
+        //    };
+        //}
     }
 }

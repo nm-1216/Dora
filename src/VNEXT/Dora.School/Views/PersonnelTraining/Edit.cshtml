@@ -2,9 +2,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+@section styles{
+    <link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+}
 <h2>Edit</h2>
 <div class="container-fluid">
+
     <form asp-action="Edit" method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="PersonnelTrainingId" />
         <div class="form-group">
@@ -29,8 +32,8 @@
         </div>
         <div class="form-group">
             <label asp-for="Status"></label>
-            <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuss"></select>
-            @*@Html.DropDownListFor(m=>m.Status,ViewBag.Statuss as IEnumerable<SelectListItem>, new { @class= "form-control" })*@
+            @*<select asp-for="Status" class="form-control" asp-items="ViewBag.Statuss"></select>*@
+            <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<BaseStatus>()"></select>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default btn-danger pull-right">保存</button>
@@ -38,3 +41,18 @@
     </form>
 </div>
 
+@section scripts{
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+
+    <script>
+        $('#Year').datepicker({
+            format: 'yyyy',
+            autoclose: true,
+            startView: 2,
+            maxViewMode: 2,
+            minViewMode: 2,
+            language: 'zh-CN'
+        });
+    </script>
+}

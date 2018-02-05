@@ -1,0 +1,55 @@
+﻿@model PersonnelTrainingViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+<div class="container-fluid">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganizationId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Professional.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LenOfSch)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LenOfSch)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SCulProPath)
+        </dt>
+        <dd>
+            <a asp-action="Download" asp-route-path="@Model.SCulProPath" class="btn-link">@System.IO.Path.GetFileName(Model.SCulProPath)</a>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SMeeSumPath)
+        </dt>
+        <dd>
+            <a asp-action="Download" asp-route-path="@Model.SMeeSumPath" class="btn-link">@System.IO.Path.GetFileName(Model.SMeeSumPath)</a>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @{ 
+                int status = (int)Model.Status;
+                string statusClass = status == 0 ? "label label-danger" : "label label-success";
+            }
+            <span class="@statusClass">@Model.Status.ToString()</span>
+        </dd>
+    </dl>
+</div>

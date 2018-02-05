@@ -31,7 +31,8 @@
         </div>
         <div class="form-group">
             <label asp-for="Status"></label>
-            <select asp-for="Status" class="form-control" asp-items="ViewBag.Statuss"></select>
+            @*<select asp-for="Status" class="form-control" asp-items="ViewBag.Statuss"></select>*@
+            <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<BaseStatus>()"></select>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-default btn-danger pull-right">保存</button>
