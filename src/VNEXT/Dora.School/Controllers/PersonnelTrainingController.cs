@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Dora.ViewModels.Extensions;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
+using Dora.School.Helpers;
 
 namespace Dora.School.Controllers
 {
@@ -47,6 +48,10 @@ namespace Dora.School.Controllers
                 || m.Professional.Name.Contains(searchKey)
                 || m.Year.Contains(searchKey)).OrderBy(m => m.CreateTime).AsNoTracking(), page, pageSize);
 
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("SearchList", list);
+            }
             return View(list);
         }
 
@@ -234,11 +239,11 @@ namespace Dora.School.Controllers
             bool success = await _personnelTrainingService.Remove(model);
             if (success)
             {
-                return Json(new { code="200",msg="OK"});
+                return Json(new { code = "200", msg = "OK" });
             }
             return Json(new { code = "-200", msg = "FAIL" });
         }
-    
+
 
         public async Task<IActionResult> Details(string id)
         {
@@ -248,7 +253,7 @@ namespace Dora.School.Controllers
             {
                 RedirectToAction(nameof(Index));
             }
-            var model = await _personnelTrainingService.GetAll().Include(m=>m.Professional)
+            var model = await _personnelTrainingService.GetAll().Include(m => m.Professional)
                 .Where(m => m.PersonnelTrainingId == id).FirstAsync();
 
             PersonnelTrainingViewModel personnelTrainingViewModel = new PersonnelTrainingViewModel

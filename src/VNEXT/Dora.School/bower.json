@@ -6,7 +6,8 @@
     "jquery-validation": "1.15.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "bootstrap-datepicker": "v1.7.1",
-    "bootstrap-select": "v2.0.0-beta1"
+    "bootstrap-select": "v2.0.0-beta1",
+    "jquery-ajax-unobtrusive": "jquery.unobtrusive-ajax#^3.2.4"
   },
   "resolutions": {
     "jquery": ">=1.8",
