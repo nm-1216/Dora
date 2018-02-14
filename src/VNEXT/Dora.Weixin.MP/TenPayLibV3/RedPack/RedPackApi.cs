@@ -1,56 +1,4 @@
-﻿#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-  
-    文件名：RedPackApi.cs
-    文件功能描述：普通红包发送和红包查询Api（暂缺裂变红包发送）
-    
-    
-    创建标识：Yu XiaoChou - 20160107
-        
-    修改标识：Senparc - 20161024
-    修改描述：v14.3.102 重新整理红包发送方法
-
-    修改标识：Senparc - 20161112
-    修改描述：v14.3.107 SearchRedPack方法修改证书初始化方法
-
-    修改标识：Senparc - 20170110
-    修改描述：v14.3.118  
-
-    修改标识：Senparc - 20170810
-    修改描述：v14.5.9 查询红包接口（SearchRedPack）添加refund_amount和remark两个参数获取
-
-    修改标识：Senparc - 20170810
-    修改描述：v14.6.10 添加接口：普通红包发送(服务商）
-    
-    修改标识：Senparc - 20170925
-    修改描述：添加新规定提示：红包超过2000元必须提供scene_id参数：
-              https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_4&index=3
-                  
-    修改标识：Senparc - 20171208
-    修改描述：v14.8.10 修复红包接口 RedPackApi.SendNormalRedPack() 在.NET 4.6 下的XML解析问题
-
-----------------------------------------------------------------*/
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,9 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dora.Weixin.Exceptions;
 
-#if !NET35 && !NET40 && !NET45
 using System.Net.Http;
-#endif
 
 namespace Dora.Weixin.MP.TenPayLibV3
 {
@@ -198,27 +144,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
 
             XmlDocument doc = new XmlDocument();
 
-#if NET35 || NET40 || NET45 || NET461
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-            //X509Certificate cer = new X509Certificate(cert, password);
-            #region 发起post请求
-            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            webrequest.ClientCertificates.Add(cer);
-            webrequest.Method = "post";
 
-
-            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
-            webrequest.ContentLength = postdatabyte.Length;
-            Stream stream = webrequest.GetRequestStream();
-            stream.Write(postdatabyte, 0, postdatabyte.Length);
-            stream.Close();
-
-            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
-            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
-            string response = streamReader.ReadToEnd();
-            #endregion
-            doc.LoadXml(response);
-#else
             #region 发起post请求
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
@@ -230,7 +156,6 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             #endregion
             doc.Load(response);
 
-#endif
 
             //XDocument xDoc = XDocument.Load(responseContent);
 
@@ -428,26 +353,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
 
             #region 发起post请求，载入到doc中
 
-#if NET35 || NET40 || NET45 || NET461
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-            //X509Certificate cer = new X509Certificate(cert, password);
 
-            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            webrequest.ClientCertificates.Add(cer);
-            webrequest.Method = "post";
-
-
-            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
-            webrequest.ContentLength = postdatabyte.Length;
-            Stream stream = webrequest.GetRequestStream();
-            stream.Write(postdatabyte, 0, postdatabyte.Length);
-            stream.Close();
-
-            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
-            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
-            string response = streamReader.ReadToEnd();
-            doc.LoadXml(response);
-#else
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
 
@@ -456,7 +362,6 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             var request = client.PostAsync(url, hc).Result;
             var response = request.Content.ReadAsStreamAsync().Result;
             doc.Load(response);
-#endif
             #endregion
 
 
@@ -600,25 +505,7 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             XmlDocument doc = new XmlDocument();
             #region 发起post请求，载入到doc中
 
-#if NET35 || NET40 || NET45 || NET461
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
 
-            HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            webrequest.ClientCertificates.Add(cer);
-            webrequest.Method = "post";
-
-
-            byte[] postdatabyte = Encoding.UTF8.GetBytes(data);
-            webrequest.ContentLength = postdatabyte.Length;
-            Stream stream = webrequest.GetRequestStream();
-            stream.Write(postdatabyte, 0, postdatabyte.Length);
-            stream.Close();
-
-            HttpWebResponse httpWebResponse = (HttpWebResponse)webrequest.GetResponse();
-            StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
-            string response = streamReader.ReadToEnd();
-            doc.LoadXml(response);
-#else
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificates.Add(cer);
 
@@ -628,7 +515,6 @@ PROCESSING	请求已受理，请稍后使用原单号查询发放结果	二十�
             var response = request.Content.ReadAsStreamAsync().Result;
             doc.Load(response);
 
-#endif
             #endregion
 
 

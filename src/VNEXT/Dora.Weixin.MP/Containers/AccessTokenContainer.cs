@@ -1,79 +1,4 @@
-﻿#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-
-    文件名：AccessTokenContainer.cs
-    文件功能描述：通用接口AccessToken容器，用于自动管理AccessToken，如果过期会重新获取
-
-
-    创建标识：Senparc - 20150211
-
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-
-    修改标识：Senparc - 20150702
-    修改描述：添加GetFirstOrDefaultAppId()方法
-
-    修改标识：Senparc - 20151004
-    修改描述：v13.3.0 将JsApiTicketContainer整合到AccessTokenContainer
-
-    修改标识：Senparc - 20160318
-    修改描述：v13.6.10 使用FlushCache.CreateInstance使注册过程立即生效
-
-    修改标识：Senparc - 20160717
-    修改描述：v13.8.11 添加注册过程中的Name参数
-  
-    修改标识：Senparc - 20160721
-    修改描述：增加其接口的异步方法
-
-    修改标识：Senparc - 20160801
-    修改描述：v14.2.1 转移到Dora.Weixin.MP.Containers命名空间下
-
-    修改标识：Senparc - 20160803
-    修改描述：v14.2.3 使用ApiUtility.GetExpireTime()方法处理过期
-
-    修改标识：Senparc - 20160808
-    修改描述：v14.3.0 删除 ItemCollection 属性，直接使用ContainerBag加入到缓存
-
-    修改标识：Senparc - 20160810
-    修改描述：v14.3.3 修复错误
-        
-    修改标识：Senparc - 20160813
-    修改描述：v14.3.4 添加TryReRegister()方法，处理分布式缓存重启（丢失）的情况
-
-    修改标识：Senparc - 20160813
-    修改描述：v14.3.6 完善getNewToken参数传递
-
-    修改标识：Senparc - 20170702
-    修改描述：v14.5.0 为了配合新版本ApiHandlerWapper方法，GetAccessTokenResultAsync方法的返回值从Task<AccessTokenResult>改为Task<IAccessTokenResult>
-    
-    修改标识：Senparc - 20170702
-    修改描述：v14.5.5 修改Container中的锁及异步调用方法
-
-    修改标识：Senparc - 20170702
-    修改描述：v14.6.2 回滚 v14.5.5中修改的方法（同步方法中调用异步方法）
-
-----------------------------------------------------------------*/
-
+﻿
 using System;
 using System.Threading.Tasks;
 using Dora.Weixin.MP.Entities;
@@ -94,41 +19,25 @@ namespace Dora.Weixin.MP.Containers
         public string AppId
         {
             get { return _appId; }
-#if NET35 || NET40
-            set { this.SetContainerProperty(ref _appId, value, "AppId"); }
-#else
             set { this.SetContainerProperty(ref _appId, value); }
-#endif
         }
 
         public string AppSecret
         {
             get { return _appSecret; }
-#if NET35 || NET40
-            set { this.SetContainerProperty(ref _appSecret, value, "AppSecret"); }
-#else
             set { this.SetContainerProperty(ref _appSecret, value); }
-#endif
         }
 
         public DateTime AccessTokenExpireTime
         {
             get { return _accessTokenExpireTime; }
-#if NET35 || NET40
-            set { this.SetContainerProperty(ref _accessTokenExpireTime, value, "AccessTokenExpireTime"); }
-#else
             set { this.SetContainerProperty(ref _accessTokenExpireTime, value); }
-#endif
         }
 
         public AccessTokenResult AccessTokenResult
         {
             get { return _accessTokenResult; }
-#if NET35 || NET40
-            set { this.SetContainerProperty(ref _accessTokenResult, value, "AccessTokenResult"); }
-#else
             set { this.SetContainerProperty(ref _accessTokenResult, value); }
-#endif
         }
 
         private AccessTokenResult _accessTokenResult;
@@ -242,7 +151,6 @@ namespace Dora.Weixin.MP.Containers
 
         #endregion
 
-#if !NET35 && !NET40
         #region 异步方法
 
         #region AccessToken
@@ -307,7 +215,6 @@ namespace Dora.Weixin.MP.Containers
         #endregion
 
         #endregion
-#endif
     }
 }
 

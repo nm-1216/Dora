@@ -9,23 +9,12 @@ using Microsoft.AspNetCore.Http;
 namespace Dora.Weixin.MP.TenPayLib
 {
 
-    /** 
-    '============================================================================
-    'ApiËµÃ÷£º
-    'GetKey()/setKey(),»ñÈ¡/ÉèÖÃÃÜÔ¿
-    'GetParameter()/setParameter(),»ñÈ¡/ÉèÖÃ²ÎÊýÖµ
-    'GetAllParameters(),»ñÈ¡ËùÓÐ²ÎÊý
-    'IsTenpaySign(),ÊÇ·ñÕýÈ·µÄÇ©Ãû,true:ÊÇ false:·ñ
-    'IsWXsign(),ÊÇ·ñÕýÈ·µÄÇ©Ãû,true:ÊÇ false:·ñ
-    ' * IsWXsignfeedbackÅÐ¶ÏÎ¢ÐÅÎ¬È¨Ç©Ãû
-    ' *GetDebugInfo(),»ñÈ¡debugÐÅÏ¢ 
-    '============================================================================
-    */
+
 
     public class ResponseHandler
     {
         /// <summary>
-        /// ÃÜÔ¿ 
+        /// ï¿½ï¿½Ô¿ 
         /// </summary>
         private string Key;
 
@@ -40,16 +29,16 @@ namespace Dora.Weixin.MP.TenPayLib
         private Hashtable XmlMap;
 
         /// <summary>
-        /// Ó¦´ðµÄ²ÎÊý
+        /// Ó¦ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
         /// </summary>
         protected Hashtable Parameters;
 
         /// <summary>
-        /// debugÐÅÏ¢
+        /// debugï¿½ï¿½Ï¢
         /// </summary>
         private string DebugInfo;
         /// <summary>
-        /// Ô­Ê¼ÄÚÈÝ
+        /// Ô­Ê¼ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         protected string Content;
 
@@ -57,21 +46,21 @@ namespace Dora.Weixin.MP.TenPayLib
         private int Charset = 936;
 
         /// <summary>
-        /// ²ÎÓëÇ©ÃûµÄ²ÎÊýÁÐ±í
+        /// ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
         /// </summary>
         private static string SignField = "appid,appkey,timestamp,openid,noncestr,issubscribe";
 
         protected HttpContext HttpContext;
 
         /// <summary>
-        /// ³õÊ¼»¯º¯Êý
+        /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public virtual void Init()
         {
         }
 
         /// <summary>
-        /// »ñÈ¡Ò³ÃæÌá½»µÄgetºÍpost²ÎÊý
+        /// ï¿½ï¿½È¡Ò³ï¿½ï¿½ï¿½á½»ï¿½ï¿½getï¿½ï¿½postï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="httpContext"></param>
         public ResponseHandler(HttpContext httpContext)
@@ -113,14 +102,14 @@ namespace Dora.Weixin.MP.TenPayLib
 
 
         /// <summary>
-        /// »ñÈ¡ÃÜÔ¿
+        /// ï¿½ï¿½È¡ï¿½ï¿½Ô¿
         /// </summary>
         /// <returns></returns>
         public string GetKey()
         { return Key; }
 
         /// <summary>
-        /// ÉèÖÃÃÜÔ¿
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         /// </summary>
         /// <param name="key"></param>
         /// <param name="appkey"></param>
@@ -131,7 +120,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// »ñÈ¡²ÎÊýÖµ
+        /// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Öµ
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
@@ -142,7 +131,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// ÉèÖÃ²ÎÊýÖµ
+        /// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½Öµ
         /// </summary>
         /// <param name="parameter"></param>
         /// <param name="parameterValue"></param>
@@ -160,7 +149,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// ÊÇ·ñ²Æ¸¶Í¨Ç©Ãû,¹æÔòÊÇ:°´²ÎÊýÃû³Æa-zÅÅÐò,Óöµ½¿ÕÖµµÄ²ÎÊý²»²Î¼ÓÇ©Ãû¡£return boolean
+        /// ï¿½Ç·ï¿½Æ¸ï¿½Í¨Ç©ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½a-zï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½Ç©ï¿½ï¿½ï¿½ï¿½return boolean
         /// </summary>
         /// <returns></returns>
         public virtual Boolean IsTenpaySign()
@@ -183,12 +172,12 @@ namespace Dora.Weixin.MP.TenPayLib
             sb.Append("key=" + this.GetKey());
             string sign = MD5UtilHelper.GetMD5(sb.ToString(), GetCharset()).ToLower();
             this.SetDebugInfo(sb.ToString() + " &sign=" + sign);
-            //debugÐÅÏ¢
+            //debugï¿½ï¿½Ï¢
             return GetParameter("sign").ToLower().Equals(sign);
         }
 
         /// <summary>
-        /// ÅÐ¶ÏÎ¢ÐÅÇ©Ãû
+        /// ï¿½Ð¶ï¿½Î¢ï¿½ï¿½Ç©ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public virtual Boolean IsWXsign()
@@ -231,7 +220,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// ÅÐ¶ÏÎ¢ÐÅÎ¬È¨Ç©Ãû
+        /// ï¿½Ð¶ï¿½Î¢ï¿½ï¿½Î¬È¨Ç©ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public virtual Boolean IsWXsignfeedback()
@@ -274,14 +263,14 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// »ñÈ¡debugÐÅÏ¢
+        /// ï¿½ï¿½È¡debugï¿½ï¿½Ï¢
         /// </summary>
         /// <returns></returns>
         public string GetDebugInfo()
         { return DebugInfo; }
 
         /// <summary>
-        /// ÉèÖÃdebugÐÅÏ¢
+        /// ï¿½ï¿½ï¿½ï¿½debugï¿½ï¿½Ï¢
         /// </summary>
         /// <param name="debugInfo"></param>
         protected void SetDebugInfo(String debugInfo)

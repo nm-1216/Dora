@@ -1,38 +1,3 @@
-#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
- 
-    ÎÄ¼þÃû£ºRequestHandler.cs
-    ÎÄ¼þ¹¦ÄÜÃèÊö£ºÎ¢ÐÅÖ§¸¶ ÇëÇó´¦Àí
-    
-    
-    ´´½¨±êÊ¶£ºSenparc - 20150211
-    
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20150303
-    ÐÞ¸ÄÃèÊö£ºÕûÀí½Ó¿Ú
-    
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20170623
-    ÐÞ¸ÄÃèÊö£ºÊ¹ÓÃ ASCII ×ÖµäÅÅÐò
-----------------------------------------------------------------*/
 
 using System;
 using System.Collections;
@@ -41,26 +6,22 @@ using System.Text.RegularExpressions;
 using Dora.Helpers.StringHelper;
 using Dora.Weixin.MP.Helpers;
 
-#if NET35 || NET40 || NET45 || NET461
-using System.Web;
-#else
 using Microsoft.AspNetCore.Http;
-#endif
 
 namespace Dora.Weixin.MP.TenPayLib
 {
     /**
-    'Ç©Ãû¹¤¾ßÀà
+    'Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      ============================================================================/// <summary>
-    'apiËµÃ÷£º
+    'apiËµï¿½ï¿½ï¿½ï¿½
     'Init();
-    '³õÊ¼»¯º¯Êý£¬Ä¬ÈÏ¸øÒ»Ð©²ÎÊý¸³Öµ¡£
-    'SetKey(key_)'ÉèÖÃÉÌ»§ÃÜÔ¿
-    'CreateMd5Sign(signParams);×ÖµäÉú³ÉMd5Ç©Ãû
-    'GenPackage(packageParams);»ñÈ¡package°ü
-    'CreateSHA1Sign(signParams);´´½¨Ç©ÃûSHA1
-    'ParseXML();Êä³öxml
-    'GetDebugInfo(),»ñÈ¡debugÐÅÏ¢
+    'ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½Ï¸ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+    'SetKey(key_)'ï¿½ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½Ô¿
+    'CreateMd5Sign(signParams);ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Md5Ç©ï¿½ï¿½
+    'GenPackage(packageParams);ï¿½ï¿½È¡packageï¿½ï¿½
+    'CreateSHA1Sign(signParams);ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½SHA1
+    'ParseXML();ï¿½ï¿½ï¿½xml
+    'GetDebugInfo(),ï¿½ï¿½È¡debugï¿½ï¿½Ï¢
      * 
      * ============================================================================
      */
@@ -74,30 +35,30 @@ namespace Dora.Weixin.MP.TenPayLib
             this.HttpContext = httpContext;
         }
         /// <summary>
-        /// ÃÜÔ¿
+        /// ï¿½ï¿½Ô¿
         /// </summary>
         private string Key;
 
         protected HttpContext HttpContext;
 
         /// <summary>
-        /// ÇëÇóµÄ²ÎÊý
+        /// ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
         /// </summary>
         protected Hashtable Parameters;
 
         /// <summary>
-        /// debugÐÅÏ¢
+        /// debugï¿½ï¿½Ï¢
         /// </summary>
         private string DebugInfo;
 
         /// <summary>
-        /// ³õÊ¼»¯º¯Êý
+        /// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public virtual void Init()
         {
         }
         /// <summary>
-        /// »ñÈ¡debugÐÅÏ¢
+        /// ï¿½ï¿½È¡debugï¿½ï¿½Ï¢
         /// </summary>
         /// <returns></returns>
         public String GetDebugInfo()
@@ -105,7 +66,7 @@ namespace Dora.Weixin.MP.TenPayLib
             return DebugInfo;
         }
         /// <summary>
-        /// »ñÈ¡ÃÜÔ¿
+        /// ï¿½ï¿½È¡ï¿½ï¿½Ô¿
         /// </summary>
         /// <returns></returns>
         public string GetKey()
@@ -113,7 +74,7 @@ namespace Dora.Weixin.MP.TenPayLib
             return Key;
         }
         /// <summary>
-        /// ÉèÖÃÃÜÔ¿
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         /// </summary>
         /// <param name="key"></param>
         public void SetKey(string key)
@@ -122,7 +83,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// ÉèÖÃ²ÎÊýÖµ
+        /// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½Öµ
         /// </summary>
         /// <param name="parameter"></param>
         /// <param name="parameterValue"></param>
@@ -141,7 +102,7 @@ namespace Dora.Weixin.MP.TenPayLib
 
 
         /// <summary>
-        /// »ñÈ¡package´ø²ÎÊýµÄÇ©Ãû°ü
+        /// ï¿½ï¿½È¡packageï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public string GetRequestURL()
@@ -159,7 +120,7 @@ namespace Dora.Weixin.MP.TenPayLib
                 }
             }
 
-            //È¥µô×îºóÒ»¸ö&
+            //È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½&
             if (sb.Length > 0)
             {
                 sb.Remove(sb.Length - 1, 1);
@@ -171,7 +132,7 @@ namespace Dora.Weixin.MP.TenPayLib
         }
 
         /// <summary>
-        /// ´´½¨md5ÕªÒª,¹æÔòÊÇ:°´²ÎÊýÃû³Æa-zÅÅÐò,Óöµ½¿ÕÖµµÄ²ÎÊý²»²Î¼ÓÇ©Ãû
+        /// ï¿½ï¿½ï¿½ï¿½md5ÕªÒª,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½a-zï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½Ç©ï¿½ï¿½
         /// </summary>
         protected virtual void CreateSign()
         {
@@ -195,13 +156,13 @@ namespace Dora.Weixin.MP.TenPayLib
 
             this.SetParameter("sign", sign);
 
-            //debugÐÅÏ¢
+            //debugï¿½ï¿½Ï¢
             this.SetDebugInfo(sb.ToString() + " => sign:" + sign);
         }
 
 
         /// <summary>
-        /// ´´½¨packageÇ©Ãû
+        /// ï¿½ï¿½ï¿½ï¿½packageÇ©ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public virtual string CreateMd5Sign()
@@ -227,7 +188,7 @@ namespace Dora.Weixin.MP.TenPayLib
 
 
         /// <summary>
-        /// ´´½¨sha1Ç©Ãû
+        /// ï¿½ï¿½ï¿½ï¿½sha1Ç©ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public string CreateSHA1Sign()
@@ -254,14 +215,14 @@ namespace Dora.Weixin.MP.TenPayLib
             }
             string paySign = SHA1UtilHelper.GetSha1(sb.ToString()).ToString().ToLower();
 
-            //debugÐÅÏ¢
+            //debugï¿½ï¿½Ï¢
             this.SetDebugInfo(sb.ToString() + " => sign:" + paySign);
             return paySign;
         }
 
 
         /// <summary>
-        /// Êä³öXML
+        /// ï¿½ï¿½ï¿½XML
         /// </summary>
         /// <returns></returns>
         public string ParseXML()
@@ -289,7 +250,7 @@ namespace Dora.Weixin.MP.TenPayLib
 
 
         /// <summary>
-        /// ÉèÖÃdebugÐÅÏ¢
+        /// ï¿½ï¿½ï¿½ï¿½debugï¿½ï¿½Ï¢
         /// </summary>
         /// <param name="debugInfo"></param>
         public void SetDebugInfo(String debugInfo)

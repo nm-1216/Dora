@@ -1,16 +1,4 @@
-﻿/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-    
-    文件名：SendPicsInfo.cs
-    文件功能描述：系统拍照发图中的SendPicsInfo
-    
-    
-    创建标识：Senparc - 20150211
-    
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-----------------------------------------------------------------*/
-
+﻿
 using System.Collections.Generic;
 
 namespace Dora.Weixin.MP.Entities

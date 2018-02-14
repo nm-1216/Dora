@@ -1,40 +1,3 @@
-#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-    
-    ÎÄ¼şÃû£ºMD5UtilHelper.cs
-    ÎÄ¼ş¹¦ÄÜÃèÊö£º»ñÈ¡´óĞ´µÄMD5Ç©Ãû½á¹û
-    
-    
-    ´´½¨±êÊ¶£ºSenparc - 20150211
-    
-    ĞŞ¸Ä±êÊ¶£ºSenparc - 20150303
-    ĞŞ¸ÄÃèÊö£ºÕûÀí½Ó¿Ú
-
-    ĞŞ¸Ä±êÊ¶£ºSenparc - 20170203
-    ĞŞ¸ÄÃèÊö£ºv14.3.123  ·Ï³ıMD5UtilHelper£¬·½·¨ºÏ²¢µ½
-       Dora.Weixin.Helpers.EncryptHelperÏÂ£¨Dora.Weixin.dllÖĞ£©
-
-----------------------------------------------------------------*/
 
 using System;
 using System.Security.Cryptography;
@@ -44,17 +7,16 @@ using Dora.Helpers;
 namespace Dora.Weixin.MP.Helpers
 {
 	/// <summary>
-    /// MD5UtilHelper µÄÕªÒªËµÃ÷¡£
+    /// MD5UtilHelper 
 	/// </summary>
 	public class MD5UtilHelper
 	{
         /// <summary>
-        /// »ñÈ¡´óĞ´µÄMD5Ç©Ãû½á¹û
+        /// ï¿½ï¿½È¡ï¿½ï¿½Ğ´ï¿½ï¿½MD5Ç©ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="encypStr"></param>
         /// <param name="charset"></param>
         /// <returns></returns>
-        [Obsolete("´Ë·½·¨ÒÑ¹ıÆÚ£¬ÇëÊ¹ÓÃDora.Weixin.Helpers.EncryptHelper.GetMD5(encypStr,charset)")]
         public static string GetMD5(string encypStr, string charset)
         {
             return EncryptHelper.GetMD5(encypStr, charset);

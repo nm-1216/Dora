@@ -1,13 +1,4 @@
-﻿/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-  
-    文件名：AppUtility.cs
-    文件功能描述：获取RequestMessage中ToUserName中的信息
-    
-    
-    创建标识：Senparc - 20150319
-----------------------------------------------------------------*/
-
+﻿
 using Dora.Weixin.MP.Entities;
 
 namespace Dora.Weixin.MP.AppStore.Utility

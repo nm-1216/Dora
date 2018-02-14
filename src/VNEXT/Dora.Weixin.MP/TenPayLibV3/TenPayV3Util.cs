@@ -1,46 +1,3 @@
-#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
- 
-    ÎÄ¼þÃû£ºTenPayV3Util.cs
-    ÎÄ¼þ¹¦ÄÜÃèÊö£ºÎ¢ÐÅÖ§¸¶V3ÅäÖÃÎÄ¼þ
-    
-    
-    ´´½¨±êÊ¶£ºSenparc - 20150211
-    
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20150303
-    ÐÞ¸ÄÃèÊö£ºÕûÀí½Ó¿Ú
-
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20161014
-    ÐÞ¸ÄÃèÊö£ºÐÞ¸ÄTenPayUtil.BuildRandomStr()·½·¨
-
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20170516
-    ÐÞ¸ÄÃèÊö£ºv14.4.8 1¡¢ÍêÉÆTenPayLibV3.GetNoncestr()·½·¨
-                      2¡¢ÓÅ»¯BuildRandomStr()·½·¨
-             
-    ÐÞ¸Ä±êÊ¶£ºSenparc - 20170522
-    ÐÞ¸ÄÃèÊö£ºv14.4.9 ÐÞ¸ÄTenPayUtil.GetNoncestr()·½·¨£¬½«±àÂëÓÉGBK¸ÄÎªUTF8
-
-----------------------------------------------------------------*/
 
 using System;
 using System.Text;
@@ -51,14 +8,14 @@ using Dora.Helpers;
 namespace Dora.Weixin.MP.TenPayLibV3
 {
     /// <summary>
-    /// Î¢ÐÅÖ§¸¶¹¤¾ßÀà
+    /// Î¢ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class TenPayV3Util
     {
         public static Random random = new Random();
 
         /// <summary>
-        /// Ëæ»úÉú³ÉNoncestr
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Noncestr
         /// </summary>
         /// <returns></returns>
         public static string GetNoncestr()
@@ -67,7 +24,7 @@ namespace Dora.Weixin.MP.TenPayLibV3
         }
 
         /// <summary>
-        /// »ñÈ¡Î¢ÐÅÊ±¼ä¸ñÊ½
+        /// ï¿½ï¿½È¡Î¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ê½
         /// </summary>
         /// <returns></returns>
         public static string GetTimestamp()
@@ -77,10 +34,10 @@ namespace Dora.Weixin.MP.TenPayLibV3
         }
 
         /// <summary>
-        /// ¶Ô×Ö·û´®½øÐÐURL±àÂë
+        /// ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="instr"></param>
-        /// <param name="charset">ÔÚ.netstandard1.6ÎÞÐ§</param>
+        /// <param name="charset">ï¿½ï¿½.netstandard1.6ï¿½ï¿½Ð§</param>
         /// <returns></returns>
         public static string UrlEncode(string instr, string charset)
         {
@@ -93,19 +50,11 @@ namespace Dora.Weixin.MP.TenPayLibV3
 
                 try
                 {
-#if NET35 || NET40 || NET45 || NET461
-                    return System.Web.HttpUtility.UrlEncode(instr, Encoding.GetEncoding(charset));
-#else
                     return WebUtility.UrlEncode(instr);
-#endif
                 }
                 catch (Exception ex)
                 {
-#if NET35 || NET40 || NET45 || NET461
-                    return System.Web.HttpUtility.UrlEncode(instr, Encoding.GetEncoding("GB2312"));
-#else
                     return WebUtility.UrlEncode(instr);
-#endif
                 }
 
                 //return res;
@@ -113,7 +62,7 @@ namespace Dora.Weixin.MP.TenPayLibV3
         }
 
         /// <summary>
-        /// ¶Ô×Ö·û´®½øÐÐURL½âÂë
+        /// ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="instr"></param>
         /// <param name="charset"></param>
@@ -128,42 +77,29 @@ namespace Dora.Weixin.MP.TenPayLibV3
 
                 try
                 {
-#if NET35 || NET40 || NET45 || NET461
-                    return System.Web.HttpUtility.UrlDecode(instr, Encoding.GetEncoding(charset));
-#else
                     return WebUtility.UrlDecode(instr);
-#endif
                 }
                 catch (Exception ex)
                 {
-#if NET35 || NET40 || NET45 || NET461
-                    return System.Web.HttpUtility.UrlDecode(instr, Encoding.GetEncoding("GB2312"));
-#else
                     return WebUtility.UrlDecode(instr);
-#endif
                 }
-                //return res;
 
             }
         }
 
 
         /// <summary>
-        /// È¡Ê±¼ä´ÁÉú³ÉËæ¼´Êý,Ìæ»»½»Ò×µ¥ºÅÖÐµÄºó10Î»Á÷Ë®ºÅ
+        /// È¡Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¼´ï¿½ï¿½,ï¿½æ»»ï¿½ï¿½ï¿½×µï¿½ï¿½ï¿½ï¿½ÐµÄºï¿½10Î»ï¿½ï¿½Ë®ï¿½ï¿½
         /// </summary>
         /// <returns></returns>
         public static UInt32 UnixStamp()
         {
-#if NET35 || NET40 || NET45 || NET461
-            TimeSpan ts = DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-#else
             TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1);
-#endif
             return Convert.ToUInt32(ts.TotalSeconds);
         }
 
         /// <summary>
-        /// È¡Ëæ»úÊý
+        /// È¡ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
@@ -196,13 +132,13 @@ namespace Dora.Weixin.MP.TenPayLibV3
         }
 
         /// <summary>
-        /// ´´½¨µ±ÌìÄÚ²»»áÖØ¸´µÄÊý×Ö
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
         public static string BuildDailyRandomStr(int length)
         {
-            var stringFormat = DateTime.Now.ToString("HHmmss0000");//¹²10Î»
+            var stringFormat = DateTime.Now.ToString("HHmmss0000");//ï¿½ï¿½10Î»
 
             return stringFormat;
         }
