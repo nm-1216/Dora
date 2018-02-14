@@ -1,94 +1,4 @@
-﻿#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
- 
-    文件名：TenPayV3.cs
-    文件功能描述：微信支付V3接口
-    
-    
-    创建标识：Senparc - 20150211
-    
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-
-    修改标识：Senparc - 20160707
-    修改描述：增加撤销订单接口：Reverse
-
-    修改标识：Senparc - 20160720
-    修改描述：增加其接口的异步方法
-              
-    修改标识：Senparc - 20161202
-    修改描述：v14.3.109 命名空间由Dora.Weixin.MP.AdvancedAPIs改为Dora.Weixin.MP.TenPayLibV3
-
-    修改标识：Senparc - 20161203
-    修改描述：v14.3.110 增加Unifiedorder方法重载和TenPayV3RequestData类
-
-    修改标识：Senparc - 20161204
-    修改描述：v14.3.111 启用TenPayV3Result用于解析统一下单返回Xml数据
-
-    修改标识：Senparc - 20161205
-    修改描述：v14.3.110 增加UnifiedorderAsync方法重载
-
-    修改标识：Senparc - 20161226
-    修改描述：v14.3.111 增加OrderQuery,CloseOrder方法重载
-
-    修改标识：Senparc - 20161226
-    修改描述：v14.3.112 增加Reverse,RefundQuery,ShortUrl,MicroPay方法重载
-
-    修改标识：Ritazh - 20161207
-    修改描述：v14.3.112 迁移企业支付方法
-
-    修改标识：Ritazh - 20161207
-    修改描述：v14.3.112 迁移企业支付方法
-
-    修改标识：Senparc - 20170215
-    修改描述：v14.3.126 增加 Transfers和TransfersAsync方法重载
-
-    修改标识：Senparc - 20170215
-    修改描述：v14.3.126 增加 GetTransferInfo和GetTransferInfoAsync方法重载
-
-    修改标识：Senparc - 20170215
-    修改描述：v14.3.126 增加 DownloadBill和DownloadBillAsync方法重载
-    
-    修改标识：Senparc - 20170508
-    修改描述：v14.4.6 1、修复企业付款接口无法指定证书的问题（TenpayV3.Transfers）
-                      2、添加CertPost()及配套异步方法
-    
-    修改标识：Senparc - 20170815
-    修改描述：v14.4.6 增加 ReverseAsync 方法重载
-    
-    修改标识：Senparc - 20170815
-    修改描述：v14.6.1 撤销订单接口（TenPayV3.Reverse()）添加证书设置
-        
-    修改标识：Senparc - 20170916
-    修改描述：v14.7.0 TenPayV3的接口添加对 UseSandBoxPay 的判断，可以自动使用沙箱
-
-----------------------------------------------------------------*/
-
-/*
-    官方API：https://mp.weixin.qq.com/paymch/readtemplate?t=mp/business/course2_tmpl&lang=zh_CN&token=25857919#4
- */
-
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -135,7 +45,6 @@ namespace Dora.Weixin.MP.TenPayLibV3
             }
         }
 
-#if !NET35 && !NET40
         /// <summary>
         /// 【异步方法】带证书提交
         /// </summary>
@@ -162,7 +71,7 @@ namespace Dora.Weixin.MP.TenPayLibV3
                 return responseContent;
             }
         }
-#endif
+
         /// <summary>
         /// 返回可用的微信支付地址（自动判断是否使用沙箱）
         /// </summary>
@@ -660,7 +569,6 @@ namespace Dora.Weixin.MP.TenPayLibV3
 
         #endregion
 
-#if !NET35 && !NET40
         #region 异步方法
         /// <summary>
         /// 【异步方法】统一支付接口
@@ -1102,6 +1010,5 @@ namespace Dora.Weixin.MP.TenPayLibV3
         }
 
         #endregion
-#endif
     }
 }

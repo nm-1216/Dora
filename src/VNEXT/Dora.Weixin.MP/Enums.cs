@@ -1,86 +1,4 @@
-﻿#region Apache License Version 2.0
-/*----------------------------------------------------------------
-
-Copyright 2017 Jeffrey Su & Suzhou Senparc Network Technology Co.,Ltd.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-except in compliance with the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the
-License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-either express or implied. See the License for the specific language governing permissions
-and limitations under the License.
-
-Detail: https://github.com/JeffreySu/WeiXinMPSDK/blob/master/license.md
-
-----------------------------------------------------------------*/
-#endregion Apache License Version 2.0
-
-/*----------------------------------------------------------------
-    Copyright (C) 2017 Senparc
-  
-    文件名：Enums.cs
-    文件功能描述：枚举类型
-    
-    
-    创建标识：Senparc - 20150211
-    
-    修改标识：Senparc - 20150303
-    修改描述：整理接口
-
-    修改标识：Senparc - 20150306
-    修改描述：添加多客服事件
-
-    修改标识：Senparc - 20150313
-    修改描述：添加语言类型
-
-    修改标识：Senparc - 20150323
-    修改描述：卡券新增会议门票类型
-
-    修改标识：Senparc - 20150327
-    修改描述：接收消息类型添加小视频类型
-
-    修改标识：马鑫 - 20150331
-    修改描述：修改返回错误码
-
-    修改标识：Senparc - 20150331
-    修改描述：应用授权作用域移至此处
-
-    修改标识：Senparc - 20150512
-    修改描述：添加摇一摇周边【关联操作标志位】、【新增操作标志位】枚举类型
- 
-    修改标识：Senparc - 20160803
-    修改描述：将其卡券中的 code_type 定义完整
- 
-    修改标识：Senparc - 20160901
-    修改描述：v14.3.7 增加QrCode_ActionName枚举
-
-    修改标识：Senparc - 20161024
-    修改描述：v14.3.1024 添加RedPack_Scene枚举
-
-    修改标识：Senparc - 20161204
-    修改描述：v14.3.1025 添加TenPayV3CodeState枚举[统一订单返回状态]
-
-    修改标识：Senparc - 20170106
-    修改描述：v14.3.117 ResponseMsgType添加SuccessResponse枚举
-
-    修改标识：Senparc - 20170328
-    修改描述：v14.3.139 ButtonType添加小程序类型
-
-    修改标识：Senparc - 20170807
-    修改描述：v14.5.7 添加TenPayV3Type.MWEB枚举，支持H5支付
-
-    修改标识：Senparc - 20170826
-    修改描述：v14.6.8 添加Event下“微信认证事件推送”一系列事件类型
-
-    修改标识：Senparc - 20171108
-    修改描述：v14.8.5 卡券MemberCard_CustomField_NameType枚举添加FIELD_NAME_TYPE_UNKNOW类型
-
-----------------------------------------------------------------*/
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Dora.Weixin.MP
 {
@@ -432,22 +350,6 @@ namespace Dora.Weixin.MP
     }
 
 
-    ///// <summary>
-    ///// 群发消息返回状态
-    ///// </summary>
-    //public enum GroupMessageStatus
-    //{
-    //    //高级群发消息的状态
-    //    涉嫌广告 = 10001,
-    //    涉嫌政治 = 20001,
-    //    涉嫌社会 = 20004,
-    //    涉嫌色情 = 20002,
-    //    涉嫌违法犯罪 = 20006,
-    //    涉嫌欺诈 = 20008,
-    //    涉嫌版权 = 20013,
-    //    涉嫌互推 = 22000,
-    //    涉嫌其他 = 21000
-    //}
 
     /// <summary>
     /// 支付类型
