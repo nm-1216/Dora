@@ -121,10 +121,14 @@
         #endregion
 
         #region 分配任务
+        
+        /*
         public IActionResult SetGroup(string syllabusId, string groupId)
         {
             return View();
         }
+        
+        */
 
         /// <summary>
         /// Sets the teacher().

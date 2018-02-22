@@ -104,6 +104,20 @@ namespace Dora.School.Controllers
 
         #endregion
 
+        #region Denied
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Denied(string returnUrl = null)
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToLocal(returnUrl);
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        #endregion
+        
         #region Register
         [HttpGet]
         [AllowAnonymous]
@@ -128,7 +142,7 @@ namespace Dora.School.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
 
-                    return Content("²Ù×÷³É¹¦");
+                    return Content("ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½");
                     //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

@@ -343,7 +343,7 @@
 
             return Content("操作成功");
         }
-
+/*
         #region Register
         [HttpGet]
         [AllowAnonymous]
@@ -379,7 +379,7 @@
         }
         #endregion
 
-
+*/
         #region Helpers
 
 
