@@ -1,7 +1,3 @@
-/*
-var base = 'http://localhost:50772/Api'
-var base = 'http://116.62.235.138:81/Api'
-*/
 import axios from 'axios'
 const Qs = require('qs')
 
@@ -17,4 +13,9 @@ if (process.env.NODE_ENV === 'development') {
 
 export const GetCourseList = params => { return axios.get(`${base}/GetCourseList`, {params: params}) }
 export const CreateCourse = params => { return axios.post(`${base}/CreateCourse`, Qs.stringify(params)) }
-
+export const GetSpecialty = params => { return axios.get(`${base}/GetSpecialty`, { params: params }) }
+export const Register = params => { return axios.post(`${base}/Register`, Qs.stringify(params)) }
+export const GetUserInfo = params => { return axios.get(`${base}/GetUserInfo`, { params: params }) }
+export const EditUserInfo = params => { return axios.post(`${base}/EditUserInfo`, Qs.stringify(params)) }
+export const GetActivity = params => { return axios.get(`${base}/GetActivity`, { params: params }) }
+export const GetActivityDetails = params => { return axios.get(`${base}/GetActivityDetails`, { params: params }) }
