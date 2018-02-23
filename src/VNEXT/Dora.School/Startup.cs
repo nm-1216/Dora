@@ -1,4 +1,6 @@
-﻿namespace Dora.School
+﻿using Dora.wx;
+
+namespace Dora.School
 {
     using Dora.Domain.Entities.Application;
     using Dora.Domain.Entities.School;
@@ -24,7 +26,7 @@
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -65,16 +67,11 @@
             });
 
             services.AddMvc();
+            
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<WxConfig>(Configuration.GetSection("wx"));
 
-            services.Configure<AppSettings>(options =>
-            {
-                options.SiteTitle = Configuration["AppSettings:SiteTitle"];
-                options.FrameWorkName = Configuration["AppSettings:FrameWorkName"];
-                options.FrameWorkVersion = Configuration["AppSettings:FrameWorkVersion"];
-                options.AppName = Configuration["AppSettings:AppName"];
-                options.AppVersion = Configuration["AppSettings:AppVersion"];
-                options.FrameWorkWeb = Configuration["AppSettings:FrameWorkWeb"];
-            });
+            
             services.AddScoped<DbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProfessionalService, ProfessionalService>();
