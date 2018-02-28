@@ -87,6 +87,9 @@ namespace Dora.Database
         public DbSet<TeachingPlanLog> TeachingPlanLogs { get; set; }
         public DbSet<TeachingPlanApproval> TeachingPlanApprovals { get; set; }
         public DbSet<TeachingPlanDetail> TeachingPlanDetails { get; set; }
+        public DbSet<TeachingPlanClass> TeachingPlanClasses { get; set; }
+        public DbSet<TeachingPlanTeacher> TeachingPlanTeachers { get; set; }
+
         #endregion
 
 

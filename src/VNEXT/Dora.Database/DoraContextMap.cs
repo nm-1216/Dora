@@ -53,7 +53,6 @@ namespace Dora.Database
             builder.AddConfiguration(new BasicDataMap());
             builder.AddConfiguration(new CoachRecordMap());
             builder.AddConfiguration(new CourseMap());
-            //builder.AddConfiguration(new CourseClassTeacherMap());
             builder.AddConfiguration(new CourseProfessionalMap());
             builder.AddConfiguration(new ProfessionalMap());
             builder.AddConfiguration(new PublicClassRoomMap());
@@ -106,6 +105,8 @@ namespace Dora.Database
             builder.AddConfiguration(new TeachingPlanLogMap());
             builder.AddConfiguration(new TeachingPlanApprovalMap());
             builder.AddConfiguration(new TeachingPlanDetailMap());
+            builder.AddConfiguration(new TeachingPlanClassMap());
+            builder.AddConfiguration(new TeachingPlanTeacherMap());
 
             #endregion
 
