@@ -67,6 +67,11 @@ namespace Dora.Domain.Entities.School
         public virtual Course Course { get; set; }
 
         /// <summary>
+        /// 是否下发，推送
+        /// </summary>
+        public virtual bool IsPush { get; set; } = false;
+
+        /// <summary>
         /// 班级
         /// </summary>
         public virtual ICollection<TeachingTaskClass> Classes { get; set; }

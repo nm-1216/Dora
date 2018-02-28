@@ -29,24 +29,15 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual string TeachingPlanId { get; set; }
 
+        /// <summary>
+        /// 教学任务ID
+        /// </summary>
+        public virtual string TeachingTaskId { get; set; }
 
         /// <summary>
         /// Gets or sets 课程信息表自增主键 
         /// </summary>
         public virtual string CourseId { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets TIID 此授课计划对应的维护人员
-        /// </summary>
-        public virtual string TeacherId { get; set; }
-
-
-        /// <summary>
-        /// Gets or sets 班级信息表自增主键 
-        /// </summary>
-        public virtual string ClassId { get; set; }
-
 
         /// <summary>
         /// Gets or sets Term 学年 17-18-1,17-18-2
@@ -94,15 +85,8 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual Course Course { get; set; }
 
-        /// <summary>
-        /// Gets or sets TIID 此授课计划对应的维护人员
-        /// </summary>
-        public virtual Teacher Teacher { get; set; }
-
-        /// <summary>
-        /// Gets or sets 课程信息表自增主键 
-        /// </summary>
-        public virtual Class Class { get; set; }
+        public virtual ICollection<TeachingPlanTeacher> Teacher { get; set; }
+        public virtual ICollection<TeachingPlanClass> Class { get; set; }
         public virtual ICollection<TeachingPlanApproval> TeachingPlanApprovals { get; set; }
         public virtual ICollection<TeachingPlanLog> TeachingPlanLogs { get; set; }
         public virtual ICollection<TeachingPlanDetail> TeachingPlanDetails { get; set; }
