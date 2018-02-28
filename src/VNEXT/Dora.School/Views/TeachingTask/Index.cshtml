@@ -81,6 +81,7 @@
                                 <td>@item.Memo</td>   
 
                                 <td class="text-right"> 
+                                    <a data-content-id="@item.TeachingTaskId" class="btn btn-info btn-xs btnPush">下发</a>
                                     <a asp-action="Edit" asp-route-id="@item.TeachingTaskId" class="btn btn-primary btn-xs">修改</a> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-danger btn-xs btnDel">删除</a>
                               
@@ -127,7 +128,59 @@
                     layer.msg(data.msg);
                 }
             };
-             
+
+            //下发
+            $('.btnPush').on('click', function () {
+                console.log('btnDel')
+                var id = $(this).attr('data-content-id');
+
+                layer.confirm('确认要下发吗？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    $.ajax({
+                        url: '/TeachingTask/Push',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result == 1) {
+                                layer.closeAll();
+                                layer.msg(data.msg, {
+                                    time: 2000, end: function () {
+                                        location.href = location.href;
+                                    }
+                                }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function () {
+                            console.log('结束')
+                        }
+                    })
+                }, function () {
+                    return
+                });
+            })
+
+
             $('.btnDel').on('click', function () {
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');

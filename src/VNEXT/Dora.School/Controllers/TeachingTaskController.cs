@@ -25,18 +25,21 @@
     {
         private IClassService _ClassService;
         private ITeachingTaskService _TeachingTaskService;
+        private ITeachingPlanService _TeachingPlanService;
         private ICourseService _CourseService;
         private ISyllabusTeacherService _SyllabusTeacherService;
 
         public TeachingTaskController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
          , IClassService classService
          , ITeachingTaskService teachingTaskService
+         , ITeachingPlanService teachingPlanService
          , ICourseService CourseService
          , ISyllabusTeacherService SyllabusTeacherService
             ) : base(roleManager, userManager, loggerFactory)
         {
             _ClassService = classService;
             _TeachingTaskService = teachingTaskService;
+            _TeachingPlanService = teachingPlanService;
             _CourseService = CourseService;
             _SyllabusTeacherService = SyllabusTeacherService;
         }
@@ -467,6 +470,56 @@
             }
         }
 
-      
+        [HttpPost]
+        public async Task<IActionResult> Push(string id)
+        {
+            var model = _TeachingTaskService.GetAll().Include(r=> r.Classes).Include(r=> r.Teachers).Where(b => b.TeachingTaskId == id).FirstOrDefault();
+            if (model != null)
+            {
+                TeachingPlan tp = new TeachingPlan();
+                tp.TeachingTaskId = id;
+                tp.CourseId = model.CourseId;
+                tp.Term = model.Term;
+                tp.UseSta = 0;
+                tp.SubSta = 0;
+
+                #region class
+                var _class = new List<TeachingPlanClass>();  
+
+                if (model.Classes!=null)
+                {
+                    foreach (var item in model.Classes)
+                    {
+                        _class.Add(new TeachingPlanClass() { ClassId = item.ClassId });
+                    }
+                }
+                tp.Class = _class;
+                #endregion
+
+                #region teacher
+                var _teacher = new List<TeachingPlanTeacher>();
+
+                if (model.Teachers != null)
+                {
+                    foreach (var item in model.Teachers)
+                    {
+                        _teacher.Add(new TeachingPlanTeacher() { TeacherId = item.TeacherId });
+                    }
+                }
+                tp.Teacher = _teacher;
+                #endregion
+
+                await _TeachingPlanService.Add(tp);
+
+                model.IsPush = true;
+                await _TeachingTaskService.Update(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
     }
 }

@@ -99,7 +99,8 @@ namespace Dora.School
             services.AddTransient<IPersonnelTrainingService, PersonnelTrainingService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<ITeachingTaskService, TeachingTaskService>();
-             
+            services.AddTransient<ITeachingPlanService, TeachingPlanService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
