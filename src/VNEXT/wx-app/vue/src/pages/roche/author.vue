@@ -1,6 +1,5 @@
 <template>
 <div>
-  author
 </div>
 </template>
 

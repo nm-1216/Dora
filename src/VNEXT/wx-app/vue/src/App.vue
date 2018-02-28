@@ -40,7 +40,7 @@ export default {
 
 <style lang="less">
 @import '~vux/src/styles/reset.less';
-html, body {
+html, body, #app {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
