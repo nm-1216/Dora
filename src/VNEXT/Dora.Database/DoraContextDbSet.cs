@@ -18,7 +18,13 @@ namespace Dora.Database
 
         //#endregion
 
+        #region System
+        //public DbSet<Class> Classes { get; set; }
+        //public DbSet<Course> Courses { get; set; }
+        //public DbSet<SchoolUser> SchoolUsers { get; set; }
+        //public DbSet<SchoolUserInClass> SchoolUserInClass { get; set; }
 
+        #endregion
 
 
         #region School

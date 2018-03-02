@@ -1,4 +1,4 @@
-﻿namespace Dora.Domain.Mapping.School
+﻿namespace Dora.Domain.Mapping.System
 {
     using Dora.Infrastructure.Features.Common;
     using Entities.School;
@@ -14,16 +14,16 @@
 
             ///Properties
             builder.Property(b => b.Name).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.AppLev).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.Nature).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.Type).HasMaxLength(Constants.INT256).IsRequired();
-            builder.Property(b => b.Discription).HasMaxLength(Constants.INT4000).IsRequired();
+
 
             ///Table & Column Mappings
             builder.ToTable("School_Course");
+            builder.Property(b => b.CourseId).HasColumnName("CourseId");
+            builder.Property(b => b.Name).HasColumnName("Name");
+
 
             ///Relationships
-            builder.HasOne(b => b.Department).WithMany().HasForeignKey(b => b.OrganizationId);
+            //builder.HasMany(b => b.Classes).WithOne(b => b.Course).HasForeignKey(b => b.CourseId);
         }
     }
 }
