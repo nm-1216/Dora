@@ -1,22 +1,14 @@
 ﻿namespace Dora.School.Controllers
 {
-    using Dora.Core;
     using Dora.Domain.Entities.School;
     using Dora.Services.School.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using NPOI.HSSF.UserModel;
-    using NPOI.SS.UserModel;
-    using NPOI.XSSF.UserModel;
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -24,14 +16,19 @@
     {
         private ITeachingPlanService _TeachingPlanService;
         private ITeachingPlanDetailService _TeachingPlanDetailService;
+        private ICourseService _CourseService;
 
-        public TeachingPlanController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
-     , ITeachingPlanService TeachingPlanService
-     , ITeachingPlanDetailService TeachingPlanDetailService
-     ) : base(roleManager, userManager, loggerFactory)
+        public TeachingPlanController(
+            RoleManager<SchoolRole> roleManager,
+            UserManager<SchoolUser> userManager,
+            ILoggerFactory loggerFactory,
+            ITeachingPlanService TeachingPlanService,
+            ICourseService courseService,
+            ITeachingPlanDetailService TeachingPlanDetailService) : base(roleManager, userManager, loggerFactory)
         {
             _TeachingPlanService = TeachingPlanService;
             _TeachingPlanDetailService = TeachingPlanDetailService;
+            _CourseService = courseService;
         }
 
         public IActionResult Index()
@@ -47,15 +44,22 @@
         /// <param name="id">TeachingPlanID</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            var model = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).Where(b => b.TeachingPlanId == id).FirstOrDefault();
+            var model = _TeachingPlanService.GetAll()
+                .Include(b => b.Course)
+                .Include(b => b.Teacher)
+                .FirstOrDefault(b => b.TeachingPlanId == id);
 
-            ViewBag.Detail = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanId == id)
-                .OrderBy(r=>r.Order)
-                .ToList();
+            var xx = _CourseService.Find(b => b.CourseId == model.CourseId);
 
-            return View(model);
+            model.Course = xx;
+
+            await _TeachingPlanService.Update(model);
+
+            var list = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanId == id).OrderBy(r => r.Order);
+            ViewBag.model = model;
+            return View(list);
         }
 
         // POST: TeachingTask/Edit/5
@@ -67,13 +71,13 @@
 
             IList<TeachingPlanDetail> list = new List<TeachingPlanDetail>();
 
-             int Period = Convert.ToInt32(tp.Course.Period);
+            int Period = Convert.ToInt32(tp.Course.Period);
             //int Period = 64;
             for (int i = 0; i < Period / 2; i++)
             {
                 TeachingPlanDetail item = new TeachingPlanDetail();
-                item.TeachingPlanId = model.TeachingPlanId; 
-                item.Order = i + 1; 
+                item.TeachingPlanId = model.TeachingPlanId;
+                item.Order = i + 1;
                 list.Add(item);
             }
             await _TeachingPlanDetailService.AddRange(list);

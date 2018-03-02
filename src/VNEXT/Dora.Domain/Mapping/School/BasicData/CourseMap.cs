@@ -24,6 +24,8 @@
 
             ///Relationships
             builder.HasOne(b => b.Department).WithMany().HasForeignKey(b => b.OrganizationId);
+            builder.HasMany(b => b.TeachingPlans).WithOne(b => b.Course).HasForeignKey(b => b.CourseId);
+
         }
     }
 }
