@@ -67,8 +67,8 @@
 
             IList<TeachingPlanDetail> list = new List<TeachingPlanDetail>();
 
-            // int Period = Convert.ToInt32(tp.Course.Period);
-            int Period = 64;
+             int Period = Convert.ToInt32(tp.Course.Period);
+            //int Period = 64;
             for (int i = 0; i < Period / 2; i++)
             {
                 TeachingPlanDetail item = new TeachingPlanDetail();
