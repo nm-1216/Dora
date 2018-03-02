@@ -43,8 +43,46 @@
        
     </div>
 
-    @*<input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
-    @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, ViewBag.Detail.CurrPage, ViewBag.Detail.PageSize, ViewBag.Detail.PageCount, ViewBag.Detail.RecordCount))*@
-
 
 </div>
+<!--参照Start-->
+<div class="DivSyllabusPeriod" style="display:none">
+    <div id="myTabContent" class="tab-content">
+        <form id="CreateSyllabusPeriod" asp-action="CreateSyllabusPeriod" method="post">
+            <input type="hidden" name="SyllabusId" value="@Model.TeachingPlanId" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>单元序号：</th>
+                        <th>讲授课时：</th>
+                        <th>实验课时：</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input name="UnitOrdNum" class="form-control" /></td>
+                        <td><input name="TeaPer" class="form-control" /></td>
+                        <td><input name="ExpPer" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">课程内容：</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            @*<input name="CouCon" class="form-control" type="text"/>*@
+                            <textarea name="CouCon" class="form-control" style="height:150px"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </form>
+    </div>
+</div>
+<!--参照End-->

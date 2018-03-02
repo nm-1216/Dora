@@ -47,13 +47,12 @@
         /// <param name="id">TeachingPlanID</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(string id)
+        public IActionResult Edit(string id, int page = 1)
         {
             var model = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).Where(b => b.TeachingPlanId == id).FirstOrDefault();
 
             ViewBag.Detail = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanId == id)
-                .OrderBy(r=>r.Order)
-                .ToList();
+                .OrderBy(r => r.Order).ToList();
 
             return View(model);
         }
