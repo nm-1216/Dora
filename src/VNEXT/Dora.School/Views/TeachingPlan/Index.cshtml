@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TeachingPlan>
+@{
+    ViewData["Title"] = "教学计划维护";
+}
+
+
+@section styles{
+    <style type="text/css">
+        .BookShelf {
+            background-image: url(/Images/Syllabus/1.png);
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: bottom center;
+            -moz-background-size: 100% 100%;
+            height: 300px;
+        }
+
+            .BookShelf .col-sm-3 {
+                text-align: center;
+                padding-left: 40px;
+                padding-right: 40px;
+                padding-top: 50px;
+                position: relative;
+            }
+
+            .BookShelf img {
+                width: 88%;
+            }
+
+        .BookName {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            font-weight: bold;
+            text-align: center;
+            z-index: 2;
+            font-family: "\5FAE\8F6F\96C5\9ED1";
+        }
+
+        .BookAuthor {
+            position: absolute;
+            left: 0;
+            top: 80%;
+            width: 100%;
+            font-size: 12px;
+            font-family: "宋体";
+            text-align: center;
+            z-index: 2;
+        }
+
+        .YouChuo {
+            background-image: url(/Images/Syllabus/33.png);
+            background-size: 100% auto;
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            right: 20%;
+            bottom: 10px;
+        }
+    </style>
+
+
+}
+
+<div class="container-fluid">
+    <div class="row">
+        @{
+            int colCount = (Model.Count() % 4 == 0) ? (Model.Count() / 4) : (Model.Count() / 4 + 1);
+        }
+        @for (int i = 0; i < colCount; i++)
+        {
+            <div class="col-sm-12 BookShelf">
+                @foreach (var item in Model.Skip(i * 4).Take(4))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.TeachingPlanId">
+                        <div class="col-sm-3">
+                            <img src="~/Images/Syllabus/2.png" />
+                            <div class="BookName">@item.CourseId</div>
+                            <div class="BookAuthor">@item.Term</div>
+                            <div class="YouChuo"></div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+
+
+
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+
+    </script>
+}

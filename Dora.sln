@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6E1EE1A1-E92D-4443-AF62-10119A2B6AB3}"
 EndProject
@@ -59,6 +59,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wx-app", "src\VNEXT\wx-app\
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "50777"
+		SlnRelativePath = "src\VNEXT\wx-app\"
 	EndProjectSection
 EndProject
 Global
@@ -115,6 +116,10 @@ Global
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F62469-BDB3-4BDA-A36D-26EC781AE4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F62469-BDB3-4BDA-A36D-26EC781AE4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F62469-BDB3-4BDA-A36D-26EC781AE4CE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F62469-BDB3-4BDA-A36D-26EC781AE4CE}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

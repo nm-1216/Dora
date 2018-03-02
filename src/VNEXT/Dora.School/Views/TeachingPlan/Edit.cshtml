@@ -1,0 +1,50 @@
+﻿@model TeachingPlan
+@{
+    ViewData["Title"] = "教学计划维护";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="TeachingPlanId" />
+                <div class="page-header">
+                    <h1><small>@Model.Term</small></h1>
+                </div>
+                <div style="padding-bottom:15px;text-align:right">
+                    <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="批量" />
+                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="参照" id="btnSyllabusBook" data-content-id="@Model.TeachingPlanId" />
+                </div>
+
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>授课序号</th> 
+
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Detail)
+                        {
+                            <tr> 
+                                <td>@item.Order</td> 
+                                <td class="text-right"> 
+                                    <a data-content-id="@item.TeachingPlanDetailId" class="btn btn-primary btn-xs btnEdit">修改</a> 
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+       
+    </div>
+
+    <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+    @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, ViewBag.Detail.CurrPage, ViewBag.Detail.PageSize, ViewBag.Detail.PageCount, ViewBag.Detail.RecordCount))
+
+
+</div>

@@ -100,6 +100,7 @@ namespace Dora.School
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<ITeachingTaskService, TeachingTaskService>();
             services.AddTransient<ITeachingPlanService, TeachingPlanService>();
+            services.AddTransient<ITeachingPlanDetailService, TeachingPlanDetailService>();
 
         }
 
