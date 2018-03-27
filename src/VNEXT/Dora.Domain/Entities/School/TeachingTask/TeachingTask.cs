@@ -61,16 +61,19 @@ namespace Dora.Domain.Entities.School
         /// </summary>
         public virtual string CourseId { get; set; }
 
-        /// <summary>
-        /// 课程
-        /// </summary>
-        public virtual Course Course { get; set; }
+
 
         /// <summary>
         /// 是否下发，推送
         /// </summary>
         public virtual bool IsPush { get; set; } = false;
 
+        
+        /// <summary>
+        /// 课程
+        /// </summary>
+        public virtual Course1 Course { get; set; }
+        
         /// <summary>
         /// 班级
         /// </summary>

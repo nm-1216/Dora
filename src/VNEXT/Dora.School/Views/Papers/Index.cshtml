@@ -1,0 +1,276 @@
+﻿@model IEnumerable<Papers>
+
+@{
+    ViewData["Title"] = "试卷管理";
+    Layout = "_Layout";
+}
+
+@section styles
+{
+
+}
+
+<div class="CreateDiv" style="display: none">
+    <form id="CreateRole" asp-action="Create" method="post">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <Td>名称</Td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="CreateDivTitle" name="Title" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <Td>描述</Td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea id="CreateDivDescription" name="Description" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <button class="btn btn-danger" style="width: 120px" type="submit">提交</button>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </form>
+</div>
+<div class="EditDiv" style="display: none">
+    <form id="EditRole" asp-action="Edit" method="post">
+        <input type="hidden" id="EditDivId" name="PaperId"/>
+
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <Td>名称</Td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="EditDivTitle" name="Title" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <Td>描述</Td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea id="EditDivDescription" name="Description" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <button class="btn btn-danger" style="width: 120px" type="submit">提交</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding-top: 10px;">
+            <div class="col-sm-1 col-sm-offset-11">
+                <a class="btn btn-block btn-danger btnAdd">添加</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th class="text-right">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="subject-item">
+                            <td>@item.Title</td>
+                            <td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
+                            <td class="text-right">
+                                <a asp-action="Questions" asp-route-id="@item.PaperId" class="btn btn-primary btn-xs">题目管理</a>
+                                <a data-content-id="@item.PaperId" data-content-title="@item.Title" data-content-description="@item.Description" class="btn btn-primary btn-xs btnEdit">修改</a> |
+                                <a data-content-id="@item.PaperId" class="btn btn-danger btn-xs btnDel">删除</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        $(function() {
+            var options = {
+                //target: '#output',          //把服务器返回的内容放入id为output的元素中
+                //beforeSubmit: showRequest,  //提交前的回调函数
+                success: showResponse, //提交后的回调函数
+                //url: url,                 //默认是form的action， 如果申明，则会覆盖
+                type: 'post', //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json', //html(默认), xml, script, json...接受服务端返回的类型
+                //clearForm: true,          //成功提交后，清除所有表单元素的值
+                //resetForm: true,          //成功提交后，重置所有表单元素的值
+                timeout: 3000 //限制请求的时间，当请求大于3秒后，跳出请求
+            }
+
+            function showResponse(responseText, statusText) {
+                console.log("responseText", responseText);
+                console.log("statusText", statusText);
+                var data = responseText;
+                if (data.result === 0) {
+                    layer.closeAll();
+                    layer.msg(data.msg,
+                        {
+                            time: 2000,
+                            end: function() {
+                                location.href = location.href;
+                            }
+                        }
+                    )
+                } else {
+                    layer.msg(data.msg);
+                }
+            };
+
+            $("#CreateRole").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+            $("#EditRole").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+            $('.btnDel').on('click',
+                function() {
+                    console.log('btnDel')
+                    var id = $(this).attr('data-content-id');
+                    
+                    layer.confirm('数据不可恢复，您确认要删除数据吗？', {
+                        btn: ['确定','取消'] //按钮
+                    }, function(){
+                        $.ajax({
+                            url: '/Papers/Delete',
+                            type: 'POST',
+                            async: true,
+                            data: {
+                                id: id
+                            },
+                            timeout: 5000,
+                            dataType: 'json',
+                            beforeSend: function(xhr) {
+                                console.log(xhr)
+                                console.log('发送前')
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                console.log(data)
+                                console.log(textStatus)
+                                console.log(jqXHR)
+                                if (data.result === 0) {
+                                    layer.closeAll();
+                                    layer.msg(data.msg,
+                                        {
+                                            time: 2000,
+                                            end: function() {
+                                                location.href = location.href;
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            },
+                            error: function(xhr, textStatus) {
+                                console.log('错误')
+                                console.log(xhr)
+                                console.log(textStatus)
+                            },
+                            complete: function() {
+                                console.log('结束')
+                            }
+                        })
+                        
+                    }, function(){
+                        
+                    });
+                    
+                    
+                })
+            $('.btnClone').on('click',
+                function() {
+                    console.log('btnDel')
+                    var id = $(this).attr('data-content-id');
+                    $.ajax({
+                        url: '/Survey/Clone',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function(xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result === 0) {
+                                layer.closeAll();
+                                layer.msg(data.msg,
+                                    {
+                                        time: 2000,
+                                        end: function() {
+                                            location.href = location.href;
+                                        }
+                                    }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function(xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function() {
+                            console.log('结束')
+                        }
+                    })
+                })
+            $('.btnEdit').on('click',
+                function() {
+                    $('#EditDivId').val($(this).attr('data-content-id'));
+                    $('#EditDivTitle').val($(this).attr('data-content-title'));
+                    $('#EditDivDescription').val($(this).attr('data-content-description'));
+
+                    DivLayer(1, '编辑问卷', $('.EditDiv'))
+                })
+            $('.btnAdd').on('click',
+                function() {
+                    $('#CreateDivName').val('')
+                    $('#CreateDivIndex').val('')
+                    DivLayer(1, '新添问卷', $('.CreateDiv'))
+                })
+
+
+        })
+
+    </script>
+}

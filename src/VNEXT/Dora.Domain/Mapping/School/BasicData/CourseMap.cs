@@ -5,9 +5,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class CourseMap : EntityBaseConfiguration<Course>
+    public class CourseMap : EntityBaseConfiguration<Course1>
     {
-        public override void ConfigureDerived(EntityTypeBuilder<Course> builder)
+        public override void ConfigureDerived(EntityTypeBuilder<Course1> builder)
         {
             ///Primary Key
             builder.HasKey(b => new { b.CourseId });
@@ -20,10 +20,13 @@
             builder.Property(b => b.Discription).HasMaxLength(Constants.INT4000).IsRequired();
 
             ///Table & Column Mappings
-            builder.ToTable("School_Course");
+            builder.ToTable("School_Course1");
 
             ///Relationships
             builder.HasOne(b => b.Department).WithMany().HasForeignKey(b => b.OrganizationId);
+            builder.HasMany(b => b.TeachingPlans).WithOne(b => b.Course).HasForeignKey(b => b.CourseId);
+
+
         }
     }
 }

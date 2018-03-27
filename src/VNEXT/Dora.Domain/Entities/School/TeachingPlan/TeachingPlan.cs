@@ -83,7 +83,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 课程
         /// </summary>
-        public virtual Course Course { get; set; }
+        public virtual Course1 Course { get; set; }
 
         public virtual ICollection<TeachingPlanTeacher> Teacher { get; set; }
         public virtual ICollection<TeachingPlanClass> Class { get; set; }

@@ -2,21 +2,15 @@
 {
     using System.Collections.Generic;
     using Dora.Infrastructure.Domains;
-    using System;
 
     /// <summary>
     /// 课程
     /// </summary>
-    public partial class Course : BaseEntity
+    public class Course1 : BaseEntity
     {
-        public Course() : base()
+        public Course1() : base()
         {
-            this.CourseId = Guid.NewGuid().ToString();
-        }
-
-        public Course(string code) : base()
-        {
-            this.CourseId = code;
+            
         }
 
         #region excel
@@ -63,7 +57,7 @@
         /// <summary>
         /// Gets or sets Status 
         /// </summary>
-        public virtual BaseStatus Status { get; set; }
+        public virtual BaseStatus Status { get; set; } = BaseStatus.有效;
 
         #endregion
 

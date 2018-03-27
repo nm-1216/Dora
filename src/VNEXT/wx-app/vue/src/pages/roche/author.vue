@@ -1,5 +1,6 @@
 <template>
 <div>
+  
 </div>
 </template>
 
@@ -21,11 +22,12 @@ export default {
     console.log('existsUser1', existsUser)
     if (openId === undefined || existsUser === undefined) {
       if (process.env.NODE_ENV === 'development') {
-        console.log('写OPENID')
-        cookies.setCookie('openId', 'oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', 10 * 60 * 1000)
-        this.$router.replace({
-          path: '/reg'
-        })
+        // console.log('写OPENID')
+        // cookies.setCookie('openId', 'oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', 10 * 60 * 1000)
+        // this.$router.replace({
+        //  path: '/reg'
+        // })
+        this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '4de6a972-d8bd-4967-afb5-c7c63862c918')
       }
       if (!isLogin) {
         let ua = window.navigator.userAgent.toLowerCase()
@@ -40,10 +42,10 @@ export default {
   methods: {
     ...mapActions([USER_SIGNIN]),
     Login (openId, existsUser) {
-      if (existsUser === '1') {
+      if (existsUser !== '0') {
         this.USER_SIGNIN({
           'token': openId,
-          'mobile': existsUser
+          'userId': existsUser
         })
         this.$router.replace({
           path: '/'

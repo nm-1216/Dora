@@ -21,10 +21,5 @@ namespace Dora.School
             var user = builder.Entity<SchoolUser>();
             user.HasMany(u => u.Roles).WithOne().HasForeignKey(ur => ur.UserId);
         }
-
-        public DbSet<Dora.Domain.Entities.School.CoachRecord> CoachRecord { get; set; }
-
-        public DbSet<Dora.Domain.Entities.School.Term> Term { get; set; }
-
     }
 }

@@ -124,6 +124,16 @@ namespace Dora.Database
             builder.AddConfiguration(new TrainingPlanDetailMap());
             builder.AddConfiguration(new TrainingPlanLogMap());
             #endregion
+            
+            
+            #region Papers
+            builder.AddConfiguration(new PaperAnswerDetailsMap());
+            builder.AddConfiguration(new PaperAnswersMap());
+            builder.AddConfiguration(new PaperQuestionsMap());
+            builder.AddConfiguration(new PapersMap());
+            builder.AddConfiguration(new LearnLogMap());
+            
+            #endregion
 
 
             #endregion

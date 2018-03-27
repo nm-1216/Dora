@@ -67,7 +67,7 @@
             ViewData["searchKey"] = searchKey;
             var user = await GetCurrentUserAsync();
 
-            var list = new PageList<Course>(_CourseService.GetAll().Include(b => b.Syllabuss)
+            var list = new PageList<Course1>(_CourseService.GetAll().Include(b => b.Syllabuss)
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.CourseId.Contains(searchKey) ||

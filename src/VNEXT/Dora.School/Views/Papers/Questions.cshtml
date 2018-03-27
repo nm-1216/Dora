@@ -1,0 +1,467 @@
+﻿
+@model IEnumerable<PaperQuestions>
+
+@{
+    ViewData["Title"] = "试题管理";
+    Layout = "_Layout";
+}
+
+<style>
+    .code {
+        text-align: center;
+        vertical-align: middle!important;
+        font-weight: bold;
+        color: red;
+    }
+</style>
+<div id="importDiv" style="display:none">
+    <form id="AjaxForm1" name="AjaxForm1" asp-action="ImportQuestions" asp-route-id="@ViewBag.model.PaperId" enctype="multipart/form-data" method="post">
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <input type="file" name="files" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <input type="submit" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>约束：</b><br />
+                    1，第一行表头必须固定，不支持随意调换列。<br />
+                    2，工作簿选取顺序，第一顺序是工作簿名字叫Survey，第二顺序是第一工作簿<br />
+                    2，<a href="~/template/Questions.xlsx">下载模板</a>
+                </td>
+            </tr>
+        </table>
+        <ol id="msgul"></ol>
+    </form>
+</div>
+<div class="CreateDiv" style="display:none">
+    <form id="CreateRole" asp-action="AddQuestions" method="post">
+        <input type="hidden"  name="paperId" value="@ViewBag.model.PaperId"/>
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td></td><Td>题目</Td><Td style="width: 100px">类型</Td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input name="text" class="form-control Content"/></td>
+                <td>
+                    <select class="form-control" name="qType" asp-items="@ViewBag.QType"></select>
+                </td>
+            </tr>
+            <tr><td style="width: 20px"></td><Td colspan="2">选项</Td></tr>
+            <tr>
+                <td class="code">A</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+            <tr>
+                <td class="code">B</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+            <tr>
+                <td class="code">C</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td class="code">D</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+
+            <tr>
+                <td class="code">E</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td class="code">F</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="text-center">
+                    <button class="btn btn-danger" style="width: 120px" type="submit">提交</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="EditDiv" style="display:none">
+    <form id="EditRole" asp-action="EditQuestions" method="post">
+        <input type="hidden"  name="id" class="subjectId"/>
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td></td><Td>题目</Td><Td style="width: 100px">类型</Td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input name="text" class="form-control Content"/></td>
+                <td>
+                    <select class="form-control surveyType" name="qtype" asp-items="@ViewBag.QType"></select>
+                </td>
+            </tr>
+            <tr><td style="width: 20px"></td><Td colspan="2">选项</Td></tr>
+            <tr>
+                <td class="code">A</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+            <tr>
+                <td class="code">B</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+            <tr>
+                <td class="code">C</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td class="code">D</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+
+            <tr>
+                <td class="code">E</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td class="code">F</td>
+                <td colspan="2"><input name="options" class="form-control options"></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="text-center">
+                    <button class="btn btn-danger" style="width: 120px" type="submit">提交</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </form>
+</div>
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding: 10px 0;">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1>@ViewBag.model.Title</h1>
+                </div>
+                <div class="text-right">
+                    <a class="btn btn-danger btnOrder">重新排序</a>
+                    <a class="btn btn-danger btnUpOrder">提交排序</a>
+                    <a class="btn btn-danger btnAdd">添加</a>
+                    <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入题目',$('#importDiv'))">导入</button>
+                    <a asp-action="Index" class="btn btn-success">返回试卷</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table-striped table hwxTab">
+                    <thead>
+                        <tr>
+                            
+                            <th>题号</th>
+                            <th>题型</th>
+                            <th>题目</th>
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="@item.PaperQuestionId">
+                                <td>@item.Code</td>
+                                <td>@item.QType</td>
+                                <td>@item.Text</td>
+                                <td class="text-right">
+                                    <a data-content-id="@item.PaperQuestionId" 
+                                       data-content-content="@item.Text" 
+                                       data-content-surveyType="@((int)item.QType)" 
+                                       data-content-options1="@item.Option1" 
+                                       data-content-options2="@item.Option2" 
+                                       data-content-options3="@item.Option3" 
+                                       data-content-options4="@item.Option4" 
+                                       data-content-options5="@item.Option5" 
+                                       data-content-options6="@item.Option6" 
+                                       class="btn btn-primary btn-xs btnEdit">修改</a> |
+                                    <a data-content-id="@item.PaperQuestionId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+
+        $(function() {
+            var options = {
+                //target: '#output',          //把服务器返回的内容放入id为output的元素中
+                //beforeSubmit: showRequest,  //提交前的回调函数
+                success: showResponse, //提交后的回调函数
+                //url: url,                 //默认是form的action， 如果申明，则会覆盖
+                type: 'post', //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json', //html(默认), xml, script, json...接受服务端返回的类型
+                //clearForm: true,          //成功提交后，清除所有表单元素的值
+                //resetForm: true,          //成功提交后，重置所有表单元素的值
+                timeout: 3000 //限制请求的时间，当请求大于3秒后，跳出请求
+            }
+
+            function showResponse(responseText, statusText) {
+                console.log("responseText", responseText);
+                console.log("statusText", statusText);
+                var data = responseText;
+                if (data.result === 0) {
+                    layer.closeAll();
+                    layer.msg(data.msg,
+                        {
+                            time: 2000,
+                            end: function() {
+                                location.href = location.href;
+                            }
+                        }
+                    )
+                } else {
+                    layer.msg(data.msg);
+                }
+            };
+
+            $("#CreateRole").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+            $("#EditRole").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+            $("#AjaxForm1").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+
+
+            $('.btnDel').on('click',
+                function() {
+                    console.log('btnDel')
+                    var id = $(this).attr('data-content-id');
+                    $.ajax({
+                        url: '/Papers/DeleteQuestions',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function(xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result === 0) {
+                                layer.closeAll();
+                                layer.msg(data.msg,
+                                    {
+                                        time: 2000,
+                                        end: function() {
+                                            location.href = location.href;
+                                        }
+                                    }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function(xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function() {
+                            console.log('结束')
+                        }
+                    })
+                })
+            $('.btnOrder').on('click',
+                function() {
+                    console.log('btnDel')
+                    var id = '@ViewBag.model.PaperId';
+                    $.ajax({
+                        url: '/Papers/CreateCode',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function(xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result === 0) {
+                                layer.closeAll();
+                                layer.msg(data.msg,
+                                    {
+                                        time: 2000,
+                                        end: function() {
+                                            location.href = location.href;
+                                        }
+                                    }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function(xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function() {
+                            console.log('结束')
+                        }
+                    })
+                })
+            $('.btnUpOrder').on('click',
+                function() {
+                    console.log('btnUpOrder')
+                    var id = '@ViewBag.model.PaperId';
+                    var list = [];
+                    $('.hwxTab tbody tr').each(function() {
+                        list.push($(this).attr('id'));
+                    });
+
+
+                    console.log(list);
+                    $.ajax({
+                        url: '/Papers/NewCode',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id,
+                            list: list
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function(xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result === 0) {
+                                layer.closeAll();
+                                layer.msg(data.msg,
+                                    {
+                                        time: 2000,
+                                        end: function() {
+                                            location.href = location.href;
+                                        }
+                                    }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function(xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function() {
+                            console.log('结束')
+                        }
+                    })
+                })
+
+
+            $('.btnEdit').on('click',
+                function() {
+
+
+                    $('.EditDiv .subjectId').val($(this).attr('data-content-id'));
+                    $('.EditDiv .Content').val($(this).attr('data-content-content'));
+                    $('.EditDiv .surveyType').val($(this).attr('data-content-surveyType'));
+                    $('.EditDiv .ForcedJump').val($(this).attr('data-content-ForcedJump'));
+
+                    $('.EditDiv .options:eq(0)').val($(this).attr('data-content-options1'));
+                    $('.EditDiv .options:eq(1)').val($(this).attr('data-content-options2'));
+                    $('.EditDiv .options:eq(2)').val($(this).attr('data-content-options3'));
+                    $('.EditDiv .options:eq(3)').val($(this).attr('data-content-options4'));
+                    $('.EditDiv .options:eq(4)').val($(this).attr('data-content-options5'));
+                    $('.EditDiv .options:eq(5)').val($(this).attr('data-content-options6'));
+
+
+                    $('.EditDiv .OptionJump:eq(0)').val($(this).attr('data-content-OptionJump1'));
+                    $('.EditDiv .OptionJump:eq(1)').val($(this).attr('data-content-OptionJump2'));
+                    $('.EditDiv .OptionJump:eq(2)').val($(this).attr('data-content-OptionJump3'));
+                    $('.EditDiv .OptionJump:eq(3)').val($(this).attr('data-content-OptionJump4'));
+                    $('.EditDiv .OptionJump:eq(4)').val($(this).attr('data-content-OptionJump5'));
+                    $('.EditDiv .OptionJump:eq(5)').val($(this).attr('data-content-OptionJump6'));
+
+
+                    DivLayer(1, '编辑角色', $('.EditDiv'), '800px', '600px')
+                })
+            $('.btnAdd').on('click',
+                function() {
+                    $('#CreateDivName').val('')
+                    $('#CreateDivIndex').val('')
+                    DivLayer(1, '新添题目', $('.CreateDiv'), '800px', '600px')
+                })
+            $('.btnPermission').on('click',
+                function() {
+
+                    var id = $(this).attr('data-content-id')
+
+                    IFreamLayer(1, '设置权限', '/Roles/SetPermission?id=' + id)
+                })
+
+            var fixHelperModified = function(e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function(index) {
+                    $(this).width($originals.eq(index).width())
+                });
+                return $helper;
+            }
+            var updateIndex = function(e, ui) {
+                $('td.index', ui.item.parent()).each(function(i) {
+                    $(this).html(i + 1);
+                });
+            };
+            $(".hwxTab tbody").sortable({
+                helper: fixHelperModified,
+                stop: updateIndex
+            }).disableSelection();
+
+        })
+
+    </script>
+}

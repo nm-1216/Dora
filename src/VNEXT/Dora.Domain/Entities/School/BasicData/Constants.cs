@@ -153,4 +153,14 @@ namespace Dora.Domain.Entities.School
         校级教学通知发布 = 1,
         校级教学管理制度上传 = 2
     }
+
+
+    public enum PaperQuestionType : int
+    {
+        单选 = 1,
+        多选 = 2,
+        判断 = 3,
+        打分 = 4,
+        主管 = 5
+    }
 }

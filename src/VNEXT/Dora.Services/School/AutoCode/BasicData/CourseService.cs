@@ -5,7 +5,7 @@
     using Infrastructure.Services;
     using Interfaces;
 
-    public partial class CourseService : BaseService<Course>, ICourseService
+    public partial class CourseService : BaseService<Course1>, ICourseService
     {
         public CourseService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

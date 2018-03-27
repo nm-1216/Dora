@@ -24,7 +24,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// 课程编号
         /// </summary>
-        public virtual Course Course  { get; set; }
+        public virtual Course1 Course  { get; set; }
 
         /// <summary>
         /// 专业

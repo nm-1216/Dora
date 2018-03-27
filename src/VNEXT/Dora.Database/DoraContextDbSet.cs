@@ -38,7 +38,7 @@ namespace Dora.Database
         public DbSet<ApprovalWorkflow> ApprovalWorkflows { get; set; }
         public DbSet<BasicData> BasicDatas { get; set; }
         public DbSet<CoachRecord> CoachRecords { get; set; }
-        public DbSet<Course> Courses { get; set; }
+        public DbSet<Course1> Courses { get; set; }
         public DbSet<CourseProfessional> CourseProfessionals { get; set; }
         public DbSet<Professional> Professionals { get; set; }
         public DbSet<PublicClassRoom> PublicClassRooms { get; set; }
@@ -110,6 +110,16 @@ namespace Dora.Database
         public DbSet<TrainingPlanLog> TrainingPlanLogs { get; set; }
 
         #endregion
+        
+        #region TrainingPlan
+        public DbSet<PaperAnswerDetails> PaperAnswerDetails { get; set; }
+        public DbSet<PaperAnswers> PaperAnswers { get; set; }
+        public DbSet<PaperQuestions> PaperQuestions { get; set; }
+        public DbSet<Papers> Papers { get; set; }
+        public DbSet<LearnLog> LearnLogs { get; set; }
+
+        #endregion
+        
         #endregion
     }
 }

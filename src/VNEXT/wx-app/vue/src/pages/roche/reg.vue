@@ -15,12 +15,8 @@
 import { XInput, XButton, Group, TransferDom } from 'vux'
 import { Register } from 'src/Api/api'
 import cookies from 'src/common/cookies'
-import {
-  mapActions
-} from 'vuex'
-import {
-  USER_SIGNIN
-} from 'src/store/user'
+import { mapActions } from 'vuex'
+import { USER_SIGNIN } from 'src/store/user'
 
 export default {
   directives: {
@@ -67,7 +63,8 @@ export default {
         return
       }
       Register({
-        model: this.form,
+        userId: this.form.user,
+        pwd: this.form.pwd,
         openId: this.openId
       }).then(response => {
         console.log(response.data)

@@ -101,7 +101,12 @@ namespace Dora.School
             services.AddTransient<ITeachingTaskService, TeachingTaskService>();
             services.AddTransient<ITeachingPlanService, TeachingPlanService>();
             services.AddTransient<ITeachingPlanDetailService, TeachingPlanDetailService>();
-
+            
+            services.AddTransient<IPaperAnswerDetailsService, PaperAnswerDetailsService>();
+            services.AddTransient<IPaperAnswersService, PaperAnswersService>();
+            services.AddTransient<IPaperQuestionsService, PaperQuestionsService>();
+            services.AddTransient<IPapersService, PapersService>();
+     
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -112,9 +117,9 @@ namespace Dora.School
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+                //app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
+                //app.UseBrowserLink();
             }
             else
             {

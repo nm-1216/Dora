@@ -2,6 +2,9 @@
 /// <summary>
 /// 基数数据 班级，课程，组织架构
 /// </summary>
+
+using Microsoft.EntityFrameworkCore;
+
 namespace Dora.School.Controllers
 {
     using Dora.Core;
@@ -48,7 +51,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Class>(_ClassService.GetAll()
+            var list = new PageList<Class>(_ClassService.GetAll().Include(b=>b.Students)
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.ClassId.Contains(searchKey) ||
@@ -152,7 +155,7 @@ namespace Dora.School.Controllers
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Course>(_CourseService.GetAll()
+            var list = new PageList<Course1>(_CourseService.GetAll()
                 .Where(
                 b => string.IsNullOrEmpty(searchKey) ||
                 b.CourseId.Contains(searchKey) ||

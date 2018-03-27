@@ -94,7 +94,7 @@ namespace Dora.Domain.Entities.School
         /// <summary>
         /// Gets or sets 课程
         /// </summary>
-        public virtual Course Course { get; set; }
+        public virtual Course1 Course { get; set; }
 
         /// <summary>
         /// Gets or sets 教师

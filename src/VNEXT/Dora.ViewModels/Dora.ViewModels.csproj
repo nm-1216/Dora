@@ -3,14 +3,11 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Dora.Core\Dora.Core.csproj" />
+    <ProjectReference Include="..\Dora.Domain\Dora.Domain.csproj" />
     <ProjectReference Include="..\Dora.Domain\Dora.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.0.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
   </ItemGroup>
 </Project>

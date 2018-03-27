@@ -1,34 +1,13 @@
 ﻿@{
     Layout = "_Layout_1";
 }
-@section styles{
-    <link rel="stylesheet" href="~/css/mm-vertical.css" />
 
+@section styles{
     @RenderSection("styles", required: false)
 }
-<nav class="sidebar-nav" style="position:fixed;left:0;top:50px;bottom:0;width:200px;z-index:99">
-    <ul class="metismenu">
-    </ul>
-</nav>
 
-<div style="padding:20px 20px 0 220px">
-    @RenderBody()
-</div>
+@RenderBody()
+
 @section scripts{
     @RenderSection("scripts", required: false)
-    <script>
-        $(function () {
-            $('.metismenu').metisMenu();
-            $.ajax({
-                url: "/Account/GetMenu",
-                success: function (result) {
-                    console.log("================");
-                    console.log(result);
-                    $('.metismenu').metisMenu('dispose');
-                    $(".metismenu").append(result);
-                    $('.metismenu').metisMenu();
-                }
-            });
-        });
-    </script>
 }

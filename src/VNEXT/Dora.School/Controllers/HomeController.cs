@@ -8,6 +8,7 @@ namespace Dora.School.Controllers
     using System.Threading.Tasks;
     using ViewModels.AccountViewModels;
 
+    [Authorize]
     public class HomeController : BaseUserController<HomeController>
     {
         private readonly SignInManager<SchoolUser> _signInManager;
@@ -17,38 +18,8 @@ namespace Dora.School.Controllers
             _signInManager = signInManager;
         }
 
-
-
         #region Index
         public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult Index1()
-        {
-            return View();
-        }
-        public IActionResult Index2()
-        {
-            return View();
-        }
-        public IActionResult Index3()
-        {
-            return View();
-        }
-        public IActionResult Index4()
-        {
-            return View();
-        }
-        public IActionResult Index5()
-        {
-            return View();
-        }
-        public IActionResult Index6()
-        {
-            return View();
-        }
-        public IActionResult Index7()
         {
             return View();
         }

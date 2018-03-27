@@ -221,7 +221,7 @@ namespace dora.school.Migrations
                     b.ToTable("School_CoachRecord");
                 });
 
-            modelBuilder.Entity("Dora.Domain.Entities.School.Course", b =>
+            modelBuilder.Entity("Dora.Domain.Entities.School.Course1", b =>
                 {
                     b.Property<string>("CourseId")
                         .ValueGeneratedOnAdd();
@@ -270,7 +270,7 @@ namespace dora.school.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.ToTable("School_Course");
+                    b.ToTable("School_Course1");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.CourseProfessional", b =>
@@ -326,6 +326,38 @@ namespace dora.school.Migrations
                     b.HasKey("InfomationId");
 
                     b.ToTable("School_Infomations");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.LearnLog", b =>
+                {
+                    b.Property<string>("LearnLogId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClassId");
+
+                    b.Property<string>("CourseId");
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("ObjectId");
+
+                    b.Property<int>("Types");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("LearnLogId");
+
+                    b.ToTable("School_LearnLogs");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.Module", b =>
@@ -430,6 +462,147 @@ namespace dora.school.Migrations
                     b.HasKey("OrganizationId");
 
                     b.ToTable("School_Organization");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperAnswerDetails", b =>
+                {
+                    b.Property<string>("PaperAnswerId");
+
+                    b.Property<string>("PaperQuestionId");
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<bool>("IsRight");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("PaperAnswerId", "PaperQuestionId");
+
+                    b.HasIndex("PaperQuestionId");
+
+                    b.ToTable("School_PaperAnswerDetails");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperAnswers", b =>
+                {
+                    b.Property<string>("PaperAnswerId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("PaperId");
+
+                    b.Property<string>("StudentId");
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("PaperAnswerId");
+
+                    b.HasIndex("PaperId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("School_PaperAnswers");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperQuestions", b =>
+                {
+                    b.Property<string>("PaperQuestionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Answer");
+
+                    b.Property<int>("Code");
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Option1");
+
+                    b.Property<string>("Option2");
+
+                    b.Property<string>("Option3");
+
+                    b.Property<string>("Option4");
+
+                    b.Property<string>("Option5");
+
+                    b.Property<string>("Option6");
+
+                    b.Property<string>("PaperId");
+
+                    b.Property<int>("QType");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<int>("Value");
+
+                    b.HasKey("PaperQuestionId");
+
+                    b.HasIndex("PaperId");
+
+                    b.ToTable("School_PaperQuestions");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.Papers", b =>
+                {
+                    b.Property<string>("PaperId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<string>("CreateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("TeacherId");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("UpdateTime");
+
+                    b.Property<string>("UpdateUser")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("PaperId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("School_Papers");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.Permission", b =>
@@ -1959,7 +2132,7 @@ namespace dora.school.Migrations
                         .HasForeignKey("TeacherId");
                 });
 
-            modelBuilder.Entity("Dora.Domain.Entities.School.Course", b =>
+            modelBuilder.Entity("Dora.Domain.Entities.School.Course1", b =>
                 {
                     b.HasOne("Dora.Domain.Entities.School.Organization", "Department")
                         .WithMany()
@@ -1968,7 +2141,7 @@ namespace dora.school.Migrations
 
             modelBuilder.Entity("Dora.Domain.Entities.School.CourseProfessional", b =>
                 {
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany("CourseProfessionals")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -1984,6 +2157,44 @@ namespace dora.school.Migrations
                     b.HasOne("Dora.Domain.Entities.School.ModuleType", "ModuleType")
                         .WithMany("Modules")
                         .HasForeignKey("ModuleTypeId");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperAnswerDetails", b =>
+                {
+                    b.HasOne("Dora.Domain.Entities.School.PaperAnswers")
+                        .WithMany("PaperAnswerDetails")
+                        .HasForeignKey("PaperAnswerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Dora.Domain.Entities.School.PaperQuestions")
+                        .WithMany("PaperAnswerDetails")
+                        .HasForeignKey("PaperQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperAnswers", b =>
+                {
+                    b.HasOne("Dora.Domain.Entities.School.Papers")
+                        .WithMany("PaperAnswers")
+                        .HasForeignKey("PaperId");
+
+                    b.HasOne("Dora.Domain.Entities.School.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.PaperQuestions", b =>
+                {
+                    b.HasOne("Dora.Domain.Entities.School.Papers")
+                        .WithMany("PaperQuestions")
+                        .HasForeignKey("PaperId");
+                });
+
+            modelBuilder.Entity("Dora.Domain.Entities.School.Papers", b =>
+                {
+                    b.HasOne("Dora.Domain.Entities.School.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Dora.Domain.Entities.School.Permission", b =>
@@ -2046,7 +2257,7 @@ namespace dora.school.Migrations
                         .WithMany("Syllabus")
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany("Syllabuss")
                         .HasForeignKey("CourseId");
 
@@ -2075,7 +2286,7 @@ namespace dora.school.Migrations
 
             modelBuilder.Entity("Dora.Domain.Entities.School.SyllabusFirstCourse", b =>
                 {
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -2140,7 +2351,7 @@ namespace dora.school.Migrations
 
             modelBuilder.Entity("Dora.Domain.Entities.School.TeachingPlan", b =>
                 {
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany("TeachingPlans")
                         .HasForeignKey("CourseId");
                 });
@@ -2198,7 +2409,7 @@ namespace dora.school.Migrations
 
             modelBuilder.Entity("Dora.Domain.Entities.School.TeachingTask", b =>
                 {
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId");
                 });
@@ -2249,7 +2460,7 @@ namespace dora.school.Migrations
                         .WithMany()
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("Dora.Domain.Entities.School.Course", "Course")
+                    b.HasOne("Dora.Domain.Entities.School.Course1", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId");
 

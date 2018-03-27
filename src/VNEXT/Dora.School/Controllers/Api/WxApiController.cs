@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Dora.Domain.Entities.School;
+using Dora.Services.School.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Dora.School.Controllers
@@ -19,13 +20,20 @@ namespace Dora.School.Controllers
     {
         private readonly ILogger _logger;
         private readonly UserManager<SchoolUser> _userManager;
+        private readonly ITeachingTaskService _teachingTaskService;
+        private readonly IClassService _classService;
+        
 
         public WxApiController(
             UserManager<SchoolUser> userManager,
+            ITeachingTaskService teachingTaskService,
+            IClassService classService,
             ILoggerFactory loggerFactory)
         {
             this._logger = loggerFactory.CreateLogger<WxApiController>();
             this._userManager = userManager;
+            _teachingTaskService = teachingTaskService;
+            _classService = classService;
         }
 
         #region user
@@ -62,5 +70,68 @@ namespace Dora.School.Controllers
 
         #endregion
 
+        
+        [EnableCors("AllowSameDomain")]
+        public IActionResult GetCourseList(string openId)
+        {
+            var user = this._userManager.Users.Include(b=>b.Teacher).Include(b=>b.Student).FirstOrDefault(o => o.WxOpenId == openId);
+            if (user == null)
+            {
+                return Json(new AjaxResult("用户查询失败") { result = 99});
+            }
+
+            if (user.UserType == SchoolUserType.student)
+            {
+                var list = _teachingTaskService.GetAll()
+                    .Include(b => b.Classes).ThenInclude(b => b.Class).ThenInclude(b => b.Students)
+                    .Include(b => b.Course)
+                    .Where(b => b.Classes.Where(c => c.ClassId == user.Student.ClassId) != null).ToList();
+                if(user.Student!=null)
+                user.Student.SchoolUser = null;
+                if(user.Teacher!=null)
+                user.Teacher.SchoolUser = null;
+                return Json(new AjaxResult<object>("查询成功") {result = 0, data = new {list, user}});
+            }
+            else if (user.UserType== SchoolUserType.teacher)
+            {
+                return Json(new AjaxResult("用户角色不对") { result = 99});
+            }
+            else
+            {
+                return Json(new AjaxResult("用户角色不对") { result = 99});
+            }
+
+            //return Json(new AjaxResult<SchoolUser>(rst ? "查询成功" : "查询失败") { result = rst ? 0 : 1, data = model });
+        }
+        
+        [EnableCors("AllowSameDomain")]
+        public IActionResult GetTongXue(string openId)
+        {
+            var user = this._userManager.Users.Include(b=>b.Student).FirstOrDefault(o => o.WxOpenId == openId);
+            if (user == null)
+            {
+                return Json(new AjaxResult("用户查询失败") { result = 99});
+            }
+
+            if (user.UserType == SchoolUserType.student)
+            {
+                var model = _classService.GetAll().Include(b => b.Students)
+                    .FirstOrDefault(b => b.ClassId == user.Student.ClassId);
+                
+                foreach (var modelStudent in model.Students)
+                {
+                    modelStudent.Class = null;
+                }
+                return Json(new AjaxResult<object>("查询成功") {result = 0, data = model});
+            }
+            else if (user.UserType== SchoolUserType.teacher)
+            {
+                return Json(new AjaxResult("用户角色不对") { result = 99});
+            }
+            else
+            {
+                return Json(new AjaxResult("用户角色不对") { result = 99});
+            }
+        }
     }
 }

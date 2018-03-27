@@ -49,7 +49,10 @@
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            var model = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).Where(b => b.TeachingPlanId == id).FirstOrDefault();
+            var model = _TeachingPlanService.GetAll()
+                .Include(b => b.Course)
+                //.Include(b => b.Teacher)
+                .FirstOrDefault(b => b.TeachingPlanId == id);
 
             ViewBag.Detail = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanId == id)
                 .OrderBy(r=>r.Order)

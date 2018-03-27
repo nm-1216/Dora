@@ -126,8 +126,9 @@
                     var code = GetValue(row.GetCell(0));
                     var name = GetValue(row.GetCell(1));
                     var idCard = GetValue(row.GetCell(2));
+                    var classId = GetValue(row.GetCell(3));
 
-                    if (!code.Equals("学号") || !name.Equals("姓名") || !idCard.Equals("身份证"))
+                    if (!code.Equals("学号") || !name.Equals("姓名") || !idCard.Equals("身份证")|| !classId.Equals("班级"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
                     }
@@ -141,6 +142,7 @@
                         code = GetValue(row.GetCell(0));
                         name = GetValue(row.GetCell(1));
                         idCard = GetValue(row.GetCell(2));
+                        classId = GetValue(row.GetCell(3));
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(idCard))
                         {
@@ -158,7 +160,8 @@
                                 {
                                     Name = name,
                                     IdCard = idCard,
-                                    Status = 1
+                                    Status = 1,
+                                    ClassId = classId
                                 }
                             };
                             var result = await _userManager.CreateAsync(user, code);
