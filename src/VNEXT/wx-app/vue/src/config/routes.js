@@ -1,17 +1,12 @@
 const AUTHOR = resolve => require(['src/pages/roche/author'], resolve)
 const INDEX = resolve => require(['src/pages/school/index'], resolve)
 const REG = resolve => require(['src/pages/roche/reg'], resolve)
-
-
 const FAXIAN = resolve => require(['@/pages/school/faxian'], resolve)
 const XIAOXI = resolve => require(['@/pages/school/xiaoxi'], resolve)
 const CLASS = resolve => require(['@/pages/school/class'], resolve)
-
-
 /* 用户-用户资料 */
 const UserInfo = resolve => require(['src/pages/roche/userinfo'], resolve)
 const EditUserInfo = resolve => require(['src/pages/roche/userinfo-edit'], resolve)
-
 /* 活动-活动列表 */
 const APPTITle = '学校'
 
@@ -61,5 +56,4 @@ export default [
     meta: { auth: false, title: '课程-' + APPTITle },
     component: CLASS
   }
-
 ]

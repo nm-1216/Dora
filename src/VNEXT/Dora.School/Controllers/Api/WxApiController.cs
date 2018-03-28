@@ -22,18 +22,21 @@ namespace Dora.School.Controllers
         private readonly UserManager<SchoolUser> _userManager;
         private readonly ITeachingTaskService _teachingTaskService;
         private readonly IClassService _classService;
+        private readonly ILearnLogService _learnLogService;
         
 
         public WxApiController(
             UserManager<SchoolUser> userManager,
             ITeachingTaskService teachingTaskService,
             IClassService classService,
+            ILearnLogService learnLogService,
             ILoggerFactory loggerFactory)
         {
             this._logger = loggerFactory.CreateLogger<WxApiController>();
             this._userManager = userManager;
             _teachingTaskService = teachingTaskService;
             _classService = classService;
+            _learnLogService = learnLogService;
         }
 
         #region user
@@ -105,13 +108,15 @@ namespace Dora.School.Controllers
         }
         
         [EnableCors("AllowSameDomain")]
-        public IActionResult GetTongXue(string openId)
+        public IActionResult GetClassCourse(string openId,string courseId)
         {
             var user = this._userManager.Users.Include(b=>b.Student).FirstOrDefault(o => o.WxOpenId == openId);
             if (user == null)
             {
                 return Json(new AjaxResult("用户查询失败") { result = 99});
             }
+
+            
 
             if (user.UserType == SchoolUserType.student)
             {
@@ -122,7 +127,11 @@ namespace Dora.School.Controllers
                 {
                     modelStudent.Class = null;
                 }
-                return Json(new AjaxResult<object>("查询成功") {result = 0, data = model});
+
+                var list = _learnLogService.GetAll().Where(b => b.ClassId == user.Student.ClassId && b.CourseId == courseId).OrderByDescending(b=>b.CreateTime);
+
+
+                return Json(new AjaxResult<object>("查询成功") {result = 0, data =new { model, list } });
             }
             else if (user.UserType== SchoolUserType.teacher)
             {

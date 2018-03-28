@@ -31,10 +31,7 @@
 
 <script>
 import { Tab, TabItem } from 'vux'
-import { GetUserBank } from '../../Api/api'
 import { formatDate } from '../../common/date.js'
-import { mapActions } from 'vuex'
-import { USER_SIGNOUT } from '../../store/user'
 
 export default {
   components: {
@@ -43,7 +40,6 @@ export default {
   ready () {
   },
   methods: {
-    ...mapActions([USER_SIGNOUT]),
     onHide () {
       console.log('on hide')
     },
@@ -58,9 +54,7 @@ export default {
     },
     tabToggle: function (index) {
       this.nowIndex = index
-      if (index === 3) {
-        return
-      } else {
+      if (index !== 3) {
         this.dropdownActive = false
       }
     },
@@ -120,19 +114,6 @@ export default {
     }
   },
   created () {
-    var isLogin = Boolean(this.$store.state.user.token)
-    if (isLogin) {
-      GetUserBank({'token': this.$store.state.user.token}).then(response => {
-        console.log(response.data)
-        if (response.data.result === 1) {
-          this.bank.money = response.data.date.balance
-          this.bank.point = response.data.date.pointValue
-        } else {
-          this.USER_SIGNOUT()
-          this.$router.replace({ path: '/' })
-        }
-      })
-    }
   }
 }
 </script>

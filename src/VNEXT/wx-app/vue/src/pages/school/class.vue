@@ -9,10 +9,22 @@
   <div>
     <div class="tab0 tabcontent" v-show= 'showtab1'>
       <img :src="kc1" style="width:100%"/>
-      <img :src="kc2" style="width:100%"/>
+      <img :src="kc2" style="width:100%" v-show="list.count<=0"/>
+
+      <div class="timeline-demo">
+      <timeline>
+      <timeline-item v-for="(item, index) in list" :key="index">
+        <p v-show="item.types===0"><span class="c_1">公告</span> {{item.createTime | formatDate}}</p>
+        <p v-show="item.types===1"><span class="c_2">课件</span> {{item.createTime | formatDate}}</p>
+        <p v-show="item.types===2"><span class="c_3">试卷</span> {{item.createTime | formatDate}}</p>
+      <h4>{{item.name}}</h4>
+      </timeline-item>
+      </timeline>
+      </div>
+
     </div>
     <div class="tab1 tabcontent" v-show= 'showtab2'>
-      
+
       <group >
         <group-title>同学</group-title>
         <cell v-for="(item,index) in tongxue" :key="index" :title="item.name"></cell>
@@ -25,16 +37,16 @@
 </template>
 
 <script>
-import { GroupTitle, Tab, TabItem, Group, Cell } from 'vux'
-import { GetTongXue } from 'src/Api/api'
-import { formatDate } from 'src/common/date.js'
+import { Timeline, TimelineItem, XButton, GroupTitle, Tab, TabItem, Group, Cell } from 'vux'
+import { GetClassCourse } from 'src/Api/api'
+import { formatDate } from 'src/filters/date.js'
 
 var kc1 = require('src/assets/kc1.png')
 var kc2 = require('src/assets/kc2.png')
 
 export default {
   components: {
-    GroupTitle, Tab, TabItem, Group, Cell
+    GroupTitle, Tab, TabItem, Group, Cell, Timeline, TimelineItem, XButton
   },
   ready () {
   },
@@ -53,9 +65,7 @@ export default {
     },
     tabToggle: function (index) {
       this.nowIndex = index
-      if (index === 3) {
-        return
-      } else {
+      if (index !== 3) {
         this.dropdownActive = false
       }
     },
@@ -106,6 +116,7 @@ export default {
         return 4 * 22 + 'px'
       },
       tongxue: [],
+      list: [],
       kc1,
       kc2
     }
@@ -113,24 +124,29 @@ export default {
   filters: {
     formatDate (time) {
       var date = new Date(time)
-      return formatDate(date, 'yyyy-MM-dd')
+      return formatDate(date, 'yyyy-MM-dd EE mm:ss')
     }
   },
   created () {
     var isLogin = Boolean(this.$store.state.user.token)
     isLogin = true
     if (isLogin) {
-      GetTongXue({'openId': this.$store.state.user.token}).then(response => {
+      GetClassCourse({'openId': this.$store.state.user.token, 'courseId': this.$route.params.courseId}).then(response => {
         console.log(response.data)
         if (response.data.result === 0) {
-          this.tongxue=response.data.data.students
+          this.tongxue = response.data.data.model.students
+          this.list = response.data.data.list
         }
       })
     }
   }
 }
 </script>
-
+<style>
+.vux-timeline-item-tail,.vux-timeline-item-color{
+  background-color: #0099FF!important;
+}
+</style>
 <style lang="less">
     @import '~vux/src/styles/1px.less';
     @import '~vux/src/styles/center.less';
@@ -233,4 +249,43 @@ export default {
             -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
                 transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
       }
+</style>
+
+<style lang="less">
+
+.timeline-demo {
+    p {
+        color: #888;
+        font-size: 0.5rem;
+    }
+
+    P span{
+      display: INLINE-BLOCK;
+      PADDING: 1px 5PX;
+    }
+
+    span.c_1{
+      BORDER: 1PX SOLID RED;
+      color:RED
+    }
+    span.c_2{
+      BORDER: 1PX SOLID #66FFCC;
+      color:#66FFCC
+    }
+    span.c_3{
+      BORDER: 1PX SOLID #FFCC00;
+      color:#FFCC00
+    }
+
+    h4 {
+        color: #666;
+        font-weight: normal;
+        background-color:#efefef;
+        margin-top:10px;
+        padding:5px 5px 6px 5px;
+    }
+    .recent {
+        color: rgb(4, 190, 2)
+    }
+}
 </style>

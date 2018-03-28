@@ -5,7 +5,7 @@ console.log(process.env.NODE_ENV)
 var base = ''
 if (process.env.NODE_ENV === 'development') {
   console.log('in development')
-  base = 'http://localhost:5000/WxApi'
+  base = 'http://localhost:56417/WxApi'
 } else {
   console.log('in production')
   base = 'http://rochewx.wojilu.com/WxApi'
@@ -19,6 +19,4 @@ export const GetUserInfo = params => { return axios.get(`${base}/GetUserInfo`, {
 export const EditUserInfo = params => { return axios.post(`${base}/EditUserInfo`, Qs.stringify(params)) }
 export const GetActivity = params => { return axios.get(`${base}/GetActivity`, { params: params }) }
 export const GetActivityDetails = params => { return axios.get(`${base}/GetActivityDetails`, { params: params }) }
-export const GetTongXue = params => { return axios.get(`${base}/GetTongXue`, { params: params }) }
-
-
+export const GetClassCourse = params => { return axios.get(`${base}/GetClassCourse`, { params: params }) }

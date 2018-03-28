@@ -56,7 +56,6 @@ export default {
       console.log('on show')
     },
     dropdown: function (event) {
-      // console.log(event.target.getAttribute('class'))
       if (event.target.getAttribute('class') === 'dropdownBtn dropdownBtnDown' || event.target.getAttribute('class') === 'dropdownBtn dropdownBtnUp') {
         this.dropdownActive = !this.dropdownActive
       }
@@ -71,16 +70,12 @@ export default {
     },
     onItemClick (index) {
       console.log('on item click:', index)
-      
-      
-
       if (index === 0) {
         this.showtab1 = true
       }
       if (index === 1) {
         this.showtab2 = true
       }
-      
     },
     next () {
       if (this.index === this.list2.length - 1) {
@@ -133,10 +128,10 @@ export default {
         console.log(response.data)
         if (response.data.result === 0) {
           console.log(response.data.data)
-          this.isStudent = response.data.data.user.userType==0
-          this.ClassId=response.data.data.user.student.classId
-          this.isTeacher = response.data.data.user.userType==1
-          this.list=response.data.data.list
+          this.isStudent = response.data.data.user.userType === 0
+          this.ClassId = response.data.data.user.student.classId
+          this.isTeacher = response.data.data.user.userType === 1
+          this.list = response.data.data.list
         }
       })
     }

@@ -106,7 +106,10 @@ namespace Dora.School
             services.AddTransient<IPaperAnswersService, PaperAnswersService>();
             services.AddTransient<IPaperQuestionsService, PaperQuestionsService>();
             services.AddTransient<IPapersService, PapersService>();
-     
+            services.AddTransient<ILearnLogService, LearnLogService>();
+            
+
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
