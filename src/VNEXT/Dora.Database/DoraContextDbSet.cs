@@ -110,13 +110,13 @@ namespace Dora.Database
         public DbSet<TrainingPlanLog> TrainingPlanLogs { get; set; }
 
         #endregion
-        
-        #region TrainingPlan
+
+        #region Papers
         public DbSet<PaperAnswerDetails> PaperAnswerDetails { get; set; }
         public DbSet<PaperAnswers> PaperAnswers { get; set; }
         public DbSet<PaperQuestions> PaperQuestions { get; set; }
         public DbSet<Papers> Papers { get; set; }
-        public DbSet<LearnLog> LearnLogs { get; set; }
+        public DbSet<Notice> Notices { get; set; }
 
         #endregion
         

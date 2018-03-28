@@ -2,33 +2,30 @@
 {
     using Dora.Infrastructure.Domains;
 
-    /// <summary>
-    /// 公告
-    /// </summary>
-    public class Notice : BaseEntity
+    public class Courseware : BaseEntity
     {
         /// <summary>
-        /// 公告编号
+        /// 学习日志id
         /// </summary>
-        public string NoticeId { get; set; }
+        public virtual string CoursewareId { get; set; }
 
         /// <summary>
-        /// 标题
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// 内容
-        /// </summary>
-        public string Content { get; set; }
-
-        /// <summary>
-        /// 学生
+        /// 教师
         /// </summary>
         public virtual string TeacherId { get; set; }
 
         /// <summary>
-        /// 学生
+        /// 标题
+        /// </summary>
+        public virtual string Title { get; set; }
+
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public virtual string Url { get; set; }
+
+        /// <summary>
+        /// 教师
         /// </summary>
         public virtual Teacher Teacher { get; set; }
     }

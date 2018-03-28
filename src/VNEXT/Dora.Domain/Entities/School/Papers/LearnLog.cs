@@ -1,7 +1,7 @@
-﻿using Dora.Infrastructure.Domains;
-
-namespace Dora.Domain.Entities.School
+﻿namespace Dora.Domain.Entities.School
 {
+    using Dora.Infrastructure.Domains;
+
     public class LearnLog: BaseEntity
     {
         /// <summary>

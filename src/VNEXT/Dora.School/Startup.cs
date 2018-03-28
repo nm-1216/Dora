@@ -107,7 +107,9 @@ namespace Dora.School
             services.AddTransient<IPaperQuestionsService, PaperQuestionsService>();
             services.AddTransient<IPapersService, PapersService>();
             services.AddTransient<ILearnLogService, LearnLogService>();
-            
+            services.AddTransient<INoticeService, NoticeService>();
+            services.AddTransient<ICoursewareService, CoursewareService>();
+
 
 
         }

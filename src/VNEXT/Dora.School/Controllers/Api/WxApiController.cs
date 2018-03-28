@@ -23,6 +23,8 @@ namespace Dora.School.Controllers
         private readonly ITeachingTaskService _teachingTaskService;
         private readonly IClassService _classService;
         private readonly ILearnLogService _learnLogService;
+        private readonly INoticeService _noticeService;
+        private readonly ICoursewareService _coursewareService;
         
 
         public WxApiController(
@@ -30,13 +32,17 @@ namespace Dora.School.Controllers
             ITeachingTaskService teachingTaskService,
             IClassService classService,
             ILearnLogService learnLogService,
-            ILoggerFactory loggerFactory)
+            INoticeService noticeService,
+            ICoursewareService coursewareService,
+        ILoggerFactory loggerFactory)
         {
             this._logger = loggerFactory.CreateLogger<WxApiController>();
             this._userManager = userManager;
             _teachingTaskService = teachingTaskService;
             _classService = classService;
             _learnLogService = learnLogService;
+            _noticeService = noticeService;
+            _coursewareService = coursewareService;
         }
 
         #region user
@@ -115,8 +121,6 @@ namespace Dora.School.Controllers
             {
                 return Json(new AjaxResult("用户查询失败") { result = 99});
             }
-
-            
 
             if (user.UserType == SchoolUserType.student)
             {
