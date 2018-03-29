@@ -117,7 +117,8 @@ namespace Dora.Database
         public DbSet<PaperQuestions> PaperQuestions { get; set; }
         public DbSet<Papers> Papers { get; set; }
         public DbSet<Notice> Notices { get; set; }
-
+        public DbSet<Courseware> Courseware { get; set; }
+        
         #endregion
         
         #endregion

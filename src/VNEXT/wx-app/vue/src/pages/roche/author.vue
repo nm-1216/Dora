@@ -22,12 +22,12 @@ export default {
     console.log('existsUser1', existsUser)
     if (openId === undefined || existsUser === undefined) {
       if (process.env.NODE_ENV === 'development') {
-        // console.log('写OPENID')
-        // cookies.setCookie('openId', 'oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', 10 * 60 * 1000)
-        // this.$router.replace({
-        //  path: '/reg'
-        // })
-        this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '4de6a972-d8bd-4967-afb5-c7c63862c918')
+        console.log('写OPENID')
+        cookies.setCookie('openId', 'oi5_2t4H7dLUWvvdk6OI1zOA3Qba', 10 * 60 * 1000)
+        this.$router.replace({
+          path: '/reg'
+        })
+        // this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '4de6a972-d8bd-4967-afb5-c7c63862c919')
       }
       if (!isLogin) {
         let ua = window.navigator.userAgent.toLowerCase()

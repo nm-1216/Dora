@@ -9,15 +9,17 @@
   <div>
     <div class="tab0 tabcontent" v-show= 'showtab1'>
       <img :src="kc1" style="width:100%"/>
-      <img :src="kc2" style="width:100%" v-show="list.count<=0"/>
+      <img :src="kc2" style="width:100%" v-show="list.length<=0"/>
 
       <div class="timeline-demo">
       <timeline>
       <timeline-item v-for="(item, index) in list" :key="index">
-        <p v-show="item.types===0"><span class="c_1">公告</span> {{item.createTime | formatDate}}</p>
-        <p v-show="item.types===1"><span class="c_2">课件</span> {{item.createTime | formatDate}}</p>
-        <p v-show="item.types===2"><span class="c_3">试卷</span> {{item.createTime | formatDate}}</p>
-      <h4>{{item.name}}</h4>
+
+        <p v-show="item.types===0"><span class="c_1">公告</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <p v-show="item.types===1"><span class="c_2">课件</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <p v-show="item.types===2"><span class="c_3">试卷</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <h4 @click="toNotice(item)">{{item.name}}</h4>
+      
       </timeline-item>
       </timeline>
       </div>
@@ -98,6 +100,10 @@ export default {
       } else {
         --this.index
       }
+    },
+    toNotice (obj) {
+      console.log('toNotice', obj)
+      this.$router.push(`/notice/${obj.learnLogId}`)
     }
   },
   data () {
@@ -123,8 +129,7 @@ export default {
   },
   filters: {
     formatDate (time) {
-      var date = new Date(time)
-      return formatDate(date, 'yyyy-MM-dd EE mm:ss')
+      return formatDate(time, 'yyyy-MM-dd EE mm:ss')
     }
   },
   created () {
@@ -256,7 +261,7 @@ export default {
 .timeline-demo {
     p {
         color: #888;
-        font-size: 0.5rem;
+        font-size:0.8rem
     }
 
     P span{
@@ -281,8 +286,8 @@ export default {
         color: #666;
         font-weight: normal;
         background-color:#efefef;
-        margin-top:10px;
-        padding:5px 5px 6px 5px;
+        margin-top:15px;
+        padding:10px 5px 10px 5px;
     }
     .recent {
         color: rgb(4, 190, 2)

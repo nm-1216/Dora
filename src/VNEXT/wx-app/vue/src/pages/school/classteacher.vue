@@ -1,55 +1,59 @@
 <template>
 <div>
-  <div class="wrapper" >
-     <a :href="tabItem.url" class="nav-item" :class='{active: index == nowIndex}' v-for='(tabItem,index) in tabParams' @click='tabToggle(index)'>
-         <span :class='(index==3 ? "dropdownBtn" : "") + (dropdownActive ? " dropdownBtnUp" : " dropdownBtnDown")'  @click='dropdown'>{{tabItem.name}}</span>
-         <ul v-if='index == 3' class="dropdownWrapper" v-show='dropdownActive'>
-            <li v-for='(item, index) in dropParams' :key="index">{{item}}</li>
-        </ul>
-     </a>
-  </div>
-  <div style="margin-top:5px;">
+  <div>
     <tab :line-width="1" :custom-bar-width="getBarWidth" bar-active-color="#639ef4">
-      <tab-item selected active-class="active-6-1"  @on-item-click="onItemClick">班级课程</tab-item>
-      <tab-item active-class="active-6-1" @on-item-click="onItemClick">公开课</tab-item>
+      <tab-item selected active-class="active-6-1"  @on-item-click="onItemClick">教学日志</tab-item>
+      <tab-item active-class="active-6-1" @on-item-click="onItemClick">班级学生</tab-item>
     </tab>
   </div>
   <div>
-    <div class="tab0 tabcontent" v-show= 'isStudent'>
+    <div class="tab0 tabcontent" v-show= 'showtab1'>
+      <img :src="kc1" style="width:100%"/>
+      <div style="font-size:2rem;padding-left:10px;margin-top:-1.8rem;color:#0099FF"><i @click="downMeau" class="glyphicon glyphicon-plus-sign"></i></div>
+      <img :src="kc2" style="width:100%" v-show="list.length<=0"/>
+
+      <div class="timeline-demo">
+      <timeline>
+      <timeline-item v-for="(item, index) in list" :key="index">
+
+        <p v-show="item.types===0"><span class="c_1">公告</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <p v-show="item.types===1"><span class="c_2">课件</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <p v-show="item.types===2"><span class="c_3">试卷</span> {{item.createTimeTimeStamp | formatDate}}</p>
+        <h4 @click="toNotice(item)">{{item.name}}</h4>
+      
+      </timeline-item>
+      </timeline>
+      </div>
+
+    </div>
+    <div class="tab1 tabcontent" v-show= 'showtab2'>
+
       <group >
-        <group-title>我的课程</group-title>
-        <cell v-for="(item,index) in list" :key="index" :title="item.course.name" :link="'/class/'+ClassId+'/'+item.course.courseId" is-link></cell>
+        <group-title>同学</group-title>
+        <cell v-for="(item,index) in tongxue" :key="index" :title="item.name"></cell>
       </group>
 
     </div>
-    <div class="tab0 tabcontent" v-show= 'isTeacher'>
-      <group v-for="(item,index) in list" :key="index">
-        <group-title>{{item.course.name}}</group-title>
-        <cell v-for="(xx, index) in item.classes" :key="index"  :title="xx.class.classId +' '+ xx.class.name" 
-        :link="'/classteacher/'+xx.class.classId+'/'+item.course.courseId"
-        is-link :value="xx.class.students.length+'人'"></cell>
-      </group>
-    </div>
   </div>
+  <actionsheet v-model="show1" :menus="menus1" @on-click-menu="actionsheetclick"></actionsheet>
 </div>
 </template>
 
 <script>
-import { GroupTitle, Tab, TabItem, Group, Cell } from 'vux'
-import { GetCourseList } from 'src/Api/api'
+import { Timeline, TimelineItem, XButton, GroupTitle, Tab, TabItem, Group, Cell, Actionsheet } from 'vux'
+import { GetClassCourse } from 'src/Api/api'
 import { formatDate } from 'src/filters/date.js'
-import { mapActions } from 'vuex'
-import { USER_SIGNOUT } from 'src/store/user'
-var bj1 = require('src/assets/bj1.png')
+import 'src/assets/Glyphicons/Glyphicons.css'
+var kc1 = require('src/assets/kc1.png')
+var kc2 = require('src/assets/kc2.png')
 
 export default {
   components: {
-    GroupTitle, Tab, TabItem, Group, Cell
+    GroupTitle, Tab, TabItem, Group, Cell, Timeline, TimelineItem, XButton, Actionsheet
   },
   ready () {
   },
   methods: {
-    ...mapActions([USER_SIGNOUT]),
     onHide () {
       console.log('on hide')
     },
@@ -57,25 +61,31 @@ export default {
       console.log('on show')
     },
     dropdown: function (event) {
+      // console.log(event.target.getAttribute('class'))
       if (event.target.getAttribute('class') === 'dropdownBtn dropdownBtnDown' || event.target.getAttribute('class') === 'dropdownBtn dropdownBtnUp') {
         this.dropdownActive = !this.dropdownActive
       }
     },
     tabToggle: function (index) {
       this.nowIndex = index
-      if (index === 3) {
-        console.log('----')
-      } else {
+      if (index !== 3) {
         this.dropdownActive = false
       }
     },
     onItemClick (index) {
       console.log('on item click:', index)
+      this.showtab1 = false
+      this.showtab2 = false
+      this.showtab3 = false
+
       if (index === 0) {
         this.showtab1 = true
       }
       if (index === 1) {
         this.showtab2 = true
+      }
+      if (index === 2) {
+        this.showtab3 = true
       }
     },
     next () {
@@ -91,6 +101,34 @@ export default {
       } else {
         --this.index
       }
+    },
+    toNotice (obj) {
+      console.log('toNotice', obj)
+      if (obj.types === 2) {
+        this.$router.push(`/papersteacher/${obj.learnLogId}`)
+      }
+      if (obj.types === 1) {
+        this.$router.push(`/wteacher/${obj.learnLogId}`)
+      }
+      if (obj.types === 0) {
+        this.$router.push(`/noticeteacher/${obj.learnLogId}`)
+      }
+    },
+    downMeau () {
+      console.log('downMeau', 'downMeau')
+      this.show1 = true
+    },
+    actionsheetclick (key) {
+      if (key === 'menu1') {
+        this.$router.push(`/sendw/${this.$route.params.classId}/${this.$route.params.courseId}`)
+      }
+      if (key === 'menu2') {
+        this.$router.push(`/sendpapers/${this.$route.params.classId}/${this.$route.params.courseId}`)
+      }
+      if (key === 'menu3') {
+        this.$router.push(`/sendnotice/${this.$route.params.classId}/${this.$route.params.courseId}`)
+      }
+      console.log(key)
     }
   },
   data () {
@@ -99,49 +137,57 @@ export default {
       dropdownActive: false,
       showtab1: true,
       showtab2: false,
-      isStudent: false,
-      ClassId: '',
-      isTeacher: false,
+      show1: false,
+      menus1: {
+        menu1: '发布课件',
+        menu2: '发布试卷',
+        menu3: '发布公告',
+        menu4: '上课签到'
+      },
       tabParams: [
           {name: '课程', url: '/#/'},
           {name: '发现', url: '/#/faxian'},
           {name: '消息', url: '/#/xiaoxi'},
           {name: '我', url: 'javascript:void(0)'}],
-      dropParams: ['我的首页', '我的课件库', '我的试题库'],
+      dropParams: ['我的首页', '我的课件库', '我的试题库', '我的收藏'],
       getBarWidth: function (index) {
         return 4 * 22 + 'px'
       },
+      tongxue: [],
       list: [],
-      bj1
+      kc1,
+      kc2
     }
   },
   filters: {
     formatDate (time) {
-      return formatDate(time, 'yyyy-MM-dd')
+      return formatDate(time, 'yyyy-MM-dd EE mm:ss')
     }
   },
   created () {
     var isLogin = Boolean(this.$store.state.user.token)
     isLogin = true
     if (isLogin) {
-      GetCourseList({'openId': this.$store.state.user.token}).then(response => {
+      GetClassCourse({
+        'openId': this.$store.state.user.token,
+        'courseId': this.$route.params.courseId,
+        'classId': this.$route.params.classId
+      }).then(response => {
+        console.log(response.data)
         if (response.data.result === 0) {
-          this.isStudent = response.data.data.user.userType === 0
-          this.isTeacher = response.data.data.user.userType === 1
-
-          if (this.isStudent) {
-            this.ClassId = response.data.data.user.student.classId
-          }
-
+          this.tongxue = response.data.data.model.students
           this.list = response.data.data.list
-          console.log('list', this.list)
         }
       })
     }
   }
 }
 </script>
-
+<style>
+.vux-timeline-item-tail,.vux-timeline-item-color{
+  background-color: #0099FF!important;
+}
+</style>
 <style lang="less">
     @import '~vux/src/styles/1px.less';
     @import '~vux/src/styles/center.less';
@@ -244,4 +290,43 @@ export default {
             -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
                 transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
       }
+</style>
+
+<style lang="less">
+
+.timeline-demo {
+    p {
+        color: #888;
+        font-size:0.8rem
+    }
+
+    P span{
+      display: INLINE-BLOCK;
+      PADDING: 1px 5PX;
+    }
+
+    span.c_1{
+      BORDER: 1PX SOLID RED;
+      color:RED
+    }
+    span.c_2{
+      BORDER: 1PX SOLID #66FFCC;
+      color:#66FFCC
+    }
+    span.c_3{
+      BORDER: 1PX SOLID #FFCC00;
+      color:#FFCC00
+    }
+
+    h4 {
+        color: #666;
+        font-weight: normal;
+        background-color:#efefef;
+        margin-top:15px;
+        padding:10px 5px 10px 5px;
+    }
+    .recent {
+        color: rgb(4, 190, 2)
+    }
+}
 </style>

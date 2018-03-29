@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dora.Domain.Entities.School
 {
@@ -68,6 +69,9 @@ namespace Dora.Domain.Entities.School
         /// 选项6
         /// </summary>
         public virtual string Option6 { get; set; }
+        
+        [NotMapped]
+        public virtual List<string> UserAnswer { get; set; }=new List<string>();
         
         /// <summary>
         /// 答案

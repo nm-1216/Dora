@@ -34,7 +34,7 @@ namespace Dora.School
             "AllowSameDomain",
             builder => builder.WithOrigins(
             "http://localhost:56417",
-            "http://os.nieba.cn"
+            "http://wx.nieba.cn"
             ).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()
             ));
 
@@ -70,6 +70,7 @@ namespace Dora.School
             
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<WxConfig>(Configuration.GetSection("wx"));
+            services.AddSession();
 
             
             services.AddScoped<DbContext, ApplicationDbContext>();
@@ -131,6 +132,7 @@ namespace Dora.School
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

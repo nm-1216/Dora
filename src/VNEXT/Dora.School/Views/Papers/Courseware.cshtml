@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Papers>
+﻿@model IEnumerable<Courseware>
 
 @{
     ViewData["Title"] = "试卷管理";
@@ -11,7 +11,7 @@
 }
 
 <div class="CreateDiv" style="display: none">
-    <form id="CreateRole" asp-action="Create" method="post">
+    <form id="CreateRole" asp-action="CoursewareCreate" enctype="multipart/form-data" method="post">
         <table class="table table-striped">
             <tbody>
             <tr>
@@ -23,11 +23,11 @@
                 </td>
             </tr>
             <tr>
-                <Td>描述</Td>
+                <Td>文件</Td>
             </tr>
             <tr>
                 <td>
-                    <textarea id="CreateDivDescription" name="Description" class="form-control"></textarea>
+                    <input type="file" name="files" class="form-control"/>
                 </td>
             </tr>
             <tr>
@@ -41,8 +41,8 @@
     </form>
 </div>
 <div class="EditDiv" style="display: none">
-    <form id="EditRole" asp-action="Edit" method="post">
-        <input type="hidden" id="EditDivId" name="PaperId"/>
+    <form id="EditRole" asp-action="CoursewareEdit" enctype="multipart/form-data"  method="post">
+        <input type="hidden" id="EditDivId" name="id"/>
 
         <table class="table table-striped">
             <tbody>
@@ -55,11 +55,19 @@
                 </td>
             </tr>
             <tr>
-                <Td>描述</Td>
+                <Td>原始文件路径</Td>
             </tr>
             <tr>
                 <td>
-                    <textarea id="EditDivDescription" name="Description" class="form-control"></textarea>
+                    <input id="EditDivDescription" readonly="readonly" name="Description" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <Td>新文件</Td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" name="files" class="form-control"/>
                 </td>
             </tr>
             <tr>
@@ -73,13 +81,13 @@
 </div>
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
-        <div class="row" style="padding-top: 10px;">
+        <div class="row">
             <div class="col-sm-12">
                 <div class="page-header">
-                    <h1>试卷管理</h1>
+                    <h1>课件管理</h1>
                 </div>
                 <div class="text-right">
-                    <a asp-action="Courseware" class="btn btn-info">课件管理</a>
+                    <a asp-action="" class="btn btn-info">试卷管理</a>
                     <a class="btn btn-danger btnAdd">添加</a>
                 </div>
             </div>
@@ -102,9 +110,8 @@
                             <td>@item.Title</td>
                             <td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
                             <td class="text-right">
-                                <a asp-action="Questions" asp-route-id="@item.PaperId" class="btn btn-primary btn-xs">题目管理</a>
-                                <a data-content-id="@item.PaperId" data-content-title="@item.Title" data-content-description="@item.Description" class="btn btn-primary btn-xs btnEdit">修改</a> |
-                                <a data-content-id="@item.PaperId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                <a data-content-id="@item.CoursewareId" data-content-title="@item.Title" data-content-url="@item.Url" class="btn btn-primary btn-xs btnEdit">修改</a> |
+                                <a data-content-id="@item.CoursewareId" class="btn btn-danger btn-xs btnDel">删除</a>
                             </td>
                         </tr>
                     }
@@ -169,7 +176,7 @@
                         btn: ['确定','取消'] //按钮
                     }, function(){
                         $.ajax({
-                            url: '/Papers/Delete',
+                            url: '/Papers/CoursewareDelete',
                             type: 'POST',
                             async: true,
                             data: {
@@ -264,9 +271,9 @@
                 function() {
                     $('#EditDivId').val($(this).attr('data-content-id'));
                     $('#EditDivTitle').val($(this).attr('data-content-title'));
-                    $('#EditDivDescription').val($(this).attr('data-content-description'));
+                    $('#EditDivDescription').val($(this).attr('data-content-url'));
 
-                    DivLayer(1, '编辑问卷', $('.EditDiv'))
+                    DivLayer(1, '编辑问卷', $('.EditDiv'),'600px','400px')
                 })
             $('.btnAdd').on('click',
                 function() {

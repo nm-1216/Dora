@@ -28,14 +28,17 @@ namespace Dora.School.Controllers
     {
         private readonly IPapersService _papersService;
         private readonly IPaperQuestionsService _paperQuestionsService;
+        private readonly ICoursewareService _coursewareService;
 
         public PapersController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory,
             IPapersService papersService,
-            IPaperQuestionsService paperQuestionsService
+            IPaperQuestionsService paperQuestionsService,
+            ICoursewareService coursewareService
         ) : base(roleManager, userManager, loggerFactory)
         {
             _papersService = papersService;
             _paperQuestionsService = paperQuestionsService;
+            _coursewareService = coursewareService;
         }
 
 
@@ -47,7 +50,7 @@ namespace Dora.School.Controllers
             var user = await GetCurrentUserAsync();
             user = _userManager.Users.Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
 
-            var list = _papersService.GetAll().Where(b=>b.TeacherId==user.Teacher.TeacherId);
+            var list = _papersService.GetAll().Where(b=>b.TeacherId==user.Teacher.TeacherId).OrderByDescending(b=>b.CreateTime);;
             
             return View(list);
         }
@@ -103,6 +106,87 @@ namespace Dora.School.Controllers
             var model = _papersService.Find(b => b.PaperId == id);
 
             rst = await _papersService.Remove(model);
+
+            return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 0 : 1});
+        }
+
+        #endregion
+
+
+        #region Courseware
+
+        public async Task<IActionResult> Courseware()
+        {
+            var user = await GetCurrentUserAsync();
+            user = _userManager.Users.Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
+
+            var list = _coursewareService.GetAll().Where(b => b.TeacherId == user.Teacher.TeacherId).OrderByDescending(b=>b.CreateTime);
+
+            return View(list);
+        }
+        
+        
+        [HttpPost]
+        public async Task<IActionResult> CoursewareCreate([FromServices]IHostingEnvironment env,string title,IList<IFormFile> files)
+        {
+            var user = await GetCurrentUserAsync();
+            user = _userManager.Users.Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
+
+            var temp = string.Empty;
+            if (files != null && files.Count > 0)
+            {
+                temp = BaseDataController.SaveFile(env, "Courseware", files[0]);
+            }
+
+            await _coursewareService.Add(new Courseware()
+            {
+                Title = title,
+                TeacherId = user.Teacher.TeacherId,
+                Url= temp
+            });
+
+
+            return Json(new  AjaxResult("成功"){result = 0});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CoursewareEdit([FromServices] IHostingEnvironment env, string id, string title,
+            IList<IFormFile> files)
+        {
+            var user = await GetCurrentUserAsync();
+            user = _userManager.Users.Include(b => b.Teacher).FirstOrDefault(b => b.Id == user.Id);
+
+            var temp = string.Empty;
+            if (files != null && files.Count > 0)
+            {
+                temp = BaseDataController.SaveFile(env, "Courseware", files[0]);
+            }
+
+            var model = _coursewareService.Find(b => b.CoursewareId == id);
+
+            model.Title = title;
+            if (!string.IsNullOrEmpty(temp))
+                model.Url = temp;
+
+            await _coursewareService.Update(model);
+
+
+            return Json(new AjaxResult("成功") {result = 0});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CoursewareDelete(string id)
+        {
+            var rst = false;
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 0 : 1});
+            }
+
+            var model = _coursewareService.Find(b => b.CoursewareId == id);
+
+            rst = await _coursewareService.Remove(model);
 
             return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 0 : 1});
         }
@@ -260,6 +344,7 @@ namespace Dora.School.Controllers
                                     QType = (PaperQuestionType)Enum.Parse(typeof(PaperQuestionType), QType),
                                     Text = Text,
                                     Value = int.Parse(Value),
+                                    Answer = Answer,
                                     Option1 = Option1,
                                     Option2 = Option2,
                                     Option3 = Option3,

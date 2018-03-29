@@ -1,4 +1,6 @@
-﻿namespace Dora.Infrastructure.Domains
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Dora.Infrastructure.Domains
 {
     using System;
 
@@ -30,9 +32,48 @@
         /// </summary>
         public DateTime CreateTime { get; set; }
 
+
+        [NotMapped]
+        public long CreateTimeTimeStamp {
+            get
+            {
+                if (CreateTime != null)
+                {
+                    System.DateTime startTime =
+                        TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+                    long t = (CreateTime.Ticks - startTime.Ticks) / 10000;
+                    return t;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
         /// <summary>
         /// 修改时间
         /// </summary>
         public DateTime UpdateTime { get; set; }
+        
+        [NotMapped]
+        public long UpdateTimeTimeStamp {
+            get
+            {
+                if (UpdateTime != null)
+                {
+                    System.DateTime startTime =
+                        TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+                    long t = (UpdateTime.Ticks - startTime.Ticks) / 10000;
+                    return t;
+                }
+                else
+                {
+                    return 0;
+                }
+                
+            }
+        }
+
     }
 }

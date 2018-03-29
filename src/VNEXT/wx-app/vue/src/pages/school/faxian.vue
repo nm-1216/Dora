@@ -26,7 +26,7 @@
 
 <script>
 import { Tab, TabItem, XImg, Masker } from 'vux'
-import { formatDate } from '../../common/date.js'
+import { formatDate } from 'src/filters/date.js'
 var k1 = require('../../assets/k1.png')
 var k2 = require('../../assets/k2.jpg')
 var k3 = require('../../assets/k3.jpg')
@@ -111,8 +111,7 @@ export default {
   },
   filters: {
     formatDate (time) {
-      var date = new Date(time)
-      return formatDate(date, 'yyyy-MM-dd')
+      return formatDate(time, 'yyyy-MM-dd')
     }
   },
   created () {
