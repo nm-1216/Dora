@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import App from './App'
 import Vuex from 'vuex'
 import cookies from './common/cookies'
-import routes from './config/routes'
+import routesAuth from './routes/auth'
+import routesSchool from './routes/school'
+import routesTemplate from './routes/template'
 import store from './store/'
 import { LocalePlugin, DevicePlugin, ToastPlugin, AlertPlugin, ConfirmPlugin, LoadingPlugin, WechatPlugin, AjaxPlugin } from 'vux'
 import FastClick from 'fastclick'
@@ -50,17 +52,15 @@ FastClick.attach(document.body)
 Vue.config.productionTip = false
 
 const router = new VueRouter({
-  routes
+  routes: routesAuth.concat(routesSchool).concat(routesTemplate)
 })
+console.log(router)
 
 router.beforeEach(({ meta, path }, from, next) => {
-  console.log(cookies)
   store.commit('updateLoadingStatus', { isLoading: true })
   var { auth = true } = meta
   var isLogin = Boolean(store.state.user.token)
-
   if (auth && !isLogin && !/author/i.test(path)) {
-    console.log(path)
     cookies.setCookie('beforeLoginUrl', path, 3 * 60 * 1000)
     return next({ path: '/author' })
   }
