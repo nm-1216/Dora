@@ -8,13 +8,15 @@ import { Checklist } from 'vux'
 export default {
   directives: { },
   components: { Checklist },
+  ready () {},
   data () {
     return {
       labelPosition: '',
       commonList: [ 'China', 'Japan', 'America' ],
-      model:{}
+      model: {}
     }
   },
+  filters: {},
   methods: {
     change (val, label) {
       console.log('change', val, label)
@@ -23,7 +25,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   body, html{background-color:#f0f0f4}
 </style>
 

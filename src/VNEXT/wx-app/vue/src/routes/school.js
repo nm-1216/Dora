@@ -15,57 +15,57 @@ const sendpapers = resolve => require(['@/pages/school/sendpapers'], resolve)
 export default [
   {
     path: '/',
-    meta: { auth: true, title: '首页-' + _global.APPTITle },
+    meta: { auth: true, title: '微课程-' + _global.APPTITle },
     component: INDEX
   },
   {
-    path: '/class/:classId/:courseId',
-    meta: { auth: false, title: '课程-' + _global.APPTITle },
+    path: '/class/:id',
+    meta: { auth: true, title: '我的课程-' + _global.APPTITle },
     component: CLASS
   },
   {
     path: '/notice/:id',
-    meta: { auth: false, title: '公告-' + _global.APPTITle },
+    meta: { auth: true, title: '公告预览-' + _global.APPTITle },
     component: NOTICE
   },
   {
     path: '/papers/:id',
-    meta: { auth: false, title: '试卷-' + _global.APPTITle },
+    meta: { auth: true, title: '我的试卷-' + _global.APPTITle },
     component: PAPERS
   },
   {
-    path: '/classteacher/:classId/:courseId',
-    meta: { auth: false, title: '课程-' + _global.APPTITle },
+    path: '/classteacher/:id',
+    meta: { auth: true, title: '我的课程-' + _global.APPTITle },
     component: classteacher
   },
   {
     path: '/papersteacher/:id',
-    meta: { auth: false, title: '试卷-' + _global.APPTITle },
+    meta: { auth: true, title: '试卷成绩-' + _global.APPTITle },
     component: papersteacher
   },
   {
     path: '/noticeteacher/:id',
-    meta: { auth: false, title: '通知-' + _global.APPTITle },
+    meta: { auth: true, title: '通知预览-' + _global.APPTITle },
     component: noticeteacher
   },
   {
     path: '/wteacher/:id',
-    meta: { auth: false, title: '课件-' + _global.APPTITle },
+    meta: { auth: true, title: '课件预览-' + _global.APPTITle },
     component: wteacher
   },
   {
-    path: '/sendnotice/:classId/:courseId',
-    meta: { auth: false, title: '通知-' + _global.APPTITle },
+    path: '/sendnotice/:id',
+    meta: { auth: true, title: '发布通知-' + _global.APPTITle },
     component: sendnotice
   },
   {
-    path: '/sendw/:classId/:courseId',
-    meta: { auth: false, title: '发布课件-' + _global.APPTITle },
+    path: '/sendw/:id',
+    meta: { auth: true, title: '发布课件-' + _global.APPTITle },
     component: sendw
   },
   {
-    path: '/sendpapers/:classId/:courseId',
-    meta: { auth: false, title: '发布试卷-' + _global.APPTITle },
+    path: '/sendpapers/:id',
+    meta: { auth: true, title: '发布试卷-' + _global.APPTITle },
     component: sendpapers
   }
 ]

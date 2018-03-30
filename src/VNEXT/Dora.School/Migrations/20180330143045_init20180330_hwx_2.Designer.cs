@@ -13,9 +13,10 @@ using System;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180330143045_init20180330_hwx_2")]
+    partial class init20180330_hwx_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -571,8 +572,6 @@ namespace dora.school.Migrations
                     b.Property<string>("PaperId");
 
                     b.Property<string>("StudentId");
-
-                    b.Property<string>("TeachingTaskId");
 
                     b.Property<DateTime>("UpdateTime");
 

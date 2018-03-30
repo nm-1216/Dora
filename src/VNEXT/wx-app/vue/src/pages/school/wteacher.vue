@@ -1,15 +1,15 @@
 <template>
   <div class="notice">
     <div class="title">
-      <h2>{{this.course.name}}</h2>
-      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher }} <i class="glyphicon glyphicon-th-list"></i> {{this.classes.name}}</p>
+      <h2>{{ courseName }}</h2>
+      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher.name }} <i class="glyphicon glyphicon-th-list"></i> {{GetObj(this.teachingTask.classes)}}</p>
     </div>
 
-    <div class="content" v-show="learnLog.types===1">
+    <div class="content">
       <h4>{{this.model.title}}</h4>
       <p class="auth"><i class="glyphicon glyphicon-time"></i> {{this.model.createTimeTimeStamp | formatDate}}</p>
       <p style="border-top:1px solid #ccc"></p>
-      <p style="font-size:0.8rem;line-height:1.5;padding-top:20px">
+      <p class="files">
         <a :href="this.model.url">立即预览</a>
       </p>
     </div>
@@ -21,21 +21,24 @@
   </div>
 </template>
 <script>
-import { XInput, XButton, Group, TransferDom } from 'vux'
+import { XButton, Group, TransferDom } from 'vux'
 import { GetNotice, DelLearnLog } from 'src/Api/api'
 import 'src/assets/Glyphicons/Glyphicons.css'
 import { formatDate } from 'src/filters/date.js'
+import 'src/assets/style/notice.css'
+var _lodash = require('lodash')
 
 export default {
   directives: { TransferDom },
-  components: { Group, XInput, XButton },
+  components: { Group, XButton },
   data () {
     return {
       learnLog: {},
       model: {},
-      classes: {},
-      course: {},
-      teacher: ''
+      teacher: {},
+      teachingTask: {},
+      id: this.$route.params.id,
+      courseName: ''
     }
   },
   filters: {
@@ -65,7 +68,7 @@ export default {
                   console.log('Plugin: I\'m showing')
                 },
                 onHide () {
-                  vm.$router.push(`/classteacher/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+                  vm.$router.push(`/classteacher/${vm.learnLog.teachingTaskId}`)
                 }
               })
             } else {
@@ -76,7 +79,7 @@ export default {
                   console.log('Plugin: I\'m showing')
                 },
                 onHide () {
-                  vm.$router.push(`/classteacher/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+                  vm.$router.push(`/classteacher/${vm.learnLog.teachingTaskId}`)
                 }
               })
             }
@@ -90,38 +93,29 @@ export default {
         console.log(response.data)
         this.learnLog = response.data.data.learnLog
         this.model = response.data.data.model
-        this.teacher = this.model.teacher.name
-        this.classes = response.data.data.classes
-        this.course = response.data.data.course
+        this.teacher = response.data.data.teacher
+        this.teachingTask = response.data.data.teachingTask
+        this.courseName = this.teachingTask.course.name
       })
+    },
+    GetObj (obj, type) {
+      let tmp = ''
+      _lodash.forEach(obj, function (o) {
+        tmp += '/' + o.classId
+      })
+      return tmp.substr(1)
     }
   }
 }
 </script>
 
 <style type="text/css">
-  .notice .title{
-    padding: 20px 20px 10px 20px;
-    background: #fff
-  }
-  .notice .content{
-    padding: 20px;
-    background: #fff;
-    margin:10px auto;
-  }
-  .notice .content p.auth,.notice .title p{
-    font-size:0.5rem;
-    color: #ccc;
+  .notice .files {
+    font-weight: bold;
     line-height: 4;
+    font-size: 1rem
   }
-
-.notice .content div{
-  background-color: #F5F5F5;
-  font-size:0.8rem;
-  padding: 5px 10px;
-  margin-top: 10px;
-  min-height: 3rem;
-  color: #ccc
-}
-
+  .notice .files a {
+    color: #639ef4
+  }
 </style>

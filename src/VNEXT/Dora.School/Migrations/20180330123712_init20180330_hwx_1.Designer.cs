@@ -13,9 +13,10 @@ using System;
 namespace dora.school.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180330123712_init20180330_hwx_1")]
+    partial class init20180330_hwx_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,6 +366,10 @@ namespace dora.school.Migrations
                     b.Property<string>("LearnLogId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ClassId");
+
+                    b.Property<string>("CourseId");
+
                     b.Property<DateTime>("CreateTime");
 
                     b.Property<string>("CreateUser")
@@ -374,8 +379,6 @@ namespace dora.school.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("ObjectId");
-
-                    b.Property<string>("TeacherId");
 
                     b.Property<string>("TeachingTaskId");
 
@@ -571,8 +574,6 @@ namespace dora.school.Migrations
                     b.Property<string>("PaperId");
 
                     b.Property<string>("StudentId");
-
-                    b.Property<string>("TeachingTaskId");
 
                     b.Property<DateTime>("UpdateTime");
 

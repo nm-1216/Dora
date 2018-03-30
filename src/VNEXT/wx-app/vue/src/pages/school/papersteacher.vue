@@ -1,23 +1,28 @@
 <template>
   <div class="notice">
     <div class="title">
-      <h2>{{this.course.name}}</h2>
-      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher }} <i class="glyphicon glyphicon-th-list"></i> {{this.classes.name}}</p>
+      <h2>{{ courseName }}</h2>
+      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher.name }} <i class="glyphicon glyphicon-th-list"></i> {{GetObj(this.teachingTask.classes)}}</p>
     </div>
 
-    <div class="content" v-show="learnLog.types===2">
+    <div class="content">
       <h4>{{this.model.title}}</h4>
       <p class="auth"><i class="glyphicon glyphicon-time"></i> {{this.model.createTimeTimeStamp | formatDate}}</p>
+      <p class="auth"><i class="glyphicon glyphicon-info-sign"></i> 总分：{{score}}</p>
     </div>
 
-    <div id="main" style="height:200px;background-color:#fff"></div>
+    <div id="main" style="height:200px;background-color:#fff;padding-top:10px"></div>
 
     <div class="papers">
       <div v-for="(item,index) in this.answers" :keys="index">
         
         <group :title="item.item.code +'. '+ item.item.text">
           <box gap="10px" style="padding:10px 0">
-            <x-progress :percent="item.right/item.count*100" :show-cancel="false"></x-progress>
+            <div class="progress">
+              <div :class="['progress-bar',getProgressBar(Division(item.right,item.count))]" role="progressbar" :style="{'width': Division(item.right,item.count)+'%','min-width':'2em'}">
+                <span class="sr-only">{{ Division(item.right,item.count) }}%</span>
+              </div>
+            </div>
           </box>
         </group>
       </div>
@@ -30,25 +35,31 @@
   </div>
 </template>
 <script>
-import { XInput, XButton, Group, TransferDom, XProgress, Box } from 'vux'
+import { XInput, XButton, Group, TransferDom, Box } from 'vux'
 import { GetNotice, GetPaperTongJi, DelLearnLog } from 'src/Api/api'
 import 'src/assets/Glyphicons/Glyphicons.css'
+import 'src/assets/css/progress.css'
+import 'src/assets/style/notice.css'
 import { formatDate } from 'src/filters/date.js'
 import echarts from 'echarts'
 var _lodash = require('lodash')
 
 export default {
   directives: { TransferDom },
-  components: { Group, XInput, XButton, XProgress, Box },
+  components: { Group, XInput, XButton, Box },
   data () {
     return {
+      teacher: {},
+      teachingTask: {},
+      id: this.$route.params.id,
+      courseName: '',
       learnLog: {},
       model: {},
       classes: {},
       course: {},
-      teacher: '',
       answers: [],
       charts: '',
+      score: '',
       opinion: ['不及格', '合格', '优秀'],
       opinionData: [
         {value: 335, name: '不及格'},
@@ -89,7 +100,7 @@ export default {
                   console.log('Plugin: I\'m showing')
                 },
                 onHide () {
-                  vm.$router.push(`/classteacher/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+                  vm.$router.push(`/classteacher/${vm.learnLog.teachingTaskId}`)
                 }
               })
             } else {
@@ -100,7 +111,7 @@ export default {
                   console.log('Plugin: I\'m showing')
                 },
                 onHide () {
-                  vm.$router.push(`/classteacher/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+                  vm.$router.push(`/classteacher/${vm.learnLog.teachingTaskId}`)
                 }
               })
             }
@@ -109,23 +120,47 @@ export default {
       })
     },
     getData () {
-      console.log('getData', 'GetNotice')
-      GetNotice({'id': this.$route.params.id}).then(response => {
+      GetNotice({'id': this.id}).then(response => {
         console.log(response.data)
         this.learnLog = response.data.data.learnLog
         this.model = response.data.data.model
-        this.teacher = this.model.teacher.name
-        this.classes = response.data.data.classes
-        this.course = response.data.data.course
+        this.teacher = response.data.data.teacher
+        this.teachingTask = response.data.data.teachingTask
+        this.courseName = this.teachingTask.course.name
       })
 
-      GetPaperTongJi({'id': this.$route.params.id}).then(response => {
-        console.log(response.data)
-        // this.answers = response.data.data.model
+      GetPaperTongJi({'id': this.id}).then(response => {
+        console.log(response.data.data)
         let abc = response.data.data.model
         abc = _lodash.orderBy(abc, ['item.code'], ['asc'])
+        this.score = _lodash.sumBy(abc, function (o) { return o.item.value })
         this.answers = abc
       })
+    },
+    GetObj (obj, type) {
+      let tmp = ''
+      _lodash.forEach(obj, function (o) {
+        tmp += '/' + o.classId
+      })
+      return tmp.substr(1)
+    },
+    Division (a, b) {
+      if (b === 0) {
+        return 0
+      } else {
+        return a / b * 100
+      }
+    },
+    getProgressBar (value) {
+      if (value <= 30) {
+        return 'progress-bar-danger'
+      } else if (value <= 60) {
+        return 'progress-bar-warning'
+      } else if (value <= 80) {
+        return 'progress-bar-info'
+      } else {
+        return 'progress-bar-success'
+      }
     },
     drawPie (id) {
       this.charts = echarts.init(document.getElementById(id))
@@ -135,7 +170,6 @@ export default {
           formatter: '{a}<br/>{b}:{c} ({d}%)'
         },
         legend: {
-          // orient: 'vertical',
           x: 'center',
           data: this.opinion
         },
@@ -169,30 +203,8 @@ export default {
   }
 }
 </script>
-
 <style type="text/css">
-  .notice .title{
-    padding: 20px 20px 10px 20px;
-    background: #fff
+  .progress{
+    margin-bottom: 0 
   }
-  .notice .content{
-    padding: 20px;
-    background: #fff;
-    margin:10px auto;
-  }
-  .notice .content p.auth,.notice .title p{
-    font-size:0.5rem;
-    color: #ccc;
-    line-height: 4;
-  }
-
-.notice .content div{
-  background-color: #F5F5F5;
-  font-size:0.8rem;
-  padding: 5px 10px;
-  margin-top: 10px;
-  min-height: 3rem;
-  color: #ccc
-}
-
 </style>

@@ -26,7 +26,9 @@ export default {
         // this.$router.replace({
         //   path: '/reg'
         // })
-        this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '4de6a972-d8bd-4967-afb5-c7c63862c919')
+
+        // this.Login('oq90mwOVwiR40sSR9e0bRTQb6xJ8', '老师')
+        this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '学生')
       }
       if (!isLogin) {
         let ua = window.navigator.userAgent.toLowerCase()

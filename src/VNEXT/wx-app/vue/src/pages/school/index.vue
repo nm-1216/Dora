@@ -1,140 +1,82 @@
 <template>
-<div>
-  <div class="wrapper" >
-     <a :href="tabItem.url" class="nav-item" :class='{active: index == nowIndex}' v-for='(tabItem,index) in tabParams' @click='tabToggle(index)'>
-         <span :class='(index==3 ? "dropdownBtn" : "") + (dropdownActive ? " dropdownBtnUp" : " dropdownBtnDown")'  @click='dropdown'>{{tabItem.name}}</span>
-         <ul v-if='index == 3' class="dropdownWrapper" v-show='dropdownActive'>
-            <li v-for='(item, index) in dropParams' :key="index">{{item}}</li>
-        </ul>
-     </a>
-  </div>
-  <div style="margin-top:5px;">
-    <tab :line-width="1" :custom-bar-width="getBarWidth" bar-active-color="#639ef4">
-      <tab-item selected active-class="active-6-1"  @on-item-click="onItemClick">班级课程</tab-item>
-      <tab-item active-class="active-6-1" @on-item-click="onItemClick">公开课</tab-item>
-    </tab>
-  </div>
-  <div>
-    <div class="tab0 tabcontent" v-show= 'isStudent'>
-      <group >
-        <group-title>我的课程</group-title>
-        <cell v-for="(item,index) in list" :key="index" :title="item.course.name" :link="'/class/'+ClassId+'/'+item.course.courseId" is-link></cell>
+  <div class="index">
+    <blur :blur-amount=40 :url="url">
+      <p class="center"><img :src="url"></p>
+    </blur>
+    <div class="main" v-show="isShow">
+      <group v-show= 'isStudent' title="我的课程">
+        <cell v-for="(item,index) in studentList" :key="index" :title="item.course.name" :link="'/class/'+item.teachingTaskId" is-link></cell>
       </group>
-
-    </div>
-    <div class="tab0 tabcontent" v-show= 'isTeacher'>
-      <group v-for="(item,index) in list" :key="index">
-        <group-title>{{item.course.name}}</group-title>
-        <cell v-for="(xx, index) in item.classes" :key="index"  :title="xx.class.classId +' '+ xx.class.name" 
-        :link="'/classteacher/'+xx.class.classId+'/'+item.course.courseId"
-        is-link :value="xx.class.students.length+'人'"></cell>
+      <group v-show= 'isTeacher' v-for="(item,index) in course" :key="index" :title="item.name">
+        <cell v-for="(xx, index) in  GetClasses(item.courseId) " :key="index"  
+        :title="GetObj(xx.classes,1)" 
+        :link="'/classteacher/'+xx.teachingTaskId" 
+        is-link 
+        :value="GetObj(xx.classes,2)+'人'"></cell>
       </group>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import { GroupTitle, Tab, TabItem, Group, Cell } from 'vux'
+import { Group, Cell, Blur } from 'vux'
 import { GetCourseList } from 'src/Api/api'
-import { formatDate } from 'src/filters/date.js'
-import { mapActions } from 'vuex'
-import { USER_SIGNOUT } from 'src/store/user'
-var bj1 = require('src/assets/bj1.png')
+var _lodash = require('lodash')
 
 export default {
-  components: {
-    GroupTitle, Tab, TabItem, Group, Cell
-  },
-  ready () {
-  },
-  methods: {
-    ...mapActions([USER_SIGNOUT]),
-    onHide () {
-      console.log('on hide')
-    },
-    onShow () {
-      console.log('on show')
-    },
-    dropdown: function (event) {
-      if (event.target.getAttribute('class') === 'dropdownBtn dropdownBtnDown' || event.target.getAttribute('class') === 'dropdownBtn dropdownBtnUp') {
-        this.dropdownActive = !this.dropdownActive
-      }
-    },
-    tabToggle: function (index) {
-      this.nowIndex = index
-      if (index === 3) {
-        console.log('----')
-      } else {
-        this.dropdownActive = false
-      }
-    },
-    onItemClick (index) {
-      console.log('on item click:', index)
-      if (index === 0) {
-        this.showtab1 = true
-      }
-      if (index === 1) {
-        this.showtab2 = true
-      }
-    },
-    next () {
-      if (this.index === this.list2.length - 1) {
-        this.index = 0
-      } else {
-        ++this.index
-      }
-    },
-    prev () {
-      if (this.index === 0) {
-        this.index = this.list2.length - 1
-      } else {
-        --this.index
-      }
-    }
-  },
+  name: 'index',
+  components: { Group, Cell, Blur },
   data () {
     return {
-      nowIndex: 0,
-      dropdownActive: false,
-      showtab1: true,
-      showtab2: false,
       isStudent: false,
-      ClassId: '',
       isTeacher: false,
-      tabParams: [
-          {name: '课程', url: '/#/'},
-          {name: '发现', url: '/#/faxian'},
-          {name: '消息', url: '/#/xiaoxi'},
-          {name: '我', url: 'javascript:void(0)'}],
-      dropParams: ['我的首页', '我的课件库', '我的试题库'],
-      getBarWidth: function (index) {
-        return 4 * 22 + 'px'
-      },
-      list: [],
-      bj1
+      ClassId: '',
+      studentList: [],
+      teacherList: [],
+      course: [],
+      url: 'https://o3e85j0cv.qnssl.com/tulips-1083572__340.jpg',
+      isShow: false
     }
   },
-  filters: {
-    formatDate (time) {
-      return formatDate(time, 'yyyy-MM-dd')
+  methods: {
+    GetClasses (id) {
+      let tmp = _lodash.filter(this.teacherList, function (o) { return o.courseId === id })
+      console.log('tmp', tmp)
+      return tmp
+    },
+    GetObj (obj, type) {
+      let tmp = ''
+      let abc = 0
+      if (type === 1) {
+        _lodash.forEach(obj, function (o) {
+          tmp += '/' + o.classId
+        })
+        return tmp.substr(1)
+      } else if (type === 2) {
+        _lodash.forEach(obj, function (o) {
+          abc += o.class.students.length
+        })
+        return abc
+      }
     }
   },
   created () {
     var isLogin = Boolean(this.$store.state.user.token)
-    isLogin = true
     if (isLogin) {
       GetCourseList({'openId': this.$store.state.user.token}).then(response => {
+        console.log('GetCourseList', response.data)
         if (response.data.result === 0) {
           this.isStudent = response.data.data.user.userType === 0
           this.isTeacher = response.data.data.user.userType === 1
 
           if (this.isStudent) {
             this.ClassId = response.data.data.user.student.classId
+            this.studentList = response.data.data.list
+          } else {
+            this.teacherList = response.data.data.list
+            this.course = response.data.data.course
           }
-
-          this.list = response.data.data.list
-          console.log('list', this.list)
+          this.isShow = true
         }
       })
     }
@@ -142,106 +84,23 @@ export default {
 }
 </script>
 
-<style lang="less">
-    @import '~vux/src/styles/1px.less';
-    @import '~vux/src/styles/center.less';
-
-    .weui-cells,.vux-no-group-title {
-      margin-top:11px!important
-    }
-    .wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 1px 1px 5px rgba(0,0,0,.4);
-    }
-    .wrapper>a {
-        flex: 1;
-        text-align: center;
-        height: 36px;
-        line-height: 36px;
-        text-decoration: none;
-        color: #000!important;
-        font-size:18px!important;font-weight: bold;
-    }
-    .dropdownWrapper {
-        /*margin-top: 36px;
-        border: 1px solid #2C3E50;*/
-        font-size: 14px;
-        box-shadow: -1px 1px 5px rgba(0,0,0,.4);
-        z-index:99;
-        position: absolute;
-        width:100%
-    }
-    .dropdownWrapper li {
-        display: block;
-        text-align: left;
-        padding-left: 5px;
-        border-bottom: 1px solid rgba(0,0,0,.4);
-        background-color:#fff
-    }
-
-    .nav-item.active {
-        background: #fff;
-        color: #639ef4!important
-    }
-    .dropdownBtn {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-    }
-    .nav-item {
-        cursor: pointer;background:#edf2f6;display: block;
-    }
-
-    .box {
-        padding: 15px;
-      }
-      .active-6-1 {
-        color: #639ef4 !important;
-        border-color: #639ef4 !important;
-      }
-      .active-6-2 {
-        color: #04be02 !important;
-        border-color: #04be02 !important;
-      }
-      .active-6-3 {
-        color: rgb(55, 174, 252) !important;
-        border-color: rgb(55, 174, 252) !important;
-      }
-      .tab-swiper {
-        background-color: #fff;
-        height: 100px;
-      }
-
-      .dropdownBtn:after {
-        content: " ";
-        display: inline-block;
-        height: 6px;
-        width: 6px;
-        border-width: 2px 2px 0 0;
-        border-color: #C8C8CD;
-        border-style: solid;
-        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-            -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-                transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
-        position: relative;
-        top: 15px;
-        margin-right:4px;
-        position: absolute;
-
-        right: 17px;
-      }
-
-      .dropdownBtnDown:after{
-        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(90deg);
-            -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(90deg);
-                transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(90deg);
-      }
-
-      .dropdownBtnUp:after{
-        -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
-            -ms-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
-                transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0) rotate(-90deg);
-      }
+<style lang="less" scoped>
+.center {
+  text-align: center;
+  padding-top: 30px;
+  color: #fff;
+  font-size: 18px;
+}
+.center img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #ececec;
+}
+.index .main{ 
+  background-color:#f0f0f4;
+  margin-top:-10px;
+  padding-top:5px;
+}
 </style>
+

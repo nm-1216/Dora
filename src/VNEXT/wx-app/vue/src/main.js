@@ -54,7 +54,7 @@ Vue.config.productionTip = false
 const router = new VueRouter({
   routes: routesAuth.concat(routesSchool).concat(routesTemplate)
 })
-console.log(router)
+// console.log(router)
 
 router.beforeEach(({ meta, path }, from, next) => {
   store.commit('updateLoadingStatus', { isLoading: true })

@@ -1,4 +1,5 @@
 ﻿using Dora.wx;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Dora.School
 {
@@ -30,6 +31,14 @@ namespace Dora.School
 
         public void ConfigureServices(IServiceCollection services)
         {
+//            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+            
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue;
+            });
+            
             services.AddCors(options => options.AddPolicy(
             "AllowSameDomain",
             builder => builder.WithOrigins(

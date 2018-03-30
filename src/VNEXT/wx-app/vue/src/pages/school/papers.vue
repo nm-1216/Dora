@@ -1,20 +1,27 @@
 <template>
-  <div class="notice">
+  <div class="notice" v-show="showBody">
     <div class="title">
-      <h2>{{this.course.name}}</h2>
-      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher }} <i class="glyphicon glyphicon-th-list"></i> {{this.classes.name}}</p>
+      <h2>{{ courseName }}</h2>
+      <p><i class="glyphicon glyphicon-user"></i> {{ this.teacher.name }} <i class="glyphicon glyphicon-th-list"></i> {{GetObj(this.teachingTask.classes)}}</p>
     </div>
 
     <div class="content">
       <h4>{{this.model.title}}</h4>
       <p class="auth"><i class="glyphicon glyphicon-time"></i> {{this.model.createTimeTimeStamp | formatDate}}</p>
-      <p style="border-top:1px solid #ccc"></p>
+      <p class="auth"><i class="glyphicon glyphicon-info-sign"></i> 总分：{{score}}</p>
+      <p class="auth start"><i class="glyphicon glyphicon-heart"></i> 成绩：{{myScore}}</p>
     </div>
 
-    <div class="papers" v-show="this.answers === null">
+    <div class="papers" v-if="this.answers !== null">
       <div v-for="(item,index) in this.model.paperQuestions" :keys="index">
-        <checklist v-show="item.qType===1" :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text" :max="1" label-position="left" :options="GetOptions(item)" v-model="item.userAnswer"></checklist>
-        <checklist v-show="item.qType===2" :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text" :max="6" label-position="left" :options="GetOptions(item)" v-model="item.userAnswer"></checklist>
+        <checklist :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text+'  <i>'+item.answer+'</i>'" disabled label-position="left" :options="GetOptions(item)" v-model="item.newAnswer"></checklist>
+      </div>
+    </div>
+
+    <div class="papers" v-if="this.answers === null">
+      <div v-for="(item,index) in this.model.paperQuestions" :keys="index">
+        <checklist v-if="item.qType===1" :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text" :max="1" label-position="left" :options="GetOptions(item)" v-model="item.userAnswer"></checklist>
+        <checklist v-if="item.qType===2" :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text" :max="6" label-position="left" :options="GetOptions(item)" v-model="item.userAnswer"></checklist>
       </div>
       <div class="content">
         <p style="font-size:0.8rem;line-height:1.5;padding-top:20px">
@@ -22,13 +29,6 @@
         </p>
       </div> 
     </div>
-
-    <div class="papers" v-show="this.answers !== null">
-      <div v-for="(item,index) in this.model.paperQuestions" :keys="index">
-        <checklist :title="(index+1)+'. ['+GetType(item.qType)+'] '+item.text+'  '+item.answer" disabled label-position="left" :options="GetOptions(item)" v-model="item.newAnswer"></checklist>
-      </div>
-    </div>
-
   </div>
 </template>
 <script>
@@ -36,6 +36,7 @@ import { XInput, XButton, Group, TransferDom, Radio, Checklist } from 'vux'
 import { GetPapers, PushAnswer } from 'src/Api/api'
 import 'src/assets/Glyphicons/Glyphicons.css'
 import { formatDate } from 'src/filters/date.js'
+import 'src/assets/style/notice.css'
 var _lodash = require('lodash')
 
 export default {
@@ -43,12 +44,18 @@ export default {
   components: { Group, XInput, XButton, Radio, Checklist },
   data () {
     return {
+      showBody: false,
       learnLog: {},
       model: {},
       classes: {},
       course: {},
+      answers: null,
+      score: 0,
+      myScore: '',
+      teachingTask: {},
       teacher: '',
-      answers: {}
+      courseName: '',
+      id: this.$route.params.id
     }
   },
   filters: {
@@ -60,25 +67,40 @@ export default {
     this.getData()
   },
   methods: {
+    GetObj (obj, type) {
+      let tmp = ''
+      _lodash.forEach(obj, function (o) {
+        tmp += '/' + o.classId
+      })
+      return tmp.substr(1)
+    },
     getData () {
       console.log('getData', 'GetNotice')
       GetPapers({'id': this.$route.params.id, 'openId': this.$store.state.user.token}).then(response => {
         console.log(response.data)
         this.learnLog = response.data.data.learnLog
+        this.teacher = response.data.data.teacher
+        this.answers = response.data.data.answers
+        this.teachingTask = response.data.data.teachingTask
+        this.courseName = this.teachingTask.course.name
+
         let abc = response.data.data.model
         abc.paperQuestions = _lodash.orderBy(abc.paperQuestions, ['code'], ['asc'])
         this.model = abc
-        this.teacher = this.model.teacher.name
-        this.classes = response.data.data.classes
-        this.course = response.data.data.course
-        this.answers = response.data.data.answers
+        this.score = _lodash.sumBy(abc.paperQuestions, function (o) { return o.value })
         let vm = this
         if (this.answers !== null) {
           _lodash.forEach(this.model.paperQuestions, function (value) {
             let tmpIndex = _lodash.findIndex(vm.answers.paperAnswerDetails, function (o) { return o.paperQuestionId === value.paperQuestionId })
             value.newAnswer = vm.answers.paperAnswerDetails[ tmpIndex ].value.split('')
+            value.isRight = vm.answers.paperAnswerDetails[ tmpIndex ].isRight
           })
+
+          this.myScore = _lodash.sumBy(
+            _lodash.filter(this.model.paperQuestions, function (o) { return o.isRight })
+            , function (o) { return o.value })
         }
+        this.showBody = true
       })
     },
     submitPaper () {
@@ -108,7 +130,7 @@ export default {
         return
       }
 
-      PushAnswer({'model': this.model, 'openId': this.$store.state.user.token}).then(response => {
+      PushAnswer({'model': this.model, 'openId': this.$store.state.user.token, 'id': this.id}).then(response => {
         console.log(response.data)
         if (response.data.result === 0) {
           this.$vux.alert.show({
@@ -118,7 +140,7 @@ export default {
               console.log('Plugin: I\'m showing')
             },
             onHide () {
-              vm.$router.push(`/class/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+              vm.$router.push(`/class/${vm.learnLog.teachingTaskId}`)
             }
           })
         } else {
@@ -129,7 +151,7 @@ export default {
               console.log('Plugin: I\'m showing')
             },
             onHide () {
-              vm.$router.push(`/class/${vm.learnLog.classId}/${vm.learnLog.courseId}`)
+              vm.$router.push(`/class/${vm.learnLog.teachingTaskId}`)
             }
           })
         }
@@ -183,30 +205,12 @@ export default {
   }
 }
 </script>
-
 <style type="text/css">
-  .notice .title{
-    padding: 20px 20px 10px 20px;
-    background: #fff
+  .weui-cells__title i{
+    color: #ff7500;
+    font-weight: bold;
   }
-  .notice .content{
-    padding: 20px;
-    background: #fff;
-    margin:10px auto;
+  .notice {
+    background-color: #f0f0f4
   }
-  .notice .content p.auth,.notice .title p{
-    font-size:0.5rem;
-    color: #ccc;
-    line-height: 4;
-  }
-
-.notice .content div{
-  background-color: #F5F5F5;
-  font-size:0.8rem;
-  padding: 5px 10px;
-  margin-top: 10px;
-  min-height: 3rem;
-  color: #ccc
-}
-
 </style>

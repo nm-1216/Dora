@@ -21,23 +21,19 @@
         public virtual string Name { get; set; }
         
         /// <summary>
+        /// 授课任务
+        /// </summary>
+        public virtual string TeachingTaskId { get; set; }
+        
+        /// <summary>
         /// 对象id
         /// </summary>
         public virtual string ObjectId { get; set; }
-        
-        
-        /// <summary>
-        /// 班级id
-        /// </summary>
-        public virtual string ClassId { get; set; }
-
 
         /// <summary>
-        /// 课程id
+        /// 老师id
         /// </summary>
-        public virtual string CourseId { get; set; }
-
-
+        public virtual string TeacherId { get; set; }
 
     }
 }

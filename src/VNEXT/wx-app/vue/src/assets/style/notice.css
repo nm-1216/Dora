@@ -1,0 +1,31 @@
+.notice .title{
+  padding: 20px 20px 10px 20px;
+  background: #fff
+}
+.notice .content{
+  padding: 10px 20px 20px 20px;
+  background: #fff;
+  margin:10px auto;
+}
+.notice .content p.auth,.notice .title p{
+  font-size:1rem;
+  font-weight: normal;
+  padding-top: 5px;    
+  color: #666;
+}
+
+.notice .content p.start{
+  color: #ff2d51;
+}
+
+.notice .content div{
+  background-color: #F5F5F5;
+  font-size:0.8rem;
+  padding: 5px 10px;
+  margin-top: 10px;
+  min-height: 3rem;
+  color: #ccc
+}
+.notice {
+  background-color: #f0f0f4
+}

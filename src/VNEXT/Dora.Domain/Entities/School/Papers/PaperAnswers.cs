@@ -13,6 +13,12 @@ namespace Dora.Domain.Entities.School
         public virtual string PaperAnswerId { get; set; }
         
         /// <summary>
+        /// 授课任务
+        /// </summary>
+        public virtual string TeachingTaskId { get; set; }
+
+        
+        /// <summary>
         /// 试卷
         /// </summary>
         public virtual string PaperId { get; set; }

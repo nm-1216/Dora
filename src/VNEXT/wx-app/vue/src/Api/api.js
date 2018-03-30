@@ -30,3 +30,4 @@ export const GetCoursewareList = params => { return axios.post(`${base}/GetCours
 export const SendPapers = params => { return axios.post(`${base}/SendPapers`, Qs.stringify(params)) }
 export const SendCoursewaree = params => { return axios.post(`${base}/SendCoursewaree`, Qs.stringify(params)) }
 export const GetPapersList = params => { return axios.post(`${base}/GetPapersList`, Qs.stringify(params)) }
+export const GetQrCode = params => { return axios.post(`${base}/GetQrCode`, Qs.stringify(params)) }

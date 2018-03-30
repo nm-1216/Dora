@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="sendPapers">
     <search v-model="searchkey" @on-change="getResult" ref="search"></search>
 
     <group title="我的试卷">
       <radio title="title" :options="options" v-model="value"></radio>
     </group>
 
-      <div style="padding:30px 15px;">
+      <div style="padding:30px 15px;background-color:#fff">
         <x-button type="warn" @click.native="submit">发送</x-button>
       </div>
   </div>
@@ -32,6 +32,7 @@ export default {
     return {
       results: [],
       list: [],
+      id: this.$route.params.id,
       searchList: [],
       searchkey: '',
       value: ''
@@ -66,7 +67,7 @@ export default {
     },
     getResult (val) {
       let vm = this
-      vm.searchList = _lodash.dropWhile(vm.list, function (o) { return o.title.search(val) === -1 })
+      vm.searchList = _lodash.filter(vm.list, function (o) { return o.title.search(val) >= 0 })
     },
     onSubmit () {
       this.$refs.search.setBlur()
@@ -95,9 +96,8 @@ export default {
         return
       }
       SendPapers({
-        courseId: this.$route.params.courseId,
-        classId: this.$route.params.classId,
-        id: this.value,
+        id: this.id,
+        objectId: this.value,
         openId: this.$store.state.user.token
       }).then(response => {
         console.log(response.data)
@@ -109,7 +109,7 @@ export default {
             onShow () {
             },
             onHide () {
-              vm.$router.push(`/classteacher/${vm.$route.params.classId}/${vm.$route.params.courseId}`)
+              vm.$router.push(`/classteacher/${vm.id}`)
             }
           })
         } else {
@@ -131,5 +131,8 @@ export default {
 <style type="text/css">
   .vux-search-box{
     position: static!important;
+  }
+  .sendPapers{
+    background-color: #f0f0f4
   }
 </style>

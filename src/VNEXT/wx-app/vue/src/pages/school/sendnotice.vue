@@ -1,5 +1,5 @@
 <template>
-  <div class="reg">
+  <div class="sendNotice">
     <form v-on:submit.prevent="submit">
       <group title="标题（必填）">
         <x-input placeholder="" v-model="title"></x-input>
@@ -8,7 +8,7 @@
         <x-textarea v-model="des"></x-textarea>
       </group>
 
-      <div style="padding:30px 15px;">
+      <div style="padding:30px 15px;background-color:#fff">
         <x-button type="warn">发送</x-button>
       </div>
     </form>
@@ -31,6 +31,7 @@ export default {
   data () {
     return {
       title: '',
+      id: this.$route.params.id,
       des: ''
     }
   },
@@ -52,8 +53,7 @@ export default {
         return
       }
       SendNotice({
-        courseId: this.$route.params.courseId,
-        classId: this.$route.params.classId,
+        id: this.id,
         title: this.title,
         des: this.des,
         openId: this.$store.state.user.token
@@ -67,7 +67,7 @@ export default {
             onShow () {
             },
             onHide () {
-              vm.$router.push(`/classteacher/${vm.$route.params.classId}/${vm.$route.params.courseId}`)
+              vm.$router.push(`/classteacher/${vm.id}`)
             }
           })
         } else {
@@ -85,3 +85,11 @@ export default {
   }
 }
 </script>
+<style type="text/css" scoped>
+  .sendNotice{
+    background-color: #f0f0f4;
+    margin-top:-10px;
+    padding-top:10px;
+  }
+</style>
+

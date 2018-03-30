@@ -49,7 +49,6 @@ html, body, #app {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-  background-color: #fbf9fe;
 }
 .weui-tab__panel{
   padding-bottom:0!important;
