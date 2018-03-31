@@ -1,3 +1,0 @@
-error: unable to create file src/VNEXT/Dora.School/wwwroot\upload\Courseware\0a0306fd-7f0a-4c01-a650-9797f45bbdf7.xlsx: No such file or directory
-error: unable to create file src/VNEXT/Dora.School/wwwroot\upload\Courseware\f0b8c13b-c766-4d86-a3ba-ff5e5e73316f.xlsx: No such file or directory
-error: unable to create file src/VNEXT/Dora.School/wwwroot\upload\Courseware\f0f77f06-b8ed-455b-87b8-12928f00f64f.xlsx: No such file or directory
