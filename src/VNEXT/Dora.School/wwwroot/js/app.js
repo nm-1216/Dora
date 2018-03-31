@@ -277,12 +277,21 @@ function checkURL() {
     }
 }
 function loadURL(a, b) {
+    var c=b.get(0);
+    var iframeWindow = c.contentWindow;
+    var currentHref = iframeWindow.document.location.pathname;
     console.log('loadURLa',a)
     console.log('loadURLb',b)
     if(a === undefined)
         return
+    var q1=currentHref;
+    var q2=("/"+a).replace('//','');
+    console.log('q1',q1);
+    console.log('q2',q2);
+    if (q1 !==q2 ){
+        b.attr('src',q2);
+    }
 
-    b.attr('src',("/"+a).replace('//',''));
     
     return;
     $.ajax({
@@ -547,12 +556,10 @@ if ($.fn.extend({
 
 
 $.navAsAjax && ($("nav").length && checkURL(), $(document).on("click", 'nav a[href!="#"]', function (a) {
-    console.log('onclick====='+1)
+    console.log('onclick=====>'+1)
     a.preventDefault();
     var b = $(a.currentTarget);
-    b.parent().hasClass("active") || b.attr("target") || ($.root_.hasClass("mobile-view-activated") ? ($.root_.removeClass("hidden-menu"), $("html").removeClass("hidden-menu-mobile-lock"), window.setTimeout(function () {
-        window.location.search ? window.location.href = window.location.href.replace(window.location.search, "").replace(window.location.hash, "") + "#" + b.attr("href") : window.location.hash = b.attr("href")
-    }, 150)) : window.location.search ? window.location.href = window.location.href.replace(window.location.search, "").replace(window.location.hash, "") + "#" + b.attr("href") : window.location.hash = b.attr("href"))
+    b.parent().hasClass("active") || b.attr("target") || (window.location.hash = b.attr("href"),checkURL())
 }), $(document).on("click", 'nav a[target="_blank"]', function (a) {
     console.log('onclick====='+2)
     a.preventDefault();
@@ -566,20 +573,12 @@ $.navAsAjax && ($("nav").length && checkURL(), $(document).on("click", 'nav a[hr
 }), $(document).on("click", 'nav a[href="#"]', function (a) {
     console.log('onclick====='+4)
     //a.preventDefault()
-}), $(window).on("hashchange", function () {
-    console.log('onclick====='+5)
+})
+// , $(window).on("hashchange", function () {
+// console.log('onclick====='+5)
+// checkURL()
+// })
 
-    checkURL()
-})), $("body").on("click", function (a) {
-    // console.log('onclick====='+6)
-    //
-    // $('[rel="popover"], [data-rel="popover"]').each(function () {
-    //     $(this).is(a.target) || 0 !== $(this).has(a.target).length || 0 !== $(".popover").has(a.target).length || $(this).popover("hide")
-    // })
-}), $("body").on("hidden.bs.modal", ".modal", function () {
-    console.log('onclick====='+7)
-
-    $(this).removeData("bs.modal")
-});
+);
 
 

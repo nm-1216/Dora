@@ -9,7 +9,15 @@
         display:block;
         margin:0 auto;
     }
-
+    .bg1 {
+/*        background-color: #e0f0e9;*/
+        background-color: #f0f7f7;
+/*        filter:alpha(opacity:50);*/
+/*        opacity:0.5;*/
+/*        -moz-opacity:0.5;*/
+/*        -khtml-opacity: 0.5;*/
+        margin-bottom: 20px;
+    }
     .imgItem {
         padding: 20px 0 20px 0;
         text-align: center;
@@ -37,7 +45,7 @@
 
     .ModuleType {
         text-align: left;
-        padding: 20px 0 20px 0;
+        padding: 20px 0 20px 20px;
         width: 23%;
         font-size: 15pt;
         color: #0c3647;
@@ -55,25 +63,25 @@
 @foreach (var role in Model)
 {
 
-    <div class="container" style="width:60%;position:relative">
-        <div class="RoleName">
+    <div class="container" style="width:80%;position:relative">
+        <div class="RoleName" style="display: none">
             @role.Name
         </div>
         @foreach (var Permission in role.Permissions.OrderBy(b => b.ModuleType.Index))
         {
             <div class="container-fluid" style="position:relative;">
-                <div class="row">
-                    <div class="col-lg-1 ModuleType" style="">
+                <div class="row bg1">
+                    <div class="col-sm-1 ModuleType" style="width: 23%">
                         <img src="@Permission.ModuleType.Ico" />
                         @Permission.ModuleType.Name
                     </div>
-                    <div class="col-lg-1" style="width:77%;padding:0">
-                        <div class="container-fluid" style="position:relative">
+                    <div class="col-sm-11" style="width:77%">
+                        <div class="container-fluid" style="position: relative;background-color: transparent">
                             <div class="row imgbox">
                                 @foreach (var item in Permission.ModuleType.Modules.OrderBy(b => b.Index))
                                 {
                                     <a href="@item.Url">
-                                        <div class="imgItem col-lg-3 col-sm-3 col-xs-3">
+                                        <div class="imgItem col-lg-3 col-sm-3 col-xs-3" style="overflow: hidden">
                                             <img src="@item.Ico" />
                                             @item.Name
                                         </div>

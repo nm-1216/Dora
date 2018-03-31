@@ -3,6 +3,7 @@ using System.Net.Mime;
 using Dora.ViewModels.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -193,7 +194,7 @@ namespace Dora.School.Controllers
 
         #endregion
 
-        #region 
+        #region Questions
 
         public async Task<IActionResult> Questions(string id)
         {
@@ -251,7 +252,7 @@ namespace Dora.School.Controllers
 
                     if (workbook != null)
                     {
-                        sheet = workbook.GetSheet("Survey");
+                        sheet = workbook.GetSheet("Papers");
                         if (sheet == null)
                             sheet = workbook.GetSheetAt(0);
                     }
@@ -372,9 +373,9 @@ namespace Dora.School.Controllers
             return Json(new AjaxResult(rst ? "导入成功" : "导入失败") {result = rst ? 0 : 1});
 
         }
-           
-        public async Task<IActionResult> AddQuestions(string paperId,string text, PaperQuestionType qType,  List<string> options)
-        
+
+        public async Task<IActionResult> AddQuestions(string paperId, string text, string answer,
+            PaperQuestionType qType, List<string> options, int value = 5)
         {
             var rst = false;
 
@@ -383,10 +384,13 @@ namespace Dora.School.Controllers
                 return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 0 : 1});
             }
 
-            var model = new PaperQuestions(){
-                Text = text, 
+            var model = new PaperQuestions()
+            {
+                Text = text,
                 PaperId = paperId,
                 QType = qType,
+                Value = value,
+                Answer = answer.ToUpper()
             };
 
             model.Option1 = options[0];
@@ -395,15 +399,15 @@ namespace Dora.School.Controllers
             model.Option4 = options[3];
             model.Option5 = options[4];
             model.Option6 = options[5];
-            
+
             rst = await _paperQuestionsService.Add(model);
 
 
             return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 0 : 1});
 
-        } 
-        
-        public async Task<IActionResult> EditQuestions(string id,string text, PaperQuestionType qType,  List<string> options)
+        }
+
+        public async Task<IActionResult> EditQuestions(string id,string text, string answer,PaperQuestionType qType,  List<string> options,int value)
         {
             var rst = false;
             var model = _paperQuestionsService.Find(b => b.PaperQuestionId == id);
@@ -413,17 +417,14 @@ namespace Dora.School.Controllers
 
                 model.Text = text;
                 model.QType = qType;
-                
+                model.Answer = answer.ToUpper();
+                model.Value = value;
                 
                 model.Option1 = options[0];
-            
                 model.Option2 = options[1];
-            
                 model.Option3 = options[2];
-            
                 model.Option4 = options[3];            
                 model.Option5 = options[4];
-            
                 model.Option6 = options[5];
                 
                 model.UpdateTime = DateTime.Now;
