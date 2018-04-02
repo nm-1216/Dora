@@ -158,15 +158,29 @@
         /// 删除
         /// </summary> 
         /// <param name="id">授课计划id</param>
+        /// <param name="detailId">要删除的明细id</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> DeletePlanDetail(string id)
-        {  
-            var model = _TeachingPlanDetailService.GetAll().First(b => b.TeachingPlanDetailId == id);
-             
+        public async Task<IActionResult> DeletePlanDetail(string id ,string detailId)
+        {
+            var rst = false;
+
+             var model = _TeachingPlanDetailService.GetAll().First(b => b.TeachingPlanDetailId == detailId);
+
             if (model != null)
             {
                 await _TeachingPlanDetailService.Remove(model);
+
+                #region 删除后重新排序
+                var modelList = _TeachingPlanDetailService.Where(b => b.TeachingPlanId == id).OrderBy(r => r.Order);
+                int i = 1;
+                foreach (var item in modelList)
+                {
+                    item.Order = i++;
+                }
+
+                rst = await _TeachingPlanDetailService.UpdateRange(modelList);
+                #endregion
 
                 return Json(new AjaxResult("操作成功") { result = 1 });
             }
@@ -178,18 +192,48 @@
 
 
         #region 修改明细
-        ///// <summary>
-        ///// 提供明细信息
-        ///// </summary> 
-        ///// <returns></returns>
-        //[HttpPost]
-        //public IActionResult GetTeachingPlanDetail(int did)
-        //{
-        //    var TeachingPlans = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanDetails.FirstOrDefault() != null)
-        //        .Select(r => new { id = r.TeachingPlanId, name = r.Course.Name, term = r.Term });
-        //    return Json(TeachingPlans);
-        //}
+        /// <summary>
+        /// 提供明细信息
+        /// </summary> 
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult GetTeachingPlanDetail(string detailId)
+        {
+            var model = _TeachingPlanDetailService.GetAll().First(b => b.TeachingPlanDetailId == detailId);
+            return Json(model);
+        }
 
         #endregion
+
+
+
+        /// <summary>
+        /// 提交排序
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> ReOrder(string id, List<string> list)
+        {
+            var rst = false;
+
+            var modelList = _TeachingPlanDetailService.Where(b => b.TeachingPlanId == id);
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                foreach (var item in modelList)
+                {
+                    if (item.TeachingPlanDetailId == list[i])
+                    {
+                        item.Order = i + 1;
+                    }
+                }
+            }
+
+
+            rst = await _TeachingPlanDetailService.UpdateRange(modelList);
+
+            return Json(new AjaxResult(rst ? "成功" : "失败") { result = rst ? 0 : 1 });
+        }
     }
 }
