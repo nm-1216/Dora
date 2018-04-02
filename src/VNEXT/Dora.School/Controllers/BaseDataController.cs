@@ -1,10 +1,4 @@
 ﻿
-/// <summary>
-/// 基数数据 班级，课程，组织架构
-/// </summary>
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Dora.School.Controllers
 {
     using Dora.Core;
@@ -26,6 +20,9 @@ namespace Dora.School.Controllers
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Dora.Helpers;
+
 
     [EnableCors("AllowSameDomain")]
     [Authorize]
@@ -103,8 +100,8 @@ namespace Dora.School.Controllers
                     }
 
                     IRow row = sheet.GetRow(0);
-                    var code = GetValue(row.GetCell(0));
-                    var name = GetValue(row.GetCell(1));
+                    var code = NpoiHelper.GetValue(row.GetCell(0));
+                    var name = NpoiHelper.GetValue(row.GetCell(1));
                     //var idCard = getValue(row.GetCell(2));
 
                     if (!code.Equals("编码") || !name.Equals("名称"))
@@ -118,8 +115,8 @@ namespace Dora.School.Controllers
                         row = sheet.GetRow(i);
                         if (row == null) continue;
 
-                        code = GetValue(row.GetCell(0));
-                        name = GetValue(row.GetCell(1));
+                        code = NpoiHelper.GetValue(row.GetCell(0));
+                        name = NpoiHelper.GetValue(row.GetCell(1));
 
                         if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name))
                         {
@@ -183,15 +180,14 @@ namespace Dora.School.Controllers
             var NewFile = System.Guid.NewGuid().ToString() + extname;
 
 
-            filename = _hostingEnvironment.WebRootPath + $@"\upload\{NewFile}";
+            filename = _hostingEnvironment.WebRootPath + $@"/upload/{NewFile}";
             using (FileStream fs = System.IO.File.Create(filename))
             {
                 upload.CopyTo(fs);
                 fs.Flush();
             }
 
-            url = "http://localhost:56417/upload/" + NewFile;
-            //return Content(string.Format(Callback, CKEditorFuncNum, url), ContentType);
+            url = "/upload/" + NewFile;
             return Json(new { uploaded = uploaded, fileName = NewFile, url = url });
         }
 
@@ -201,7 +197,7 @@ namespace Dora.School.Controllers
             var filename = ContentDispositionHeaderValue.Parse(upload.ContentDisposition).FileName.Trim('"');
             var extname = filename.Substring(filename.LastIndexOf("."), filename.Length - filename.LastIndexOf("."));
             var NewFile = System.Guid.NewGuid().ToString() + extname;
-            filename = hostingEnvironment.WebRootPath + $@"\upload\{dir}\{NewFile}";
+            filename = hostingEnvironment.WebRootPath + $@"/upload/{dir}/{NewFile}";
 
 
             var path = Path.Combine(hostingEnvironment.WebRootPath, "upload", dir);
@@ -229,29 +225,7 @@ namespace Dora.School.Controllers
 
         #endregion
 
-        private string GetValue(ICell cell)
-        {
-            if (cell == null)
-            {
-                return null;
-            }
 
-            if (cell.CellType == CellType.Boolean)
-            {
-                return cell.BooleanCellValue.ToString();
-            }
-            else if (cell.CellType == CellType.Numeric)
-            {
-                Double doubleVal = cell.NumericCellValue;
-
-
-                return doubleVal.ToString("#.####");
-            }
-            else
-            {
-                return cell.StringCellValue.Trim();
-            }
-        }
 
     }
 }
