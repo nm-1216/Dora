@@ -3,7 +3,7 @@
     ViewData["Title"] = "教学计划维护";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -15,14 +15,14 @@
                 <div style="padding-bottom:15px;text-align:right">
                     @if (ViewBag.Detail.Count == 0)
                     {
-                        <input type="button" class="btn btn-danger"  value="批量" id="btnBatchGenerate" data-content-id="@Model.TeachingPlanId" />
+                        <input type="button" class="btn btn-danger" value="批量" id="btnBatchGenerate" data-content-id="@Model.TeachingPlanId" />
                         <input type="button" class="btn btn-info" value="参照" id="btnImitate" data-content-id="@Model.TeachingPlanId" />
 
                     }
                     else
                     {
                         <a class="btn btn-danger btnUpOrder">提交排序</a>
-                        <input type="button" class="btn btn-info" value="添加" id="btnAdd" data-content-id="@Model.TeachingPlanId" />
+                        <input type="button" class="btn btn-info btnAdd" value="添加" data-content-id="@Model.TeachingPlanId" />
 
                     }
                 </div>
@@ -60,95 +60,103 @@
                     </tbody>
                 </table>
             </form>
-        </div> 
+        </div>
     </div>
-     
+
 
 </div>
 
 <!--参照Start-->
-<div class="DivImitate" style="display:none"> 
-    <div id="myTabContent" class="tab-content">  
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th colspan="3">授课计划名称：</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
-                        </td>
-                        <td>
-                            <button class="btn btn-info" id="btnSearchProfessionals">search</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <table class="table table-striped" id="tabcz">
-                                <thead>
-                                    <tr>
-                                        <th>授课计划</th>
-                                        <th>学期</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr></tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody> 
-            </table> 
-    </div>
-</div>
-<!--参照End-->
-
-<!--修改Start-->
-<div class="DivEdit" style="display:none">
+<div class="DivImitate" style="display:none">
     <div id="myTabContent" class="tab-content">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>授课方式：</th>
-                    <th>课时数：</th>
-                    <th>教学内容：</th>
+                    <th colspan="3">授课计划名称：</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><input id="EditMode" name="Term" type="text" class="form-control" /></td>
-                    <td><input id="EditPeriod" name="BegWeek" type="number" class="form-control"  /></td>
-                    <td><input id="EditTeaCon" name="EndWeek" type="text" class="form-control" /></td>
+                    <td>
+                        <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
+                    </td>
+                    <td>
+                        <button class="btn btn-info" id="btnSearchProfessionals">search</button>
+                    </td>
                 </tr>
                 <tr>
-                    <th>教学资源：</th>
-                    <th>是否随堂测试：</th>
-                    <th>授课教师</th>
-                </tr>
-                <tr>
-                    <td><input id="EditAssets" name="ClaRoomCode" type="text" class="form-control" /></td>
-                    <td><input id="EditTest" name="Test" type="checkbox" />随堂测试</td>
-                    <td><input id="EditTeacher" name="ClaRoomCode" type="text" class="form-control" /></td>
-                </tr>
-                <tr>
-                    <th colspan="3">作业：</th>
-                </tr>
-                <tr>
-                    <td colspan="3"><input id="EditJob" name="Week" type="text" class="form-control" maxlength="256" /></td> 
+                    <td colspan="3">
+                        <table class="table table-striped" id="tabcz">
+                            <thead>
+                                <tr>
+                                    <th>授课计划</th>
+                                    <th>学期</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+<!--参照End-->
+<!--修改Start-->
+<div class="DivEdit" style="display:none">
+    <div id="myTabContent" class="tab-content">
+        <form id="EditTeachingPlanDetail" asp-action="EditTeachingPlanDetail" method="post">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>授课方式：</th>
+                        <th>课时数：</th>
+                        <th>教学内容：</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input id="EditMode" name="Mode" type="text" class="form-control" /></td>
+                        <td><input id="EditPeriod" name="Period" type="number" class="form-control" /></td>
+                        <td><input id="EditTeaCon" name="TeaCon" type="text" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th>教学资源：</th>
+                        <th>是否随堂测试：</th>
+                        <th>授课教师</th>
+                    </tr>
+                    <tr>
+                        <td><input id="EditAssets" name="Assets" type="text" class="form-control" /></td>
+                        <td><input id="EditTest" name="Test" type="checkbox" />随堂测试</td>
+                        <td><input id="EditTeacher" name="Teacher" type="text" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">作业：</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><input id="EditJob" name="Job" type="text" class="form-control" maxlength="256" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <input id="EditTeachingPlanDetailId" name="TeachingPlanDetailId" type="hidden" />
+                            <input id="EditTeachingPlanId" name="TeachingPlanId" type="hidden" />
+                            <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </div>
 <!--修改End-->
 
 
 @section scripts{
-<script src="~/js/jquery-ui.min.js"></script>
-<script type="text/javascript">
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script type="text/javascript">
     //点击批量生成
     $('#btnBatchGenerate').click(function () {
         var id = $(this).attr('data-content-id');
@@ -253,35 +261,48 @@
     }
 
 
+        $('.btnAdd').click(function () {
+            var id = $(this).attr('data-content-id');
+            DivLayer(1, '添加', $('.DivEdit'), '580px', '460px') 
 
-    //点击修改按钮，弹出列表供选择
-    $('.btnEdit').click(function () {
-        var id = $(this).attr('data-content-id');
-        DivLayer(1, '修改', $('.DivEdit'), '580px', '460px')
+            $("#EditMode").val("");
+            $("#EditPeriod").val("");
+            $("#EditTeaCon").val("");
+            $("#EditAssets").val("");
+            $("#EditTest").prop('checked', false);
+            $("#EditTeacher").val("");
+            $("#EditJob").val("");
+            $("#EditTeachingPlanId").val(id);
+            $("#EditTeachingPlanDetailId").val("");
+        });
 
-           $.ajax({
+        //点击修改按钮，弹出列表供选择
+        $('.btnEdit').click(function () {
+            var id = $(this).attr('data-content-id');
+            DivLayer(1, '修改', $('.DivEdit'), '580px', '460px')
+
+            $.ajax({
                 type: "Post",
                 url: "/TeachingPlan/GetTeachingPlanDetail",
-                data: { 
+                data: {
                     detailId: id
                 },
                 dataType: "json",
-                success: function (item ) { 
-                    if (item != undefined) {  
+                success: function (item) {
+                    if (item != undefined) {
                         $("#EditMode").val(item.mode);
                         $("#EditPeriod").val(item.period);
                         $("#EditTeaCon").val(item.teaCon);
                         $("#EditAssets").val(item.assets);
-                        
                         if (item.test == "1") {
                             $("#EditTest").prop('checked', true);
-                        } else
-                        {
-                            $("#EditTest").prop('checked', false); 
+                        } else {
+                            $("#EditTest").prop('checked', false);
                         }
-                     
+
                         $("#EditTeacher").val(item.teacher);
                         $("#EditJob").val(item.job);
+                        $("#EditTeachingPlanDetailId").val(item.teachingPlanDetailId);
                     }
                     else {
                         alert("失败");
@@ -294,16 +315,16 @@
                 }
             });
 
-    });
+        });
 
-    //点击删除按钮
-    $('.btnDelete').click(function () {
-        var id = $(this).attr('data-content-id');
-        layer.confirm('确认要删除该数据吗？', {
-            btn: ['确定', '取消']
-        }, function () {
-            $.ajax({
-                type: "Post",
+        //点击删除按钮
+        $('.btnDelete').click(function () {
+            var id = $(this).attr('data-content-id');
+            layer.confirm('确认要删除该数据吗？', {
+                btn: ['确定', '取消']
+            }, function () {
+                $.ajax({
+                    type: "Post",
                 url: "/TeachingPlan/DeletePlanDetail",
                 data: {
                     id:'@Model.TeachingPlanId', //要生成的id
@@ -384,7 +405,7 @@
                             console.log(data)
                             console.log(textStatus)
                             console.log(jqXHR)
-                            if (data.result === 0) {
+                            if (data.result === 1) {
                                 layer.closeAll();
                                 layer.msg(data.msg,
                                     {
@@ -410,7 +431,43 @@
         })
 
 
-</script>
+        //$(function () {
+            var options = {
+                //target: '#output',          //把服务器返回的内容放入id为output的元素中
+                //beforeSubmit: showRequest,  //提交前的回调函数
+                success: showResponse,      //提交后的回调函数
+                //url: url,                 //默认是form的action， 如果申明，则会覆盖
+                type: 'post',               //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json',           //html(默认), xml, script, json...接受服务端返回的类型
+                //clearForm: true,          //成功提交后，清除所有表单元素的值
+                //resetForm: true,          //成功提交后，重置所有表单元素的值
+                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+            }
+
+            function showResponse(responseText, statusText) {
+                console.log("responseText", responseText);
+                console.log("statusText", statusText);
+                var data = responseText;
+                if (data.result == 1) {
+                    layer.closeAll();
+                    layer.msg(data.msg, {
+                        time: 2000, end: function () {
+                            location.href = location.href;
+                        }
+                    }
+                    )
+                } else {
+                layer.msg(data.msg);
+                }
+            };
+
+            $("#EditTeachingPlanDetail").submit(function () { $(this).ajaxSubmit(options); return false; });
+        //});
+
+
+
+
+    </script>
 
 
 }

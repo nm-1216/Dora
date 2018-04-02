@@ -203,6 +203,59 @@
             return Json(model);
         }
 
+        // POST: TeachingTask/Edit/5
+        /// <summary>
+        /// 修改和添加，model.TeachingPlanDetailId有值就是修改，否则添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditTeachingPlanDetail(TeachingPlanDetail model, IFormCollection form)
+        {
+            var rst = false;
+            if (string.IsNullOrEmpty(model.TeachingPlanDetailId))
+            {
+                TeachingPlanDetail item = new TeachingPlanDetail();
+                item.TeachingPlanId = model.TeachingPlanId;
+                item.TeachingPlanDetailId = model.TeachingPlanDetailId;
+                item.Mode = model.Mode;
+                item.Period = model.Period;
+                item.TeaCon = model.TeaCon;
+                item.Assets = model.Assets;
+                item.Test = form["Test"] == "on" ? YesOrNo.Yes : YesOrNo.No;
+                item.Teacher = model.Teacher;
+                item.Job = model.Job;
+                item.Order = 1;//添加默认给1
+                rst = await _TeachingPlanDetailService.Add(item);
+
+                //重新排序
+                var modelList = _TeachingPlanDetailService.Where(b => b.TeachingPlanId == model.TeachingPlanId).OrderBy(r=> r.Order);
+                int i = 1;
+                foreach (var item2 in modelList)
+                {
+                    item2.Order = i++;
+                }
+                rst = await _TeachingPlanDetailService.UpdateRange(modelList); 
+            }
+            else
+            {
+                var item = _TeachingPlanDetailService.GetAll().First(b => b.TeachingPlanDetailId == model.TeachingPlanDetailId);
+                item.Mode = model.Mode;
+                item.Period = model.Period;
+                item.TeaCon = model.TeaCon;
+                item.Assets = model.Assets;
+                item.Test = form["Test"] == "on" ? YesOrNo.Yes : YesOrNo.No;
+                item.Teacher = model.Teacher;
+                item.Job = model.Job;
+                rst = await _TeachingPlanDetailService.Update(item);
+            }
+
+            return Json(new AjaxResult(rst ? "操作成功" : "操作失败") { result = rst ? 1 : 0 });
+        }
+
+ 
         #endregion
 
 
@@ -233,7 +286,7 @@
 
             rst = await _TeachingPlanDetailService.UpdateRange(modelList);
 
-            return Json(new AjaxResult(rst ? "成功" : "失败") { result = rst ? 0 : 1 });
+            return Json(new AjaxResult(rst ? "成功" : "失败") { result = rst ?1 : 0});
         }
     }
 }
