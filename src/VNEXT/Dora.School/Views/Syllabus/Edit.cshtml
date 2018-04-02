@@ -48,7 +48,6 @@
                 </table>
 
                 <div style="padding-bottom:15px;text-align:right"> 
-                        <button type="button" class="btn btn-danger btn-sm" onclick="DivLayer(1,'导入教学任务',$('#importDiv'))">导入</button> 
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook" data-content-id="@Model.SyllabusId" />
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId" />
@@ -56,7 +55,8 @@
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId" />
                         <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
                         <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="送审" />
-                        <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
+                    <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
+                    <a asp-action="Index" class="btn btn-success btn-sm">返回</a>
                     </div>
 
                 <ul id="myTab" class="nav nav-tabs">
@@ -116,12 +116,12 @@
                         </tr>
                         <tr>
                             <td><input name="Press" class="form-control" /></td>
-                            <td><input name="PreTime" class="form-control" /></td>
+                            <td><input name="PreTime" type="date" class="form-control" /></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-center">
-                                <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
+                                <button class="btn btn-danger" style="width:160px" type="submit">提交</button>
                             </td>
                         </tr>
                     </tbody>
@@ -150,6 +150,7 @@
     </div>
 </div>
 <!--建议选用教材End-->
+
 <!--课程学时分配Start-->
 <div class="DivSyllabusPeriod" style="display:none">
     <ul class="nav nav-tabs">
@@ -163,32 +164,37 @@
                 <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" />
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>单元序号：</th>
-                            <th>讲授课时：</th>
-                            <th>实验课时：</th> 
-                        </tr>
+                    <tr>
+                        <th>单元序号：</th>
+                        <th>讲授课时：</th>
+                        <th>实验课时：</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input name="UnitOrdNum" class="form-control" /></td>
-                            <td><input name="TeaPer" class="form-control" /></td>
-                            <td><input name="ExpPer" class="form-control" /></td> 
-                        </tr>
-                        <tr>
-                            <th  colspan="3">课程内容：</th>
-                            <th ></th>
-                        </tr>
-                        <tr>
-                            <td colspan="3">@*<input name="CouCon" class="form-control" type="text"/>*@
-                            <textarea  name="CouCon" class="form-control" style="height:150px"></textarea>
-                            </td> 
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center">
-                                <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <input name="UnitOrdNum" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="TeaPer" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="ExpPer" class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">课程内容：</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <textarea  name="CouCon" class="form-control" style="height: 150px"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <button class="btn btn-danger" style="width: 160px" type="submit">提交</button>
+                        </td>
+                    </tr>
                     </tbody>
 
                 </table>
@@ -211,108 +217,105 @@
     </div>
 </div>
 <!--课程学时分配End-->
+
 <!--设置先修课程Start-->
-<div class="DivSyllabusFirstCourse" style="display:none">
+<div class="DivSyllabusFirstCourse" style="display: none">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tabxx1" data-toggle="tab">添加</a></li>
-        <li><a href="#tabxx2" data-toggle="tab" id="ViewSyllabusFirstCourseList" data-content-id="@Model.SyllabusId">列表</a></li>
+        <li class="active">
+            <a href="#tabxx1" data-toggle="tab">添加</a>
+        </li>
+        <li>
+            <a href="#tabxx2" data-toggle="tab" id="ViewSyllabusFirstCourseList" data-content-id="@Model.SyllabusId">列表</a>
+        </li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade in active" id="tabxx1"> 
-                <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusFirstCourse_SyllabusId" />
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th colspan="3">课程：</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="text" class="form-control" name="searchKey" id="searchKey" placeholder="请输入关键字">
-                            </td>
-                            <td>
-                                <button class="btn btn-info" id="btnSearchCourses">search</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"> 
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>课程内容</th>
-                                            <th class="text-right">操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr> 
-                    </tbody>
-
-                </table> 
-    </div>
-    <div class="tab-pane fade" id="tabxx2">
-        <table class="table table-striped">
-            <thead>
+        <div class="tab-pane fade in active" id="tabxx1">
+            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusFirstCourse_SyllabusId"/>
+            <table class="table table-striped">
+                <tbody>
                 <tr>
-                    <th>课程内容</th> 
+                    <th>
+                        <input type="text" class="form-control" name="searchKey" id="searchKey" placeholder="请输入关键字">
+                    </th>
+                    <th>
+                        <button class="btn btn-info btn-block" id="btnSearchCourses">搜索</button>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>课程内容</th>
+                                <th class="text-right">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="tabxx2">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>课程内容</th>
                     <th class="text-right">操作</th>
                 </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+                </thead>
+                <tbody></tbody>
+            </table>
 
+        </div>
     </div>
-</div>
 </div>
 <!--设置先修课程End-->
 
 <!--设置对应专业Start-->
-<div class="DivSyllabusProfessional" style="display:none">
+<div class="DivSyllabusProfessional" style="display: none">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tabzy1" data-toggle="tab">添加</a></li>
-        <li><a href="#tabzy2" data-toggle="tab" id="ViewSyllabusProfessionalList" data-content-id="@Model.SyllabusId">列表</a></li>
+        <li class="active">
+            <a href="#tabzy1" data-toggle="tab">添加</a>
+        </li>
+        <li>
+            <a href="#tabzy2" data-toggle="tab" id="ViewSyllabusProfessionalList" data-content-id="@Model.SyllabusId">列表</a>
+        </li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade in active" id="tabzy1">
-            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusProfessional_SyllabusId" />
+            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusProfessional_SyllabusId"/>
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th colspan="3">专业：</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
-                        </td>
-                        <td>
-                            <button class="btn btn-info" id="btnSearchProfessionals">search</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>专业</th>
-                                        <th class="text-right">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr></tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                <tr>
+                    <th>
+                        <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
+                    </th>
+                    <th>
+                        <button class="btn btn-info btn-block" id="btnSearchProfessionals">搜索</button>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>专业</th>
+                                <th class="text-right">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
                 </tbody>
 
             </table>
@@ -320,10 +323,10 @@
         <div class="tab-pane fade" id="tabzy2">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>专业</th>
-                        <th class="text-right">操作</th>
-                    </tr>
+                <tr>
+                    <th>专业</th>
+                    <th class="text-right">操作</th>
+                </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -334,45 +337,43 @@
 <!--设置对应专业End-->
 
 <!--设置任课老师Start-->
-<div class="DivSyllabusTeacher" style="display:none">
+<div class="DivSyllabusTeacher" style="display: none">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tabls1" data-toggle="tab">添加</a></li>
-        <li><a href="#tabls2" data-toggle="tab" id="ViewSyllabusTeacherList" data-content-id="@Model.SyllabusId">列表</a></li>
+        <li class="active">
+            <a href="#tabls1" data-toggle="tab">添加</a>
+        </li>
+        <li>
+            <a href="#tabls2" data-toggle="tab" id="ViewSyllabusTeacherList" data-content-id="@Model.SyllabusId">列表</a>
+        </li>
     </ul>
-
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade in active" id="tabls1">
-            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusTeacher_SyllabusId" />
+            <input type="hidden" name="SyllabusId" value="@Model.SyllabusId" id="DivSyllabusTeacher_SyllabusId"/>
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th colspan="3">老师：</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" class="form-control" name="searchKey" id="TeachersearchKey" placeholder="请输入关键字">
-                        </td>
-                        <td>
-                            <button class="btn btn-info" id="btnSearchTeachers">search</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>老师</th>
-                                        <th class="text-right">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr></tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="searchKey" id="TeachersearchKey" placeholder="请输入关键字">
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-block" id="btnSearchTeachers">搜索</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>老师</th>
+                                <th class="text-right">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
                 </tbody>
 
             </table>
@@ -380,10 +381,10 @@
         <div class="tab-pane fade" id="tabls2">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>老师</th>
-                        <th class="text-right">操作</th>
-                    </tr>
+                <tr>
+                    <th>老师</th>
+                    <th class="text-right">操作</th>
+                </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -803,7 +804,7 @@
             
             $('#btnSyllabusBook').click(function () {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '建议选用教材', $('.DivSyllabusBook'), '580px', '460px')
+                DivLayer(1, '建议选用教材', $('.DivSyllabusBook'), '800px', '450px')
                 // IFreamLayer(1, '建议选用教材', "/Syllabus/SyllabusBook?id="+id, '580px', '460px')
             })
 
@@ -827,8 +828,8 @@
                                 html += "<td>" + item.compiler + "</td>";
                                 html += "<td>" + item.edition + "</td>";
                                 html += "<td>" + item.press + "</td>";
-                                html += "<td>" + item.preTime + "</td>";
-                                html += " <td><a data-content-id='" + item.syllabusBookId
+                                html += "<td>" + item.preTime.substring(0,10) + "</td>";
+                                html += " <td class='text-right'><a data-content-id='" + item.syllabusBookId
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusBook('" + item.syllabusBookId + "','" + item.syllabusId + "')\">删除</a></td>";//
                                 html += "</tr>";
                             });
@@ -852,7 +853,7 @@
 
             $('#btnSyllabusPeriod').click(function () {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '课程学时分配', $('.DivSyllabusPeriod'), '580px', '460px')
+                DivLayer(1, '课程学时分配', $('.DivSyllabusPeriod'), '800px', '450px')
             })
 
             //设置“课程学时分配”中，每次点击tab中的“列表”，查询数据
@@ -871,7 +872,7 @@
                             $.each(result, function (i, item) {
                                 html += "<tr>";
                                 html += "<td>" + item.Course + "</td>";
-                                html += " <td><a  "
+                                html += " <td class='text-right'><a  "
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusPeriod('" + item.CourseId + "','" + item.syllabusId + "')\">删除</a></td>";//
                                 html += "</tr>";
                             })
@@ -896,7 +897,7 @@
             //弹出div
             $('#btnSyllabusFirstCourse').click(function () {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '先修课程', $('.DivSyllabusFirstCourse'), '580px', '460px') 
+                DivLayer(1, '先修课程', $('.DivSyllabusFirstCourse'), '800px', '450px') 
             })
 
             //根据搜索内容加载列表
@@ -916,7 +917,7 @@
                             $.each(result, function (i, item) {
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>";
-                                html += " <td><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusFirstCourse('" + item.courseId + "','" + SyllabusId + "')\">添加</a></td>";// 
+                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusFirstCourse('" + item.courseId + "','" + SyllabusId + "')\">添加</a></td>";// 
                                 html += "</tr>";
                             }) 
                             $("#tabxx1 tbody tbody").html(html);
@@ -950,7 +951,7 @@
                             $.each(result, function (i, item) { 
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>"; 
-                                html += " <td><a  "
+                                html += " <td class='text-right'><a  "
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusFirstCourse('" + item.courseId + "','" + id+ "')\">删除</a></td>";//
                                 html += "</tr>";
                             }) 
@@ -976,7 +977,7 @@
             //弹出div
             $('#btnSyllabusProfessional').click(function () {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '先修专业', $('.DivSyllabusProfessional'), '580px', '460px')
+                DivLayer(1, '先修专业', $('.DivSyllabusProfessional'), '800px', '450px')
             })
 
             //根据搜索内容加载列表
@@ -996,7 +997,7 @@
                             $.each(result, function (i, item) { 
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>";
-                                html += " <td><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusProfessional('" + item.professionalId + "','" + SyllabusId + "')\">添加</a></td>";// 
+                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusProfessional('" + item.professionalId + "','" + SyllabusId + "')\">添加</a></td>";// 
                                 html += "</tr>";
                             })
                             $("#tabzy1 tbody tbody").html(html);
@@ -1030,7 +1031,7 @@
                             $.each(result, function (i, item) {
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>";
-                                html += " <td><a  "
+                                html += " <td class='text-right'><a  "
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusProfessional('" + item.professionalId + "','" + id + "')\">删除</a></td>";//
                                 html += "</tr>";
                             })
@@ -1055,7 +1056,7 @@
             //弹出div
             $('#btnSyllabusTeacher').click(function () {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '任课老师', $('.DivSyllabusTeacher'), '580px', '460px')
+                DivLayer(1, '任课老师', $('.DivSyllabusTeacher'), '800px', '450px')
             })
 
             //根据搜索内容加载列表
@@ -1075,7 +1076,7 @@
                             $.each(result, function (i, item) {
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>";
-                                html += " <td><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusTeacher('" + item.teacherId + "','" + SyllabusId + "')\">添加</a></td>";// 
+                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusTeacher('" + item.teacherId + "','" + SyllabusId + "')\">添加</a></td>";// 
                                 html += "</tr>";
                             })
                             $("#tabls1 tbody tbody").html(html);
@@ -1109,7 +1110,7 @@
                             $.each(result, function (i, item) {
                                 html += "<tr>";
                                 html += "<td>" + item.name + "</td>";
-                                html += " <td><a  "
+                                html += " <td class='text-right'><a  "
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusTeacher('" + item.teacherId + "','" + id + "')\">删除</a></td>";//
                                 html += "</tr>";
                             })

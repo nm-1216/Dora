@@ -237,7 +237,12 @@
 
         public IActionResult Details(string id)
         {
-            var model = _SyllabusService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.SyllabusId == id);
+            var model = _SyllabusService.GetAll()
+                .Include(b => b.Course)
+                .Include(b => b.Teacher)
+                .Include(b=>b.SyllabusPeriods)
+                .Include(b=>b.SyllabusBooks)
+                .FirstOrDefault(b => b.SyllabusId == id);
 
             return View(model);
         }
