@@ -1,3 +1,6 @@
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 namespace Dora.School.Controllers
 {
     using Domain.Entities.School;
@@ -19,8 +22,16 @@ namespace Dora.School.Controllers
         }
 
         #region Index
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
+            var user = await GetCurrentUserAsync();
+            var model = _userManager.Users.Include(b => b.Teacher).Include(b => b.Student)
+                .FirstOrDefault(b => b.Id == user.Id);
+
+            
+            ViewBag.user = model.Teacher == null ? model.Student==null?user.UserName:model.Student.Name : model.Teacher.Name;
+
             return View();
         }
 
