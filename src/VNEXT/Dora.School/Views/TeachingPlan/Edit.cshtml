@@ -7,20 +7,33 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <form method="post">
                 <input type="hidden" asp-for="TeachingPlanId" />
                 <div class="page-header">
                     <h1><small>@Model.Term</small></h1>
                 </div>
                 <div style="padding-bottom:15px;text-align:right">
-                    <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="批量" />
-                    <input type="button" class="btn btn-info btn-sm" style="width:100px" value="参照" id="btnSyllabusBook" data-content-id="@Model.TeachingPlanId" />
-                </div>
+                    @if (ViewBag.Detail.Count == 0)
+                    {
+                        <input type="button" class="btn btn-danger btn-sm" style="width:100px" value="批量" id="btnBatchGenerate" data-content-id="@Model.TeachingPlanId" />
+                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="参照" id="btnImitate" data-content-id="@Model.TeachingPlanId" />
 
+                    }
+                    else
+                    {  <input type="button" class="btn btn-danger btn-sm" style="width:100px" value="添加" id="btnAdd" data-content-id="@Model.TeachingPlanId" />
+
+                    }
+                </div>
                 <table class="table-striped table">
                     <thead>
                         <tr>
-                            <th>授课序号</th> 
+                            <th>授课序号</th>
+                            <th>授课方式</th>
+                            <th>课时数</th>
+                            <th>教学内容</th>
+                            <th>教学资源</th>
+                            <th>是否随堂测试</th>
+                            <th>作业</th>
 
                             <th class="text-right">操作</th>
                         </tr>
@@ -28,23 +41,257 @@
                     <tbody>
                         @foreach (var item in ViewBag.Detail)
                         {
-                            <tr> 
-                                <td>@item.Order</td> 
-                                <td class="text-right"> 
-                                    <a data-content-id="@item.TeachingPlanDetailId" class="btn btn-primary btn-xs btnEdit">修改</a> 
+                            <tr>
+                                <td>@item.Order</td>
+                                <td>@item.Mode</td>
+                                <td>@item.Period</td>
+                                <td>@item.TeaCon</td>
+                                <td>@item.Assets</td>
+                                <td>@item.Test</td>
+                                <td>@item.Job</td>
+                                <td class="text-right">
+                                    <a data-content-id="@item.TeachingPlanDetailId" class="btn btn-primary btn-xs btnEdit">修改</a>
+                                    <a data-content-id="@item.TeachingPlanDetailId" class="btn btn-primary btn-xs btnDelete">删除</a>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
             </form>
-        </div>
-
-       
+        </div> 
     </div>
-
-    @*<input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
-    @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, ViewBag.Detail.CurrPage, ViewBag.Detail.PageSize, ViewBag.Detail.PageCount, ViewBag.Detail.RecordCount))*@
-
+     
 
 </div>
+
+<!--参照Start-->
+<div class="DivImitate" style="display:none"> 
+    <div id="myTabContent" class="tab-content">  
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="3">授课计划名称：</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="searchKey" id="ProfessionalsearchKey" placeholder="请输入关键字">
+                        </td>
+                        <td>
+                            <button class="btn btn-info" id="btnSearchProfessionals">search</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-striped" id="tabcz">
+                                <thead>
+                                    <tr>
+                                        <th>授课计划</th>
+                                        <th>学期</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody> 
+            </table> 
+    </div>
+</div>
+<!--参照End-->
+
+<!--修改Start-->
+<div class="DivEdit" style="display:none">
+    <div id="myTabContent" class="tab-content">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>授课方式：</th>
+                    <th>课时数：</th>
+                    <th>教学内容：</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="EditMode" name="Term" type="text" class="form-control" /></td>
+                    <td><input id="EditPeriod" name="BegWeek" type="number" class="form-control"  /></td>
+                    <td><input id="EditTeaCon" name="EndWeek" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th>教学资源：</th>
+                    <th>是否随堂测试：</th>
+                    <th>授课教师</th>
+                </tr>
+                <tr>
+                    <td><input id="EditAssets" name="ClaRoomCode" type="text" class="form-control" /></td>
+                    <td><input id="EditTest" name="Test" type="checkbox" />随堂测试</td>
+                    <td><input id="EditTeacher" name="ClaRoomCode" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <th colspan="3">作业：</th>
+                </tr>
+                <tr>
+                    <td colspan="3"><input id="EditJob" name="Week" type="text" class="form-control" maxlength="256" /></td> 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--修改End-->
+
+
+@section scripts{
+<script type="text/javascript">
+    //点击批量生成
+    $('#btnBatchGenerate').click(function () {
+        var id = $(this).attr('data-content-id');
+
+        layer.confirm('确认要批量生成吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.ajax({
+                type: "Post",
+                url: "/TeachingPlan/BatchGenerate",
+                data: {
+                    TeachingPlanId: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        location.reload();
+                    }
+                    else {
+                        alert("失败");
+                    }
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("error");
+                }
+            });
+        })
+    });
+
+    //点击参照按钮，弹出列表供选择
+    $('#btnImitate').click(function () {
+        var id = $(this).attr('data-content-id');
+        DivLayer(1, '参照', $('.DivImitate'), '580px', '460px')
+
+        //列出已有明细的授课计划，以供“参照”
+        $.ajax({
+            type: "Post",
+            url: "/TeachingPlan/GetTeachingPlansToImitate",
+            dataType: "json",
+            success: function (result) {
+
+                if (result != undefined) {
+                    var html = "";
+                    $.each(result, function (i, item) {
+
+                        html += "<tr>";
+                        html += "<td>" + item.name + "</td>";
+                        html += "<td>" + item.term + "</td>";
+                        html += " <td><a data-content-id='" + item.id
+                            + "' class='btn btn-danger btn-xs btnDel' onclick=\"doImitate('" + item.id + "','" + id + "')\">参照</a></td>";//
+                        html += "</tr>";
+                    });
+                    $("#tabcz tbody").html(html);
+                }
+                else {
+                    alert("失败");
+                }
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("error");
+            }
+        });
+    })
+
+
+    //参照
+    function doImitate(czid, id) {
+        layer.confirm('确认要参照该授课计划生成数据吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.ajax({
+                type: "Post",
+                url: "/TeachingPlan/doImitate",
+                data: {
+                    czid: czid,//要参照的id
+                    id: id//要生成的id
+                },
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+
+                    if (data.result == 1) {
+                        layer.msg(data.msg);
+                        layer.closeAll();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("error");
+                }
+            });
+        });
+    }
+
+
+
+    //点击修改按钮，弹出列表供选择
+    $('.btnEdit').click(function () {
+        var id = $(this).attr('data-content-id');
+        DivLayer(1, '修改', $('.DivEdit'), '580px', '460px')
+    });
+
+    //点击删除按钮
+    $('.btnDelete').click(function () {
+        var id = $(this).attr('data-content-id');
+        layer.confirm('确认要删除该数据吗？', {
+            btn: ['确定', '取消']
+        }, function () {
+            $.ajax({
+                type: "Post",
+                url: "/TeachingPlan/DeletePlanDetail",
+                data: { 
+                    id: id//要生成的id
+                },
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) { 
+
+                    if (data.result == 1) {
+                        layer.msg(data.msg);
+                        layer.closeAll();
+                        location.reload();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("error");
+                }
+            });
+
+            layer.closeAll();
+        });
+    });
+    
+</script>
+
+
+}

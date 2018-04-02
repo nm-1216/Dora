@@ -61,26 +61,135 @@
             return View(model);
         }
 
-        // POST: TeachingTask/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(TeachingPlan model, IFormCollection form)
+        //// POST: TeachingTask/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Edit(TeachingPlan model, IFormCollection form)
+        //{
+        //    var tp = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.TeachingPlanId == model.TeachingPlanId);
+
+        //    IList<TeachingPlanDetail> list = new List<TeachingPlanDetail>();
+
+        //     int Period = Convert.ToInt32(tp.Course.Period);
+        //    //int Period = 64;
+        //    for (int i = 0; i < Period / 2; i++)
+        //    {
+        //        TeachingPlanDetail item = new TeachingPlanDetail();
+        //        item.TeachingPlanId = model.TeachingPlanId; 
+        //        item.Order = i + 1; 
+        //        list.Add(item);
+        //    }
+        //    await _TeachingPlanDetailService.AddRange(list);
+        //    return RedirectToAction(nameof(Edit));
+        //}
+
+        [HttpPost] 
+        public async Task<IActionResult> BatchGenerate(string TeachingPlanId)
         {
-            var tp = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.TeachingPlanId == model.TeachingPlanId);
+            var tp = _TeachingPlanService.GetAll().Include(b => b.Course).Include(b => b.Teacher).FirstOrDefault(b => b.TeachingPlanId == TeachingPlanId);
 
             IList<TeachingPlanDetail> list = new List<TeachingPlanDetail>();
 
-             int Period = Convert.ToInt32(tp.Course.Period);
+            int Period = Convert.ToInt32(tp.Course.Period);
             //int Period = 64;
             for (int i = 0; i < Period / 2; i++)
             {
                 TeachingPlanDetail item = new TeachingPlanDetail();
-                item.TeachingPlanId = model.TeachingPlanId; 
-                item.Order = i + 1; 
+                item.TeachingPlanId = TeachingPlanId;
+                item.Order = i + 1;
                 list.Add(item);
             }
             await _TeachingPlanDetailService.AddRange(list);
-            return RedirectToAction(nameof(Edit));
+            
+            return Json(new AjaxResult("操作成功") { result = 1 });
+            
         }
+
+        /// <summary>
+        /// 提供已有明细的授课计划列表，以供参照
+        /// </summary> 
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult GetTeachingPlansToImitate()
+        {
+            var TeachingPlans = _TeachingPlanService.GetAll().Include(r => r.Course).Where(r => r.TeachingPlanDetails.FirstOrDefault() != null)
+                .Select(r => new { id= r.TeachingPlanId, name = r.Course.Name, term = r.Term });
+            return Json(TeachingPlans);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="czid">要参照的授课计划id</param>
+        /// <param name="id">要生成明细的授课计划id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> doImitate(string czid, string id)
+        {
+            //要参照的授课计划
+            var tp = _TeachingPlanService.GetAll().Include(r => r.TeachingPlanDetails).First(b => b.TeachingPlanId == czid);
+
+            //要生成的
+            IList<TeachingPlanDetail> list = new List<TeachingPlanDetail>();
+
+            foreach (var czitem in tp.TeachingPlanDetails)
+            {
+                TeachingPlanDetail item = new TeachingPlanDetail();
+                item.TeachingPlanId = id;
+                item.Order = czitem.Order;
+                item.TeacherId = czitem.TeacherId;
+                item.Order = czitem.Order;
+                item.Mode = czitem.Mode;
+                item.Period = czitem.Period;
+                item.TeaCon = czitem.TeaCon;
+                item.Assets = czitem.Assets;
+                item.Test = czitem.Test;
+                item.Job = czitem.Job;
+                list.Add(item);
+            }
+            await _TeachingPlanDetailService.AddRange(list);
+
+            return Json(new AjaxResult("操作成功") { result = 1 });
+
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary> 
+        /// <param name="id">授课计划id</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeletePlanDetail(string id)
+        {  
+            var model = _TeachingPlanDetailService.GetAll().First(b => b.TeachingPlanDetailId == id);
+             
+            if (model != null)
+            {
+                await _TeachingPlanDetailService.Remove(model);
+
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
+
+        #region 修改明细
+        ///// <summary>
+        ///// 提供明细信息
+        ///// </summary> 
+        ///// <returns></returns>
+        //[HttpPost]
+        //public IActionResult GetTeachingPlanDetail(int did)
+        //{
+        //    var TeachingPlans = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanDetails.FirstOrDefault() != null)
+        //        .Select(r => new { id = r.TeachingPlanId, name = r.Course.Name, term = r.Term });
+        //    return Json(TeachingPlans);
+        //}
+
+        #endregion
     }
 }
