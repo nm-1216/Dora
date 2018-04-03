@@ -300,26 +300,25 @@
                         $("#EditPeriod").val(item.period);
                         $("#EditTeaCon").val(item.teaCon);
                         $("#EditAssets").val(item.assets);
+                        //是否随堂测试
                         if (item.test == "1") {
                             $("#EditTest").prop('checked', true);
                         } else {
                             $("#EditTest").prop('checked', false);
                         }
-
-                        //$("#EditTeacher").val(item.teacher);
+                         
                         $("#EditJob").val(item.job);
                         $("#EditTeachingPlanDetailId").val(item.teachingPlanDetailId);
-
-                        $("input[name='Teacher']").each(function () {
-
-                            if ($(this).val().indexOf(item.teacherId) >= 0) {
+                        //选择授课老师
+                        $("input[name='Teacher']").each(function () { 
+                            if ((',' + $(this).val() + ',').indexOf(',' + item.teacher + ',') >= 0) {
                                 $(this).prop("checked", true);
                             }
                             else {
                                 $(this).prop('checked', false);
                             }
                         });
-                 
+
                     }
                     else {
                         alert("失败");
