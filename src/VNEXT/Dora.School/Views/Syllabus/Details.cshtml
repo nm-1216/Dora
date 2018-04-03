@@ -30,10 +30,6 @@
         }
     </style>
 
-
-
-
-
 <style type="text/css">
     .ck-hidden {
         display: none !important
@@ -993,6 +989,18 @@ to{right:100%}
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-sm-12">
+            <div class="page-header">
+                <h1>@Model.Course.Name<small>@Model.Teacher.Name</small></h1>
+            </div>
+            <div class="text-right">
+                <a asp-action="Edit" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">返回</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
         <div class="col-lg-12">
             <div class="box" style="border:1px solid #000;width:800px;height:1000px;margin:50px auto 0 auto">
                 <h1>课程教学大纲</h1>
@@ -1011,13 +1019,66 @@ to{right:100%}
                 <h2>教学内容及要求</h2>
                 <div>@Html.Raw(Model.ConReq)</div>
                 <h2>教学时数分配</h2>
-                <div></div>
+                <div>
+                    <table class="table table-striped">
+                        <tbody>
+                        @foreach (var item in Model.SyllabusPeriods)
+                        {
+                            <tr>
+                                <th>单元序号</th>
+                                <th>讲授课时</th>
+                                <th>实验课时</th>
+                            </tr>
+                            <tr>
+                                <td>@item.UnitOrdNum</td>
+                                <td>@(item.TeaPer == null ? "" : item.TeaPer.Value.ToString("0.##"))</td>
+                                <td>@(item.ExpPer == null ? "" : item.ExpPer.Value.ToString("0.##"))</td>
+                            </tr>
+                            <tr>
+                                <th colspan="3">课程内容</th>
+                            </tr>
+                            <tr>
+                                <td colspan="3">@item.CouCon</td>
+                            </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                </div>
                 <h2>课程实践教学内容</h2>
                 <div>@Html.Raw(Model.PraCon)</div>
                 <h2>课程评价方法</h2>
                 <div>@Html.Raw(Model.EvaWay)</div>
                 <h2>建议选用教材</h2>
-                <div></div>
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>教材名称</th>
+                            <th>编著者</th>
+                            <th>版次</th>
+                            <th>出版社</th>
+                            <th>出版时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.SyllabusBooks)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Compiler</td>
+                                <td>@item.Edition</td>
+                                <td>@item.Press</td>
+                                <td>@item.PreTime.ToShortDateString()</td>
+                            </tr>
+                            
+                        }
+
+                        </tbody>
+                    </table>
+                    				
+                    
+                </div>
                 <h2>教学方法建议</h2>
                 <div>@Html.Raw(Model.Pro)</div>
                 <h2>其他说明</h2>

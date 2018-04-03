@@ -107,7 +107,7 @@
                 .Where(b => roles.Contains(b.Name))
                 .OrderBy(b => b.Index);
 
-            string nav = @"<li><a class=""has-arrow"" href=""javascript:void(0)""><span class=""fa fa-fw fa-github fa-lg""></span>{0}</a>";
+            string nav = @"<li><a class=""has-arrow"" href=""#""><span class=""fa fa-fw fa-github fa-lg""></span>{0}</a>";
             string href = @"<li><a href=""{1}""><span class=""fa fa-fw fa-code-fork""></span>{0}</a></li>";
             string ul = @"<ul aria-expanded=""true"">";
             string ulend = @"</ul>";
