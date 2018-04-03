@@ -293,7 +293,7 @@
         [HttpPost]
         public IActionResult GetSyllabusPeriod(string id)
         {
-            var SyllabusPeriod = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id);
+            var SyllabusPeriod = _SyllabusPeriodService.GetAll().Where(r => r.SyllabusId == id).OrderBy(r=> r.UnitOrdNum);
             return Json(SyllabusPeriod);
         }
 

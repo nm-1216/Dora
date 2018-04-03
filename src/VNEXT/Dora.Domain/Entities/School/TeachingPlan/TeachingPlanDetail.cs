@@ -35,9 +35,9 @@ namespace Dora.Domain.Entities.School
         public virtual string TeachingPlanId { get; set; }
 
 
-        ///// <summary>
-        ///// Gets or sets TIID 对应的授课教师
-        ///// </summary>
+        /// <summary>
+        /// Gets or sets TIID 对应的授课教师
+        /// </summary>
         //public virtual string TeacherId { get; set; }
 
 

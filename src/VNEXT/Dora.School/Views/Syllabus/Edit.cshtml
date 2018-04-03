@@ -871,7 +871,9 @@
                             var html = "";
                             $.each(result, function (i, item) {
                                 html += "<tr>";
-                                html += "<td>" + item.Course + "</td>";
+                                html += "<td>" + item.unitOrdNum + "</td>";
+                                html += "<td>" + item.teaPer + "</td>";
+                                html += "<td>" + item.expPer + "</td>";
                                 html += " <td class='text-right'><a  "
                                     + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusPeriod('" + item.CourseId + "','" + item.syllabusId + "')\">删除</a></td>";//
                                 html += "</tr>";
