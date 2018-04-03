@@ -35,10 +35,10 @@ namespace Dora.Domain.Entities.School
         public virtual string TeachingPlanId { get; set; }
 
 
-        /// <summary>
-        /// Gets or sets TIID 对应的授课教师
-        /// </summary>
-        public virtual string TeacherId { get; set; }
+        ///// <summary>
+        ///// Gets or sets TIID 对应的授课教师
+        ///// </summary>
+        //public virtual string TeacherId { get; set; }
 
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Dora.Domain.Entities.School
         public virtual string Job { get; set; } = string.Empty;
 
         public virtual TeachingPlan TeachingPlan { get; set; }
-        public virtual Teacher Teacher { get; set; }
+        public virtual string Teacher { get; set; }
         #endregion
 
     }

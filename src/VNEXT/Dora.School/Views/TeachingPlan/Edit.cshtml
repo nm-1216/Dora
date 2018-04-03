@@ -131,8 +131,14 @@
                     <tr>
                         <td><input id="EditAssets" name="Assets" type="text" class="form-control" /></td>
                         <td><input id="EditTest" name="Test" type="checkbox" />随堂测试</td>
-                        <td><input id="EditTeacher" name="Teacher" type="text" class="form-control" /></td>
+                        <td> 
+                            @foreach (var item in ViewBag.Teachers)
+                            {
+                                <input type="checkbox" name="Teacher" value="@item.TeacherId" /><label>@item.Name</label><br />
+                            }
+                        </td>
                     </tr>
+
                     <tr>
                         <th colspan="3">作业：</th>
                     </tr>
@@ -300,9 +306,20 @@
                             $("#EditTest").prop('checked', false);
                         }
 
-                        $("#EditTeacher").val(item.teacher);
+                        //$("#EditTeacher").val(item.teacher);
                         $("#EditJob").val(item.job);
                         $("#EditTeachingPlanDetailId").val(item.teachingPlanDetailId);
+
+                        $("input[name='Teacher']").each(function () {
+
+                            if ($(this).val().indexOf(item.teacherId) >= 0) {
+                                $(this).prop("checked", true);
+                            }
+                            else {
+                                $(this).prop('checked', false);
+                            }
+                        });
+                 
                     }
                     else {
                         alert("失败");

@@ -24,14 +24,17 @@
     {
         private ITeachingPlanService _TeachingPlanService;
         private ITeachingPlanDetailService _TeachingPlanDetailService;
+        private ITeachingPlanTeacherService _TeachingPlanTeacherService;
 
         public TeachingPlanController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
      , ITeachingPlanService TeachingPlanService
      , ITeachingPlanDetailService TeachingPlanDetailService
+     , ITeachingPlanTeacherService TeachingPlanTeacherService
      ) : base(roleManager, userManager, loggerFactory)
         {
             _TeachingPlanService = TeachingPlanService;
             _TeachingPlanDetailService = TeachingPlanDetailService;
+            _TeachingPlanTeacherService = TeachingPlanTeacherService;
         }
 
         public IActionResult Index()
@@ -57,6 +60,9 @@
             ViewBag.Detail = _TeachingPlanDetailService.GetAll().Where(r => r.TeachingPlanId == id)
                 .OrderBy(r=>r.Order)
                 .ToList();
+
+            ViewBag.Teachers = _TeachingPlanTeacherService.GetAll().Include(r=> r.Teacher).Where(r => r.TeachingPlanId == id)
+                .Select(r=> r.Teacher);
 
             return View(model);
         }
@@ -138,7 +144,7 @@
                 TeachingPlanDetail item = new TeachingPlanDetail();
                 item.TeachingPlanId = id;
                 item.Order = czitem.Order;
-                item.TeacherId = czitem.TeacherId;
+                item.Teacher = czitem.Teacher;
                 item.Order = czitem.Order;
                 item.Mode = czitem.Mode;
                 item.Period = czitem.Period;
@@ -225,7 +231,7 @@
                 item.TeaCon = model.TeaCon;
                 item.Assets = model.Assets;
                 item.Test = form["Test"] == "on" ? YesOrNo.Yes : YesOrNo.No;
-                item.Teacher = model.Teacher;
+                item.Teacher = form["teacher"].ToString();
                 item.Job = model.Job;
                 item.Order = 1;//添加默认给1
                 rst = await _TeachingPlanDetailService.Add(item);
@@ -247,7 +253,7 @@
                 item.TeaCon = model.TeaCon;
                 item.Assets = model.Assets;
                 item.Test = form["Test"] == "on" ? YesOrNo.Yes : YesOrNo.No;
-                item.Teacher = model.Teacher;
+                item.Teacher = form["teacher"].ToString();
                 item.Job = model.Job;
                 rst = await _TeachingPlanDetailService.Update(item);
             }

@@ -21,7 +21,7 @@
             builder.ToTable("School_TeachingPlanDetail");
 
             ///Relationships
-            builder.HasOne(b => b.Teacher).WithMany().HasForeignKey(b => b.TeacherId);
+            //builder.HasOne(b => b.Teacher).WithMany().HasForeignKey(b => b.TeacherId);
 
 
         }
