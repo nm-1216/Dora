@@ -1,0 +1,68 @@
+﻿@model Dora.Core.PageList<TeachingPlan>
+
+@{
+    ViewData["Title"] = "授课计划查询";
+}
+<div class="container-fluid">
+  
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding:10px 0 20px 0;">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">课程名：</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="请输入名称">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">检索</button> 
+            </div> 
+        </div>
+
+        <div class="row" style="margin-top:15px;">
+            <div class="col-lg-12">
+                <table class="table-striped table">
+                    <thead>
+                        <tr>
+                            <th>课程</th>
+                            <th>学年</th>
+                            <th>状态</th>
+                            <th>是否提交</th>
+                            <th>完成时间</th>
+                            <th class="text-right">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(string.Format("({0}) {1}", item.CourseId.Trim(), item.Course.Name.Trim()))</td>
+                                <th>@item.Term</th>
+                                <th>
+                                    @if (item.UseSta == 0)
+                                    {<label> 停用</label>}
+                                    else
+                                    {<label>在用</label>}
+                                </th>
+                                <th>
+                                    @if (item.SubSta == 0)
+                                    {<label>未提交</label>}
+                                    else
+                                    {<label>已提交</label>}
+                                </th>
+                                @*<td>@(item.Teacher != null ? (string.Format("({0}) {1}", item.TeacherId.Trim(), item.Teacher.Name.Trim())) : "")</td>
+                    <td>@(item.Organization != null ? item.Organization.Name : "")</td>*@
+                                <th>@item.UpdateTime.ToString("yyyy-MM-dd")</th>
+                                <td class="text-right">
+                                    <a asp-action="TeachingPlanDetail" asp-route-id="@item.TeachingPlanId" class="btn btn-info btn-xs">查看明细</a>
+</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" name="Page" id="Page" value="@ViewBag.Page" />
+        @Html.Raw(Dora.Core.Pager.Pager1(Context.Request.Path.Value, Model.CurrPage, Model.PageSize, Model.PageCount, Model.RecordCount))
+    </form>
+</div>
