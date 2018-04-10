@@ -25,6 +25,7 @@
     {
         private IClassService _ClassService;
         private ITeachingTaskService _TeachingTaskService;
+        private ITeachingTaskDetailService _TeachingTaskDetailService;
         private ITeachingPlanService _TeachingPlanService;
         private ICourseService _CourseService;
         private ISyllabusTeacherService _SyllabusTeacherService;
@@ -32,6 +33,7 @@
         public TeachingTaskController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
          , IClassService classService
          , ITeachingTaskService teachingTaskService
+         , ITeachingTaskDetailService teachingTaskDetailService
          , ITeachingPlanService teachingPlanService
          , ICourseService CourseService
          , ISyllabusTeacherService SyllabusTeacherService
@@ -39,6 +41,7 @@
         {
             _ClassService = classService;
             _TeachingTaskService = teachingTaskService;
+            _TeachingTaskDetailService = teachingTaskDetailService;
             _TeachingPlanService = teachingPlanService;
             _CourseService = CourseService;
             _SyllabusTeacherService = SyllabusTeacherService;
@@ -101,10 +104,10 @@
                     var classes = GetValue(row.GetCell(3));
                     var BegWeek = GetValue(row.GetCell(4));
                     var EndWeek = GetValue(row.GetCell(5));
-                    var ClaRoomCode = GetValue(row.GetCell(6));
-                    var Week = GetValue(row.GetCell(7));
-                    var Section = GetValue(row.GetCell(8));
-                    var Memo = GetValue(row.GetCell(9));
+                    //var ClaRoomCode = GetValue(row.GetCell(6));
+                    //var Week = GetValue(row.GetCell(7));
+                    //var Section = GetValue(row.GetCell(8));
+                    var Memo = GetValue(row.GetCell(6));
 
                     if (!course.Equals("课程")
                     || !term.Equals("学期")
@@ -112,9 +115,9 @@
                     || !classes.Equals("班级")
                     || !BegWeek.Equals("开始周次")
                     || !EndWeek.Equals("结束周次")
-                    || !ClaRoomCode.Equals("教室编号")
-                    || !Week.Equals("星期")
-                    || !Section.Equals("上课节次")
+                    //|| !ClaRoomCode.Equals("教室编号")
+                    //|| !Week.Equals("星期")
+                    //|| !Section.Equals("上课节次")
                     || !Memo.Equals("备注"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
@@ -135,23 +138,21 @@
                         classes = GetValue(row.GetCell(3));
                         BegWeek = GetValue(row.GetCell(4));
                         EndWeek = GetValue(row.GetCell(5));
-                        ClaRoomCode = GetValue(row.GetCell(6));
-                        Week = GetValue(row.GetCell(7));
-                        Section = GetValue(row.GetCell(8));
+                        //ClaRoomCode = GetValue(row.GetCell(6));
+                        //Week = GetValue(row.GetCell(7));
+                        //Section = GetValue(row.GetCell(8));
                         Memo = GetValue(row.GetCell(9));
-
-                        if (string.IsNullOrEmpty(course))
-                            continue;
-
+                          
                         if (!string.IsNullOrEmpty(course)
                             && !string.IsNullOrEmpty(teacher)
                             && !string.IsNullOrEmpty(term)
                             && !string.IsNullOrEmpty(classes)
                             && !string.IsNullOrEmpty(BegWeek)
                             && !string.IsNullOrEmpty(EndWeek)
-                            && !string.IsNullOrEmpty(ClaRoomCode)
-                            && !string.IsNullOrEmpty(Week)
-                            && !string.IsNullOrEmpty(Section))//备注可以为空
+                            //&& !string.IsNullOrEmpty(ClaRoomCode)
+                            //&& !string.IsNullOrEmpty(Week)
+                            //&& !string.IsNullOrEmpty(Section)//备注可以为空
+                            )
                         {
                             var _teacher = new List<TeachingTaskTeacher>();
                             var _class = new List<TeachingTaskClass>();
@@ -195,6 +196,106 @@
 
             return new JsonResult(new AjaxResult("导入成功"));
         }
+
+
+
+        public async Task<IActionResult> ImportTeachingTaskDetail([FromServices]IHostingEnvironment env, IList<IFormFile> files)
+        {
+            var _list = new List<TeachingTaskDetail>();
+
+            foreach (var file in files)
+            {
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                if (!fileExtension.Equals(".xls") && !fileExtension.Equals(".xlsx"))
+                {
+                    return new JsonResult(new AjaxResult("文件格式不正确") { result = 0 });
+                }
+
+                var dir = Path.Combine(env.WebRootPath, "upload", "temp", DateTime.Now.ToString("yyMMdd"));
+                var fileName = Path.Combine(env.WebRootPath, "upload", "temp", DateTime.Now.ToString("yyMMdd"), Guid.NewGuid() + fileExtension).ToLower();
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+
+                IWorkbook workbook = null;
+                ISheet sheet = null;
+                using (var Read = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                {
+
+                    if (fileExtension.Equals(".xlsx")) // 2007版本
+                        workbook = new XSSFWorkbook(Read);
+                    else
+                        workbook = new HSSFWorkbook(Read);
+
+                    if (workbook != null)
+                    {
+                        sheet = workbook.GetSheet("教学任务");
+                        if (sheet == null)
+                            sheet = workbook.GetSheetAt(0);
+                    }
+
+                    IRow row = sheet.GetRow(0);
+                    var ClaRoomCode = GetValue(row.GetCell(0));
+                    var Week = GetValue(row.GetCell(1));
+                    var Section = GetValue(row.GetCell(2));
+                    
+                    if (!ClaRoomCode.Equals("教室编号")
+                    || !Week.Equals("星期")
+                    || !Section.Equals("上课节次"))
+                    {
+                        return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
+                    }
+                     
+                    int rowCount = sheet.LastRowNum;
+                    for (int i = 1; i <= rowCount; i++)
+                    {
+                        row = sheet.GetRow(i);
+                        if (row == null)
+                            continue;
+
+                        ClaRoomCode = GetValue(row.GetCell(0));
+                        Week = GetValue(row.GetCell(1));
+                        Section = GetValue(row.GetCell(2));
+                         
+                        if (!string.IsNullOrEmpty(ClaRoomCode)
+                            && !string.IsNullOrEmpty(Week)
+                            && !string.IsNullOrEmpty(Section)//备注可以为空
+                            )
+                        { 
+
+                            //教学任务
+                            var model = new Domain.Entities.School.TeachingTaskDetail()
+                            {
+                                ClaRoomCode = ClaRoomCode,
+                                Week = Week,
+                                Section = ((SectionType)Convert.ToInt32(Section)),
+
+                            };
+
+                            _list.Add(model);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            var result = await _TeachingTaskDetailService.AddRange(_list);
+
+            return new JsonResult(new AjaxResult("导入成功"));
+        }
+
+
+
 
         private string GetValue(ICell cell)
         {
@@ -454,7 +555,20 @@
                 return View();
             }
         }
-         
+
+
+
+        // GET: TeachingTask/Detail/5
+        public ActionResult Detail(string id, string searchKey)
+        {
+            ViewData["searchKey"] = searchKey;
+            ViewBag.Details = this._TeachingTaskService.GetAll().Where(b => b.TeachingTaskId == id).FirstOrDefault().TeachingTaskDetails;
+
+
+            return View();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {

@@ -23,7 +23,7 @@
                     <b>约束：</b><br />
                     1，第一行表头必须固定，不支持随意调换列。<br />
                     2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
-                    2，<a href="~/template/student.xlsx">下载模板</a>
+                    2，<a href="~/template/teachingtask.xlsx">下载模板</a>
                 </td>
             </tr>
         </table>
@@ -58,9 +58,9 @@
                             <th>学期</th>
                             <th>开始周次</th>
                             <th>结束周次</th>
-                            <th>教室编号</th>
+                            @*<th>教室编号</th>
                             <th>星期</th>
-                            <th>上课节次</th>
+                            <th>上课节次</th>*@
                             <th>课程</th>
                             <th>备注</th>
 
@@ -74,14 +74,15 @@
                                 <td>@item.Term</td>
                                 <td>@item.BegWeek</td>
                                 <td>@item.EndWeek</td>
-                                <td>@item.ClaRoomCode</td>
+                                @*<td>@item.ClaRoomCode</td>
                                 <td>@item.Week</td>
-                                <td>@item.Section</td>
+                                <td>@item.Section</td>*@
                                 <td>@item.Course</td> 
                                 <td>@item.Memo</td>   
 
                                 <td class="text-right"> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-info btn-xs btnPush">下发</a>
+                                    <a asp-action="Detail" asp-route-id="@item.TeachingTaskId" class="btn btn-primary btn-xs">排程</a> 
                                     <a asp-action="Edit" asp-route-id="@item.TeachingTaskId" class="btn btn-primary btn-xs">修改</a> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-danger btn-xs btnDel">删除</a>
                               
@@ -179,8 +180,7 @@
                     return
                 });
             })
-
-
+             
             $('.btnDel').on('click', function () {
                 console.log('btnDel')
                 var id = $(this).attr('data-content-id');
