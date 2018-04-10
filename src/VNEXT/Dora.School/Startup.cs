@@ -69,10 +69,10 @@ namespace Dora.School
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);//Cookie保持有效的时间60分。//TimeSpan.FromDays(150);
                 options.LoginPath = "/Login";//在进行登录时自动重定向。
                 options.LogoutPath = "/Logout";//在进行注销时自动重定向。
-                //options.AccessDeniedPath = "/Account/AccessDenied"; //当用户没有授权检查时将被重定向。
-                //options.SlidingExpiration = true;//当TRUE时，新cookie将在当前cookie超过到期窗口一半时发出新的到期时间。默认为true。
+                // options.AccessDeniedPath = "/Account/AccessDenied"; //当用户没有授权检查时将被重定向。
+                // options.SlidingExpiration = true;//当TRUE时，新cookie将在当前cookie超过到期窗口一半时发出新的到期时间。默认为true。
                 // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
-                //options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
+                // options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
             });
 
             services.AddMvc();

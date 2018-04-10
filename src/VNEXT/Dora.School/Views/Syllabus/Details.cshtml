@@ -994,7 +994,7 @@ to{right:100%}
                 <h1>@Model.Course.Name<small>@Model.Teacher.Name</small></h1>
             </div>
             <div class="text-right">
-                <a asp-action="Edit" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">返回</a>
+                <a class="btn btn-success btn-sm btn-GoBack" style="width:100px">返回</a>
             </div>
         </div>
     </div>
@@ -1091,3 +1091,16 @@ to{right:100%}
     </div>
 </div>
 
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('.btn-GoBack').on('click', function() {
+                history.back(-1);
+            });
+        })
+
+    </script>
+}

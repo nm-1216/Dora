@@ -11,6 +11,7 @@ const wteacher = resolve => require(['@/pages/school/wteacher'], resolve)
 const sendnotice = resolve => require(['@/pages/school/sendnotice'], resolve)
 const sendw = resolve => require(['@/pages/school/sendw'], resolve)
 const sendpapers = resolve => require(['@/pages/school/sendpapers'], resolve)
+const signin = resolve => require(['@/pages/school/signin'], resolve)
 
 export default [
   {
@@ -67,5 +68,10 @@ export default [
     path: '/sendpapers/:id',
     meta: { auth: true, title: '发布试卷-' + _global.APPTITle },
     component: sendpapers
+  },
+  {
+    path: '/signin/:id',
+    meta: { auth: true, title: '签到-' + _global.APPTITle },
+    component: signin
   }
 ]

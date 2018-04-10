@@ -26,8 +26,8 @@
                                 <td>@(item.Organization != null ? item.Organization.Name : "")</td>
                                 <th>@item.UpdateTime.ToString("yyyy-MM-dd")</th>
                                 <td class="text-right">
-                                    <a data-content-id="@item.SyllabusId" data-content-isRestTask="1" class="btn btn-info btn-xs btnSetTeacher">预览</a>
-                                    <a data-content-id="@item.SyllabusId" data-content-isRestTask="1" class="btn btn-info btn-xs btnSetTeacher">下载</a>
+                                    <a asp-route-id="@item.SyllabusId" asp-action="Details" asp-controller="Syllabus" class="btn btn-info btn-xs btnSetTeacher">预览</a>
+                                    <a href="@item.TeaProPath" class="btn btn-info btn-xs btnSetTeacher">下载</a>
                                 </td>
                             </tr>
                         }

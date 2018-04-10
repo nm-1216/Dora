@@ -5,82 +5,125 @@
     Layout = "_Layout";
 }
 
-<div id="continer">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <a class="btn btn-primary btn-xs btnAdd">新增</a>
             <a class="btn btn-info btn-xs btnEdit">修改</a>
             <a class="btn btn-danger btn-xs btnDel">删除</a>
         </div>
-        <div class="col-sm-1">
-            <div id="tree" class="ztree"></div>
-
-        </div>
-        <div class="col-sm-2">
+        <div class="col-sm-12">
             <div class="form-group">
                 <label for="txtname" class="col-sm-4 control-label">名称：</label>
                 <div class="col-sm-8">
-                    <input class="form-control input-sm" id="txtname" />
+                    <input class="form-control input-sm" id="txtname"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="txtdescription" class="col-sm-4 control-label">权限：</label>
                 <div class="col-sm-8">
-                    <input class="form-control input-sm" id="txtdescription" />
+                    <input class="form-control input-sm" id="txtdescription"/>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>AJAX demo</h1>
+            <div id="ajax" class="demo"></div>
+        </div>
+        
+    </div>
 </div>
 
 @section scripts{
-    <script src="~/js/zTree_v3/js/jquery.ztree.core.min.js"></script>
-    <script src="~/js/zTree_v3/js/jquery.ztree.excheck.min.js"></script>
-    <script src="~/js/zTree_v3/js/jquery.ztree.exedit.min.js"></script>
+    <script src="~/js/jstree/jstree.min.js"></script>
+
     <script type="text/javascript">
-
-
-        var setting = {
-            view: {
-                fontCss: {
-                    color: "#313131"
-                }
-            },
-            data: {
-                simpleData: {
-                    enable: true
-                }
-            }
-        };
-
-
-        var zTree;
-        $(function () {
-            //JQuery的 Ajax 请求
-            $.ajax({
-                type: "Post",
-                url: "GetGroup",
-                data: "",
-                dataType: "json",
-                success: function (result) {
-                    if (result) {
-                        zTree = $.fn.zTree.init($("#tree"), setting, result);
-
-                        zTree.expandAll(true);
-                    }
-                    else {
-                        alert("失败");
+        $(function() {
+            $("#ajax1").jstree({
+                "core": {
+                    "check_callback": true,
+                    'data': {
+                        "url": "/js/root.json",
+                        "dataType": "json"
                     }
                 },
-                complete: function (XMLHttpRequest, textStatus) {
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("error");
-                }
+                "plugins": ["contextmenu"]
             });
-
         });
 
+
+        $(function() {
+            $('#ajax').jstree({
+                'core': {
+                    'data': {
+                        "url": "/js/root.json",
+                        "dataType": "json"
+                    },
+                    "check_callback": true
+                },
+                "contextmenu": {
+                    select_node: false,
+                    show_at_node: true,
+                    items: {
+                        "新建设备": {
+                            "label": "新建菜单",
+                            "icon": "glyphicon glyphicon-plus",
+                            "action": function(data) {
+                                var inst = $.jstree.reference(data.reference),
+                                    obj = inst.get_node(data.reference);
+                                inst.create_node(obj,
+                                    {},
+                                    "last",
+                                    function(new_node) {
+                                        try {
+                                            new_node.text = "新建设备";
+                                            inst.edit(new_node);
+                                        } catch (ex) {
+                                            setTimeout(function() { inst.edit(new_node); }, 0);
+                                        }
+                                    });
+                            }
+                        },
+                        "修改设备": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "_disabled":
+                                false, 
+                            "label": "修改设备",
+                            "shortcut_label": 'F2',
+                            "icon": "glyphicon glyphicon-leaf",
+                            "action": function(data) {
+                                var inst = $.jstree.reference(data.reference),
+                                    obj = inst.get_node(data.reference);
+                                inst.edit(obj);
+                            }
+                        },
+                        "删除设备": {
+                            "separator_before": false,
+                            "icon": false,
+                            "separator_after": false,
+                            "_disabled":
+                                false,
+                            "label": "删除设备",
+                            "icon": "glyphicon glyphicon-remove",
+                            "action": function(data) {
+                                var inst = $.jstree.reference(data.reference),
+                                    obj = inst.get_node(data.reference);
+                                if (inst.is_selected(obj)) {
+                                    inst.delete_node(inst.get_selected());
+                                } else {
+                                    inst.delete_node(obj);
+                                }
+                            }
+                        }
+                    }
+                },
+
+                "plugins": [ "contextmenu"]
+            });
+        });
 
 
     </script>
@@ -88,6 +131,7 @@
 }
 
 @section styles{
-    <link href="~/js/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="js/jstree/themes/default/style.min.css" />
+    <link rel="stylesheet" href="js/jstree/themes/default-dark/style.min.css" />
 
 }

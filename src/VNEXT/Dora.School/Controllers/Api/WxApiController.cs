@@ -544,5 +544,7 @@ namespace Dora.School.Controllers
             return
                 Json(new AjaxResult(QrCodeApi.GetShowQrCodeUrl(temp.ticket)){});
         }
+        
+        
     }
 }

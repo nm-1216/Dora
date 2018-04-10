@@ -93,7 +93,7 @@ export default {
         this.$router.push(`/sendnotice/${this.id}`)
       }
       if (key === 'menu4') {
-        this.$router.push(`/sendnotice/${this.id}`)
+        this.$router.push(`/signin/${this.id}`)
       }
       console.log(key)
     }
