@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Dora.Infrastructure.Domains
+﻿namespace Dora.Infrastructure.Domains
 {
     using System;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// 基础模型
@@ -13,8 +12,8 @@ namespace Dora.Infrastructure.Domains
 
         public BaseEntity()
         {
-            this.CreateTime = this.UpdateTime = DateTime.Now;
-            this.CreateUser = this.UpdateUser = string.Empty;
+            CreateTime = UpdateTime = DateTime.Now;
+            CreateUser = UpdateUser = string.Empty;
         }
 
         /// <summary>
@@ -37,17 +36,8 @@ namespace Dora.Infrastructure.Domains
         public long CreateTimeTimeStamp {
             get
             {
-                if (CreateTime != null)
-                {
-                    System.DateTime startTime =
-                        TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
-                    long t = (CreateTime.Ticks - startTime.Ticks) / 10000;
-                    return t;
-                }
-                else
-                {
-                    return 0;
-                }
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);  
+                return Convert.ToInt64((CreateTime.ToUniversalTime() - epoch).TotalMilliseconds);
             }
         }
 
@@ -60,18 +50,8 @@ namespace Dora.Infrastructure.Domains
         public long UpdateTimeTimeStamp {
             get
             {
-                if (UpdateTime != null)
-                {
-                    System.DateTime startTime =
-                        TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
-                    long t = (UpdateTime.Ticks - startTime.Ticks) / 10000;
-                    return t;
-                }
-                else
-                {
-                    return 0;
-                }
-                
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);  
+                return Convert.ToInt64((CreateTime.ToUniversalTime() - epoch).TotalMilliseconds);
             }
         }
 

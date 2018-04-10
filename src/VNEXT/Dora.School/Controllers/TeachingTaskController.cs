@@ -172,9 +172,9 @@
                                 Term = term,
                                 BegWeek = Convert.ToInt32(BegWeek),
                                 EndWeek = Convert.ToInt32(EndWeek),
-                                ClaRoomCode = ClaRoomCode,
-                                Week = Week,
-                                Section = ((SectionType)Convert.ToInt32(Section)),
+                                //ClaRoomCode = ClaRoomCode,
+                                //Week = Week,
+                                //Section = ((SectionType)Convert.ToInt32(Section)),
                                 Memo = Memo,
                                 Classes = _class,
                                 Teachers = _teacher,
@@ -279,9 +279,9 @@
 
             #region 上课节次
             List<SelectListItem> type;
-            type = ((Enum)SectionType.节1_2).ToSelectListItem(model.Section.ToString());
+            //type = ((Enum)SectionType.节1_2).ToSelectListItem(model.Section.ToString());
 
-            ViewBag.SectionType = type;
+            //ViewBag.SectionType = type;
             #endregion
 
             #region 教师
@@ -325,9 +325,9 @@
                 newItem.Term = model.Term;
                 newItem.BegWeek = model.BegWeek;
                 newItem.EndWeek = model.EndWeek;
-                newItem.ClaRoomCode = model.ClaRoomCode;
-                newItem.Week = model.Week;
-                newItem.Section = model.Section;
+                //newItem.ClaRoomCode = model.ClaRoomCode;
+                //newItem.Week = model.Week;
+                //newItem.Section = model.Section;
                 newItem.Memo = model.Memo;
                 newItem.CourseId = model.CourseId; 
                 newItem.UpdateTime = DateTime.Now;
