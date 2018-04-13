@@ -8,6 +8,7 @@
     <tab :line-width="1"  bar-active-color="#639ef4">
       <tab-item selected active-class="active-6-1"  @on-item-click="onItemClick">教学日志</tab-item>
       <tab-item active-class="active-6-1" @on-item-click="onItemClick">我的同学</tab-item>
+      <tab-item active-class="active-6-1" @on-item-click="onItemClick">我的签到</tab-item>
     </tab>
   </div>
   <div>
@@ -30,6 +31,32 @@
         </grid-item>
       </grid>
     </div>
+    <div class="tab2 tabcontent" v-show= 'showtab3'>
+      <div style="padding:15px 15px">
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" style="width: 30%">
+            <span class="sr-only">正常(15)</span>
+          </div>
+          <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">
+            <span class="sr-only">请假(10)</span>
+          </div>
+          <div class="progress-bar progress-bar-danger" style="width: 10%">
+            <span class="sr-only">旷课(5)</span>
+          </div>
+        </div>
+      </div>
+
+      <grid :show-lr-borders="false" :cols="3">
+        <grid-item v-for="(item,index) in QD" :key="index">
+          <span slot="label">{{item.text}}<br/><i style="color:#999;font-size:12px">180412-1</i></span>
+          <x-icon v-if="item.type === 1" slot="icon" type="ios-checkmark" size="30"></x-icon>
+          <x-icon v-if="item.type === 2" slot="icon" type="ios-information" size="30"></x-icon>
+          <x-icon v-if="item.type === 3" slot="icon" type="ios-minus" size="30"></x-icon>
+          <x-icon v-if="item.type === 4" slot="icon" type="ios-close" size="30"></x-icon>
+        </grid-item>
+      </grid>
+
+    </div>
   </div>
 </div>
 </template>
@@ -38,6 +65,7 @@
 import { Timeline, TimelineItem, Tab, TabItem, Group, Grid, GridItem } from 'vux'
 import { GetClassCourse } from 'src/Api/api'
 import { formatDate } from 'src/filters/date.js'
+import 'src/assets/css/progress.css'
 var kc1 = require('src/assets/kc1.png')
 
 export default {
@@ -70,8 +98,11 @@ export default {
     return {
       showtab1: true,
       showtab2: false,
+      showtab3: false,
       students: [],
       list: [],
+      // QD: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+      QD: [ {text: '正常', type: 1}, {text: '迟到', type: 2}, {text: '请假', type: 3}, {text: '旷课', type: 4} ],
       kc1,
       today: new Date(),
       id: this.$route.params.id
@@ -144,6 +175,12 @@ export default {
         padding: 15px 5px;
         background-color: #f0f0f4;
       }
+  }
+  .vux-x-icon-ios-checkmark,.vux-x-icon-ios-information {
+    fill: green;
+  }
+  .vux-x-icon-ios-minus,.vux-x-icon-ios-close {
+    fill: #F70968;
   }
 </style>
 <style type="text/css">

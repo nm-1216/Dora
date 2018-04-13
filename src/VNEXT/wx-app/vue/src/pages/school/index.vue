@@ -20,7 +20,7 @@
 
 <script>
 import { Group, Cell, Blur } from 'vux'
-import { GetCourseList } from 'src/Api/api'
+import { GetCourseList, GetUserInfo } from 'src/Api/api'
 var _lodash = require('lodash')
 
 export default {
@@ -61,25 +61,31 @@ export default {
     }
   },
   created () {
-    var isLogin = Boolean(this.$store.state.user.token)
-    if (isLogin) {
-      GetCourseList({'openId': this.$store.state.user.token}).then(response => {
-        console.log('GetCourseList', response.data)
-        if (response.data.result === 0) {
-          this.isStudent = response.data.data.user.userType === 0
-          this.isTeacher = response.data.data.user.userType === 1
+    GetCourseList({'openId': this.$store.state.user.token}).then(response => {
+      console.log('GetCourseList', response.data)
+      if (response.data.result === 0) {
+        this.isStudent = response.data.data.user.userType === 0
+        this.isTeacher = response.data.data.user.userType === 1
 
-          if (this.isStudent) {
-            this.ClassId = response.data.data.user.student.classId
-            this.studentList = response.data.data.list
-          } else {
-            this.teacherList = response.data.data.list
-            this.course = response.data.data.course
-          }
-          this.isShow = true
+        if (this.isStudent) {
+          this.ClassId = response.data.data.user.student.classId
+          this.studentList = response.data.data.list
+        } else {
+          this.teacherList = response.data.data.list
+          this.course = response.data.data.course
         }
-      })
-    }
+        this.isShow = true
+      }
+    })
+
+    GetUserInfo({'openId': this.$store.state.user.token}).then(response => {
+      console.log('GetUserInfo', response.data)
+      if (response.data.result === 0) {
+        if (response.data.data.wxAvatar) {
+          this.url = response.data.data.wxAvatar
+        }
+      }
+    })
   }
 }
 </script>

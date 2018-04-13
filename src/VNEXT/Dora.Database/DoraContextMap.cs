@@ -115,9 +115,9 @@ namespace Dora.Database
             builder.AddConfiguration(new TeachingTaskDetailMap());
             builder.AddConfiguration(new TeachingTaskClassMap());
             builder.AddConfiguration(new TeachingTaskTeacherMap());
-
-
+            builder.AddConfiguration(new TimeCardMap());
             #endregion
+            
             #region TrainingPlan
             builder.AddConfiguration(new TrainingPlanMap());
             builder.AddConfiguration(new TrainingPlanApprovalMap());
