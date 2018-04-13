@@ -25,7 +25,7 @@
     {
         private IClassService _ClassService;
         private ITeachingTaskService _TeachingTaskService;
-        private ITeachingTaskDetailService _TeachingTaskDetailService;
+      private ITeachingTaskDetailService _TeachingTaskDetailService;
         private ITeachingPlanService _TeachingPlanService;
         private ICourseService _CourseService;
         private ISyllabusTeacherService _SyllabusTeacherService;
@@ -33,7 +33,7 @@
         public TeachingTaskController(RoleManager<SchoolRole> roleManager, UserManager<SchoolUser> userManager, ILoggerFactory loggerFactory
          , IClassService classService
          , ITeachingTaskService teachingTaskService
-         , ITeachingTaskDetailService teachingTaskDetailService
+       , ITeachingTaskDetailService teachingTaskDetailService
          , ITeachingPlanService teachingPlanService
          , ICourseService CourseService
          , ISyllabusTeacherService SyllabusTeacherService
@@ -41,12 +41,13 @@
         {
             _ClassService = classService;
             _TeachingTaskService = teachingTaskService;
-            _TeachingTaskDetailService = teachingTaskDetailService;
+           _TeachingTaskDetailService = teachingTaskDetailService;
             _TeachingPlanService = teachingPlanService;
             _CourseService = CourseService;
             _SyllabusTeacherService = SyllabusTeacherService;
         }
 
+         
         public IActionResult Index()
         {
             var list = _TeachingTaskService.GetAll();
@@ -103,10 +104,7 @@
                     var term = GetValue(row.GetCell(2));
                     var classes = GetValue(row.GetCell(3));
                     var BegWeek = GetValue(row.GetCell(4));
-                    var EndWeek = GetValue(row.GetCell(5));
-                    //var ClaRoomCode = GetValue(row.GetCell(6));
-                    //var Week = GetValue(row.GetCell(7));
-                    //var Section = GetValue(row.GetCell(8));
+                    var EndWeek = GetValue(row.GetCell(5)); 
                     var Memo = GetValue(row.GetCell(6));
 
                     if (!course.Equals("课程")
@@ -114,10 +112,7 @@
                     || !term.Equals("学期")
                     || !classes.Equals("班级")
                     || !BegWeek.Equals("开始周次")
-                    || !EndWeek.Equals("结束周次")
-                    //|| !ClaRoomCode.Equals("教室编号")
-                    //|| !Week.Equals("星期")
-                    //|| !Section.Equals("上课节次")
+                    || !EndWeek.Equals("结束周次") 
                     || !Memo.Equals("备注"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
@@ -132,26 +127,23 @@
                         if (row == null)
                             continue;
 
+                        if (GetValue(row.GetCell(0)) == "")
+                            continue;
+
                         course = GetValue(row.GetCell(0));
                         teacher = GetValue(row.GetCell(1));
                         term = GetValue(row.GetCell(2));
                         classes = GetValue(row.GetCell(3));
                         BegWeek = GetValue(row.GetCell(4));
-                        EndWeek = GetValue(row.GetCell(5));
-                        //ClaRoomCode = GetValue(row.GetCell(6));
-                        //Week = GetValue(row.GetCell(7));
-                        //Section = GetValue(row.GetCell(8));
-                        Memo = GetValue(row.GetCell(9));
+                        EndWeek = GetValue(row.GetCell(5)); 
+                        Memo = GetValue(row.GetCell(6));
                           
                         if (!string.IsNullOrEmpty(course)
                             && !string.IsNullOrEmpty(teacher)
                             && !string.IsNullOrEmpty(term)
                             && !string.IsNullOrEmpty(classes)
                             && !string.IsNullOrEmpty(BegWeek)
-                            && !string.IsNullOrEmpty(EndWeek)
-                            //&& !string.IsNullOrEmpty(ClaRoomCode)
-                            //&& !string.IsNullOrEmpty(Week)
-                            //&& !string.IsNullOrEmpty(Section)//备注可以为空
+                            && !string.IsNullOrEmpty(EndWeek)  //备注可以为空
                             )
                         {
                             var _teacher = new List<TeachingTaskTeacher>();
@@ -172,10 +164,7 @@
                             {
                                 Term = term,
                                 BegWeek = Convert.ToInt32(BegWeek),
-                                EndWeek = Convert.ToInt32(EndWeek),
-                                //ClaRoomCode = ClaRoomCode,
-                                //Week = Week,
-                                //Section = ((SectionType)Convert.ToInt32(Section)),
+                                EndWeek = Convert.ToInt32(EndWeek), 
                                 Memo = Memo,
                                 Classes = _class,
                                 Teachers = _teacher,
@@ -194,7 +183,7 @@
 
             var result = await _TeachingTaskService.AddRange(_list);
 
-            return new JsonResult(new AjaxResult("导入成功"));
+            return new JsonResult(new AjaxResult("导入成功") { result = 1 });
         }
 
 
@@ -245,14 +234,14 @@
                     var ClaRoomCode = GetValue(row.GetCell(0));
                     var Week = GetValue(row.GetCell(1));
                     var Section = GetValue(row.GetCell(2));
-                    
+
                     if (!ClaRoomCode.Equals("教室编号")
                     || !Week.Equals("星期")
                     || !Section.Equals("上课节次"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
                     }
-                     
+
                     int rowCount = sheet.LastRowNum;
                     for (int i = 1; i <= rowCount; i++)
                     {
@@ -263,12 +252,12 @@
                         ClaRoomCode = GetValue(row.GetCell(0));
                         Week = GetValue(row.GetCell(1));
                         Section = GetValue(row.GetCell(2));
-                         
+
                         if (!string.IsNullOrEmpty(ClaRoomCode)
                             && !string.IsNullOrEmpty(Week)
                             && !string.IsNullOrEmpty(Section)//备注可以为空
                             )
-                        { 
+                        {
 
                             //教学任务
                             var model = new Domain.Entities.School.TeachingTaskDetail()
@@ -561,9 +550,11 @@
         // GET: TeachingTask/Detail/5
         public ActionResult Detail(string id, string searchKey)
         {
+
             ViewData["searchKey"] = searchKey;
             ViewBag.Details = this._TeachingTaskService.GetAll().Where(b => b.TeachingTaskId == id).FirstOrDefault().TeachingTaskDetails;
 
+            ViewBag.TeachingTaskId = id;
 
             return View();
         }

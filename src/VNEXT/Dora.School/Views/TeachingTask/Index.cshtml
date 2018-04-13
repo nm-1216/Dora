@@ -233,6 +233,55 @@
            
         })
 
+
+        var options = {
+            beforeSend: function () {
+                $('#msgul').html('')
+                layer.load(3, { shade: 0.8 });
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+            },
+            dataType: 'json',
+            success: function (r) { 
+                
+            },
+            complete: function (r) { 
+                layer.closeAll('loading');
+                console.log(r)
+                alert(r.msg) 
+                alert(1)
+                if (r.result == 1) {
+                    console.log(1) 
+                    //jQuery("#grid-table").trigger("reloadGrid");
+                    if (r.data != null) {
+                        alert('d')
+                        console.log(2)
+                        layer.msg(r.message + ",但是有重复数据");
+                        for (var i = 0; i < r.data.length; i++)
+                            $('#msgul').append(r.data[i])
+                    }
+                    else {
+                        alert('c')
+                        console.log(3)
+                        layer.msg(r.msg, {
+                            time: 2000, end: function () {
+                                layer.closeAll();
+                                location.href = location.href;
+                            }
+                        })
+                    }
+                }
+                else {
+                    console.log(4)
+                    var msg = r.msg;
+                    layer.msg(msg);
+                }
+            }
+        }
+
+        function AjaxForm1Submit() {
+            $("#AjaxForm1").ajaxSubmit(options);
+        }
     </script>
 }
 
