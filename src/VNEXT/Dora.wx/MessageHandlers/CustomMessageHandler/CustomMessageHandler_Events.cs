@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dora.Domain.Entities.School;
 using Dora.Helpers.Extensions;
 using Dora.Utilities.HttpUtility;
 using Dora.Weixin.Exceptions;
@@ -8,6 +9,7 @@ using Dora.Weixin.MP.AdvancedAPIs;
 using Dora.Weixin.MP.Agent;
 using Dora.Weixin.MP.Entities;
 using Dora.Weixin.MP.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Senparc.Weixin.MP.Sample.CommonService.Download;
 
 namespace Dora.wx.CustomMessageHandler
@@ -96,26 +98,62 @@ namespace Dora.wx.CustomMessageHandler
         {
             //通过扫描关注
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
-
-            //下载文档
-            if (!string.IsNullOrEmpty(requestMessage.EventKey))
+            
+            
+            //绑定医生
+            if (!string.IsNullOrEmpty(requestMessage.EventKey) && requestMessage.EventKey.StartsWith("QD,"))
             {
-                var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
-                //var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
-                var codeRecord =
-                    ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
+                string openId = requestMessage.FromUserName;
 
+                var student= _studentService.GetAll().Include(o => o.SchoolUser).FirstOrDefault(o => o.SchoolUser.WxOpenId == openId);
 
-                if (codeRecord != null)
+                if (student == null)
                 {
-                    //确认可以下载
-                    codeRecord.AllowDownload = true;
-                    responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
+                    responseMessage.Content = "用户查询失败，请绑定学号";
+                }
+                else
+                {
+                    var temp = (requestMessage.EventKey.Replace("QD,", "")).Split(",");
+
+                    var a = temp[0];
+                    var b = temp[1];
+                    var c = long.Parse(temp[2]);
+                
+                    //精确到秒
+                    var d = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+                    if (d > (c + 3600))
+                    {
+                        responseMessage.Content = "二维码已过期，有效时间一个小时";
+                    }
+                    else
+                    {
+                        var model=_timeCardService.Find(o => o.StudentId == student.StudentId && o.Batch == a);
+                        if (model == null)
+                        {
+                            _timeCardService.Add(new TimeCard()
+                            {
+                                TeachingTaskId = b,
+                                StudentId = student.StudentId,
+                                Time = c,
+                                Batch = a
+                            });
+                        }
+                        
+                        var strongResponseMessage = requestMessage.CreateResponseMessage<ResponseMessageNews>();
+                        strongResponseMessage.ArticleCount = 1;
+                        strongResponseMessage.Articles = new System.Collections.Generic.List<Article> { new Article() {
+                            Title = "打卡成功，美好课程从此刻开始！",
+                            Description = "好好学习，天天向上。",
+                            PicUrl = "http://wx.nieba.cn/images/clock.jpg",
+                            Url = "http://WX.NIEBA.CN/VUE/INDEX.HTML"
+                        } };
+                        return strongResponseMessage;
+                    }
                 }
             }
 
-            responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
-
+            responseMessage.Content =
+                responseMessage.Content ?? requestMessage.EventKey;
 
 
             return responseMessage;

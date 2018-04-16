@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />

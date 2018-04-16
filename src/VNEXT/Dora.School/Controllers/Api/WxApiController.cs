@@ -179,6 +179,40 @@ namespace Dora.School.Controllers
         }
 
         [EnableCors("AllowSameDomain")]
+        public IActionResult GetTeachingTask(string openId, string id)
+        {
+            var user = this._userManager.Users
+                .Include(b => b.Student)
+                .Include(b=>b.Teacher)
+                .FirstOrDefault(o => o.WxOpenId == openId);
+            if (user == null)
+            {
+                return Json(new AjaxResult("用户查询失败") {result = 99});
+            }
+
+            var teachingTask = _teachingTaskService.GetAll().Include(b=>b.Course).Include(b => b.Classes).Include(b => b.Teachers)
+                .FirstOrDefault(b => b.TeachingTaskId == id);
+
+            if (teachingTask == null)
+            {
+                return Json(new AjaxResult("该教学任务不存在") {result = 99});
+            }
+            
+            foreach (var item in teachingTask.Classes)
+            {
+                item.TeachingTask = null;
+            }
+            
+            foreach (var item in teachingTask.Teachers)
+            {
+                item.TeachingTask = null;
+            }
+            
+            return Json(new AjaxResult<object>("查询成功") {result = 0, data = new {teachingTask}});
+        }
+
+        
+        [EnableCors("AllowSameDomain")]
         public IActionResult GetClassCourse(string openId, string id)
         {
             var user = this._userManager.Users
@@ -190,7 +224,7 @@ namespace Dora.School.Controllers
                 return Json(new AjaxResult("用户查询失败") {result = 99});
             }
 
-            var teachingTask = _teachingTaskService.GetAll().Include(b => b.Classes).Include(b => b.Teachers)
+            var teachingTask = _teachingTaskService.GetAll().Include(b=>b.Course).Include(b => b.Classes).Include(b => b.Teachers)
                 .FirstOrDefault(b => b.TeachingTaskId == id);
 
             if (teachingTask == null)
@@ -227,7 +261,19 @@ namespace Dora.School.Controllers
             {
                 xx.Class = null;
             }
-            return Json(new AjaxResult<object>("查询成功") {result = 0, data = new {students, list}});
+            
+            foreach (var item in teachingTask.Classes)
+            {
+                item.TeachingTask = null;
+            }
+            
+            foreach (var item in teachingTask.Teachers)
+            {
+                item.TeachingTask = null;
+            }
+            
+            
+            return Json(new AjaxResult<object>("查询成功") {result = 0, data = new {students, list, teachingTask}});
         }
 
         [EnableCors("AllowSameDomain")]
@@ -540,9 +586,15 @@ namespace Dora.School.Controllers
         {
             Dora.Weixin.MP.Containers.AccessTokenContainer.Register(_wxConfig.AppID, _wxConfig.Appsecret);
 
-            var temp = QrCodeApi.Create(_wxConfig.AppID, 1800, 1, QrCode_ActionName.QR_STR_SCENE, id);
+            var a = Guid.NewGuid().ToString();
+            var b = id;
+            var c = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+
+            var code = $@"QD,{a},{b},{c}";
+
+            var temp = QrCodeApi.Create(_wxConfig.AppID, 1800, 1, QrCode_ActionName.QR_STR_SCENE, code);
             return
-                Json(new AjaxResult(QrCodeApi.GetShowQrCodeUrl(temp.ticket)){});
+                Json(new AjaxResult(QrCodeApi.GetShowQrCodeUrl(temp.ticket)) { });
         }
         
         

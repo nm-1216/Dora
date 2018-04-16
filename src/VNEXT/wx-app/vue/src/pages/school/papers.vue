@@ -207,7 +207,7 @@ export default {
 </script>
 <style type="text/css">
   .weui-cells__title i{
-    color: #ff7500;
+    color: #ff2d51;
     font-weight: bold;
   }
   .notice {

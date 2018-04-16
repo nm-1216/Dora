@@ -27,8 +27,8 @@ export default {
         //   path: '/reg'
         // })
 
-        this.Login('oq90mwOVwiR40sSR9e0bRTQb6xJ8', '老师')
-        // this.Login('oi5_2t4H7dLUWvvdk6OI1zOA3Qbg', '学生')
+        // this.Login('oq90mwOVwiR40sSR9e0bRTQb6xJ8', '老师')
+        this.Login('orcJX1CJgmVrnPerfrvl2rXv02mA', '学生')
       }
       if (!isLogin) {
         let ua = window.navigator.userAgent.toLowerCase()

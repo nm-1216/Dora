@@ -17,8 +17,6 @@ export const GetSpecialty = params => { return axios.get(`${base}/GetSpecialty`,
 export const Register = params => { return axios.post(`${base}/Register`, Qs.stringify(params)) }
 export const GetUserInfo = params => { return axios.get(`${base}/GetUserInfo`, { params: params }) }
 export const EditUserInfo = params => { return axios.post(`${base}/EditUserInfo`, Qs.stringify(params)) }
-export const GetActivity = params => { return axios.get(`${base}/GetActivity`, { params: params }) }
-export const GetActivityDetails = params => { return axios.get(`${base}/GetActivityDetails`, { params: params }) }
 export const GetClassCourse = params => { return axios.get(`${base}/GetClassCourse`, { params: params }) }
 export const GetNotice = params => { return axios.get(`${base}/GetNotice`, { params: params }) }
 export const GetPapers = params => { return axios.get(`${base}/GetPapers`, { params: params }) }
@@ -31,3 +29,4 @@ export const SendPapers = params => { return axios.post(`${base}/SendPapers`, Qs
 export const SendCoursewaree = params => { return axios.post(`${base}/SendCoursewaree`, Qs.stringify(params)) }
 export const GetPapersList = params => { return axios.post(`${base}/GetPapersList`, Qs.stringify(params)) }
 export const GetQrCode = params => { return axios.post(`${base}/GetQrCode`, Qs.stringify(params)) }
+export const GetTeachingTask = params => { return axios.post(`${base}/GetTeachingTask`, Qs.stringify(params)) }

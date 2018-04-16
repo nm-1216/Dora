@@ -1,6 +1,7 @@
 import _global from '../config/global'
 const AUTHOR = resolve => require(['src/pages/auth/author'], resolve)
 const REG = resolve => require(['src/pages/auth/reg'], resolve)
+const CLEAR = resolve => require(['src/pages/auth/clear'], resolve)
 
 export default [
   {
@@ -17,5 +18,10 @@ export default [
     path: '/reg',
     meta: { auth: false, title: 'Binding user-' + _global.APPTITle },
     component: REG
+  },
+  {
+    path: '/clear',
+    meta: { auth: false, title: 'Binding user-' + _global.APPTITle },
+    component: CLEAR
   }
 ]

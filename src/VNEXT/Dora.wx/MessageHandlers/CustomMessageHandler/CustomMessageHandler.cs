@@ -16,6 +16,7 @@ using Dora.Weixin.Entities.Request;
 using Dora.Weixin.Exceptions;
 using Dora.Weixin;
 using Dora.Helpers;
+using Dora.Services.School.Interfaces;
 using Dora.Weixin.MP;
 using Dora.Weixin.MP.Agent;
 using Senparc.Weixin.MP.Sample.CommonService;
@@ -31,21 +32,29 @@ namespace Dora.wx.CustomMessageHandler
         private string appId = string.Empty;
         private string appSecret = string.Empty;
 
+        private ITimeCardService _timeCardService;
+        private IStudentService _studentService;
+
         /// <summary>
         /// 模板消息集合（Key：checkCode，Value：OpenId）
         /// </summary>
         public static Dictionary<string, string> TemplateMessageCollection = new Dictionary<string, string>();
 
-        public CustomMessageHandler(Stream inputStream, PostModel postModel, int maxRecordCount = 0)
+        public CustomMessageHandler(Stream inputStream, PostModel postModel
+            , ITimeCardService timeCardService
+            , IStudentService studentService
+            , int maxRecordCount = 0)
             : base(inputStream, postModel, maxRecordCount)
         {
             //这里设置仅用于测试，实际开发可以在外部更全局的地方设置，
             //比如MessageHandler<MessageContext>.GlobalWeixinContext.ExpireMinutes = 3。
             WeixinContext.ExpireMinutes = 3;
-
+            _timeCardService = timeCardService;
+            _studentService = studentService;
+            
             if (!string.IsNullOrEmpty(postModel.AppId))
             {
-                appId = postModel.AppId;//通过第三方开放平台发送过来的请求
+                appId = postModel.AppId; //通过第三方开放平台发送过来的请求
             }
 
             //在指定条件下，不使用消息去重
@@ -56,6 +65,7 @@ namespace Dora.wx.CustomMessageHandler
                 {
                     return false;
                 }
+
                 return true;
             };
         }

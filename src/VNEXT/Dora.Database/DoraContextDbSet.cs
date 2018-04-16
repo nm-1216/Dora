@@ -93,13 +93,12 @@ namespace Dora.Database
         #endregion
 
 
-        #region TeachingPlan
+        #region TeachingTask
         public DbSet<TeachingTask> TeachingTasks { get; set; }
         public DbSet<TeachingTaskDetail> TeachingTaskDetails { get; set; }
         public DbSet<TeachingTaskClass> TeachingTaskClasses { get; set; }
         public DbSet<TeachingTaskTeacher> TeachingTaskTeachers { get; set; }
-
-
+        public DbSet<TimeCard> TimeCards { get; set; }
         #endregion
 
 

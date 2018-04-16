@@ -29,46 +29,46 @@ namespace Dora.School
 
         private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 //            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-            
+
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = int.MaxValue;
                 x.MultipartBodyLengthLimit = int.MaxValue;
             });
-            
+
             services.AddCors(options => options.AddPolicy(
-            "AllowSameDomain",
-            builder => builder.WithOrigins(
-            "http://localhost:56417",
-            "http://wx.nieba.cn"
-            ).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()
+                "AllowSameDomain",
+                builder => builder.WithOrigins(
+                    "http://localhost:56417",
+                    "http://wx.nieba.cn"
+                ).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()
             ));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<SchoolUser, SchoolRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 1;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-            })
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 1;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             //应用程序的cookie常用设置
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "AspNetCoreAuthCookies";//cookied的名称. 默认为AspNetCore.Cookies.
-                options.Cookie.HttpOnly = true;//是否拒绝cookie从客户端脚本访问.默认为true.
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);//Cookie保持有效的时间60分。//TimeSpan.FromDays(150);
-                options.LoginPath = "/Login";//在进行登录时自动重定向。
-                options.LogoutPath = "/Logout";//在进行注销时自动重定向。
+                options.Cookie.Name = "AspNetCoreAuthCookies"; //cookied的名称. 默认为AspNetCore.Cookies.
+                options.Cookie.HttpOnly = true; //是否拒绝cookie从客户端脚本访问.默认为true.
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60); //Cookie保持有效的时间60分。//TimeSpan.FromDays(150);
+                options.LoginPath = "/Login"; //在进行登录时自动重定向。
+                options.LogoutPath = "/Logout"; //在进行注销时自动重定向。
                 // options.AccessDeniedPath = "/Account/AccessDenied"; //当用户没有授权检查时将被重定向。
                 // options.SlidingExpiration = true;//当TRUE时，新cookie将在当前cookie超过到期窗口一半时发出新的到期时间。默认为true。
                 // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
@@ -76,12 +76,12 @@ namespace Dora.School
             });
 
             services.AddMvc();
-            
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<WxConfig>(Configuration.GetSection("wx"));
             services.AddSession();
 
-            
+
             services.AddScoped<DbContext, ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProfessionalService, ProfessionalService>();
@@ -122,9 +122,11 @@ namespace Dora.School
             services.AddTransient<ILearnLogService, LearnLogService>();
             services.AddTransient<INoticeService, NoticeService>();
             services.AddTransient<ICoursewareService, CoursewareService>();
+            services.AddTransient<ITimeCardService, TimeCardService>();
 
-            
 
+            services.AddTimedJob();
+            return services.BuildServiceProvider();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -143,7 +145,7 @@ namespace Dora.School
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseTimedJob();
             app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -152,18 +154,17 @@ namespace Dora.School
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}",
-                    defaults: new { Controllers = "Home" });
+                    defaults: new {Controllers = "Home"});
 
                 routes.MapRoute(
                     name: "action",
                     template: "{action=Index}/{id?}",
-                    defaults: new { controller = "Home" });
+                    defaults: new {controller = "Home"});
 
                 routes.MapRoute(
                     name: "areaRoute",
                     template: "{area:exists}/{controller}/{action}/{page?}",
-                    defaults: new { controller = "Home", action = "Index" });
-
+                    defaults: new {controller = "Home", action = "Index"});
             });
         }
     }
