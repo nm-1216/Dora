@@ -25,7 +25,8 @@
     {
         private IClassService _ClassService;
         private ITeachingTaskService _TeachingTaskService;
-      private ITeachingTaskDetailService _TeachingTaskDetailService;
+        private ITeachingTaskDetailService _TeachingTaskDetailService
+             ;
         private ITeachingPlanService _TeachingPlanService;
         private ICourseService _CourseService;
         private ISyllabusTeacherService _SyllabusTeacherService;
@@ -41,16 +42,17 @@
         {
             _ClassService = classService;
             _TeachingTaskService = teachingTaskService;
-           _TeachingTaskDetailService = teachingTaskDetailService;
+            _TeachingTaskDetailService = teachingTaskDetailService;
             _TeachingPlanService = teachingPlanService;
             _CourseService = CourseService;
             _SyllabusTeacherService = SyllabusTeacherService;
         }
 
-         
-        public IActionResult Index()
+
+        public IActionResult Index(string IndexsearchKey)
         {
-            var list = _TeachingTaskService.GetAll();
+            ViewData["IndexsearchKey"] = IndexsearchKey;
+            var list = _TeachingTaskService.GetAll().Where(r => (IndexsearchKey == null|| r.Term.Contains(IndexsearchKey)));
 
             return View(list);
         }
@@ -188,7 +190,7 @@
 
 
 
-        public async Task<IActionResult> ImportTeachingTaskDetail([FromServices]IHostingEnvironment env, IList<IFormFile> files)
+        public async Task<IActionResult> ImportTeachingTaskDetail([FromServices]IHostingEnvironment env, IList<IFormFile> files,string TeachingTaskId)
         {
             var _list = new List<TeachingTaskDetail>();
 
@@ -248,6 +250,9 @@
                         row = sheet.GetRow(i);
                         if (row == null)
                             continue;
+                         
+                        if (GetValue(row.GetCell(0)) == "")
+                            continue;
 
                         ClaRoomCode = GetValue(row.GetCell(0));
                         Week = GetValue(row.GetCell(1));
@@ -262,6 +267,7 @@
                             //教学任务
                             var model = new Domain.Entities.School.TeachingTaskDetail()
                             {
+                                TeachingTaskId = TeachingTaskId,
                                 ClaRoomCode = ClaRoomCode,
                                 Week = Week,
                                 Section = ((SectionType)Convert.ToInt32(Section)),
@@ -547,12 +553,13 @@
 
 
 
+
         // GET: TeachingTask/Detail/5
         public ActionResult Detail(string id, string searchKey)
         {
 
             ViewData["searchKey"] = searchKey;
-            ViewBag.Details = this._TeachingTaskService.GetAll().Where(b => b.TeachingTaskId == id).FirstOrDefault().TeachingTaskDetails;
+            ViewBag.Details = this._TeachingTaskDetailService.GetAll().Where(b => b.TeachingTaskId == id && (searchKey == null || b.ClaRoomCode.Contains(searchKey)));
 
             ViewBag.TeachingTaskId = id;
 
@@ -574,6 +581,24 @@
                 return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
             }
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteDetail(int id)
+        {
+            var model = _TeachingTaskDetailService.Find(b => b.TeachingTaskDetailId == id);
+            if (model != null)
+            {
+                await _TeachingTaskDetailService.Remove(model);
+                return Json(new AjaxResult("操作成功") { result = 1 });
+            }
+            else
+            {
+                return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Push(string id)

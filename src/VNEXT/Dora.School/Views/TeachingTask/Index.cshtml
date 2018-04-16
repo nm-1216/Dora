@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="代码或名称">
+                        <input type="text" class="form-control" name="IndexsearchKey" value="@ViewData["IndexsearchKey"]" id="IndexsearchKey" placeholder="学期">
                     </div>
                 </div>
 
@@ -132,7 +132,7 @@
 
             //下发
             $('.btnPush').on('click', function () {
-                console.log('btnDel')
+                console.log('btnPush')
                 var id = $(this).attr('data-content-id');
 
                 layer.confirm('确认要下发吗？', {
@@ -243,25 +243,16 @@
             },
             dataType: 'json',
             success: function (r) { 
-                
-            },
-            complete: function (r) { 
-                layer.closeAll('loading');
-                console.log(r)
-                alert(r.msg) 
-                alert(1)
                 if (r.result == 1) {
-                    console.log(1) 
+                    console.log(1)
                     //jQuery("#grid-table").trigger("reloadGrid");
-                    if (r.data != null) {
-                        alert('d')
+                    if (r.data != null) { 
                         console.log(2)
                         layer.msg(r.message + ",但是有重复数据");
                         for (var i = 0; i < r.data.length; i++)
                             $('#msgul').append(r.data[i])
                     }
-                    else {
-                        alert('c')
+                    else { 
                         console.log(3)
                         layer.msg(r.msg, {
                             time: 2000, end: function () {
@@ -276,6 +267,9 @@
                     var msg = r.msg;
                     layer.msg(msg);
                 }
+            },
+            complete: function (r) { 
+               
             }
         }
 

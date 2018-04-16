@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="代码或名称">
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="教室编号">
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                                     <td>@item.Section</td>
 
                                     <td class="text-right">
-                                        <a data-content-id="@item.TeachingTaskId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                        <a data-content-id="@item.TeachingTaskDetailId" class="btn btn-danger btn-xs btnDel">删除</a>
 
                                     </td>
                                 </tr>
@@ -87,3 +87,107 @@
 
     </form>
 </div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+
+        var options = {
+            beforeSend: function () {
+                $('#msgul').html('')
+                layer.load(3, { shade: 0.8 });
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+            },
+            dataType: 'json',
+            success: function (r) {
+                if (r.result == 1) {
+                    console.log(1)
+                    //jQuery("#grid-table").trigger("reloadGrid");
+                    if (r.data != null) {
+                        console.log(2)
+                        layer.msg(r.message + ",但是有重复数据");
+                        for (var i = 0; i < r.data.length; i++)
+                            $('#msgul').append(r.data[i])
+                    }
+                    else {
+                        console.log(3)
+                        layer.msg(r.msg, {
+                            time: 2000, end: function () {
+                                layer.closeAll();
+                                location.href = location.href;
+                            }
+                        })
+                    }
+                }
+                else {
+                    console.log(4)
+                    var msg = r.msg;
+                    layer.msg(msg);
+                }
+            },
+            complete: function (r) {
+
+            }
+        }
+
+        function AjaxForm1Submit() {
+            $("#AjaxForm1").ajaxSubmit(options);
+        }
+
+
+        $('.btnDel').on('click', function () {
+            console.log('btnDel')
+            var id = $(this).attr('data-content-id');
+
+            layer.confirm('数据不可恢复，确认要删除吗？', {
+                btn: ['确定', '取消']
+            }, function () {
+                $.ajax({
+                    url: '/TeachingTask/DeleteDetail',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        id: id
+                    },
+                    timeout: 5000,
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        console.log(xhr)
+                        console.log('发送前')
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data)
+                        console.log(textStatus)
+                        console.log(jqXHR)
+                        if (data.result == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {
+                                time: 2000, end: function () {
+                                    location.href = location.href;
+                                }
+                            }
+                            )
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, textStatus) {
+                        console.log('错误')
+                        console.log(xhr)
+                        console.log(textStatus)
+                    },
+                    complete: function () {
+                        console.log('结束')
+                    }
+                })
+            }, function () {
+                return
+            });
+        })
+            
+
+    </script>
+}
+
