@@ -46,7 +46,16 @@ namespace Dora.Domain.Entities.School
         节11_12 = 6
     }
 
-
+    public enum Week : int
+    {
+        星期一 = 1,
+        星期二 = 2,
+        星期三 = 3,
+        星期四 = 4,
+        星期五 = 5,
+        星期六 = 6,
+        星期日 = 0
+    }
 
 
     public enum ApprovalWorkflowType : int
