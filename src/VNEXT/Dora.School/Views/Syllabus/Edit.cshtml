@@ -34,10 +34,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input class="form-control" asp-for="Version" /></td>
+                            <td><input class="form-control" asp-for="Version" disabled=@(Model.SubSta==0?false:true)/></td>
                             <td><input class="form-control" asp-for="Course.Period" disabled /></td>
                             <td><input class="form-control" asp-for="Course.Credit" disabled /></td>
-                            <td><input type="file" name="files" /></td>
+                            <td><input type="file" name="files" disabled=@(Model.SubSta==0?false:true) /></td>
                         </tr>
                         <tr>
                             <td colspan="4">
@@ -47,17 +47,26 @@
                     </tbody>
                 </table>
 
-                <div style="padding-bottom:15px;text-align:right"> 
-                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="建议选用教材" id="btnSyllabusBook" data-content-id="@Model.SyllabusId" />
-                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId" />
-                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置对应专业" id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId" />
-                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId" />
-                        <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId" />
-                        <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
-                        <input type="button" class="btn btn-danger btn-sm sendReview" style="width:100px" value="送审" />
-                    <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
-                    <a asp-action="Index" class="btn btn-success btn-sm">返回</a>
+                @if (Model.SubSta == 0)
+                {
+                    <div style="padding-bottom: 15px; text-align: right">
+                        <input type="button" class="btn btn-info btn-sm" style="width: 100px" value="建议选用教材" id="btnSyllabusBook" data-content-id="@Model.SyllabusId"/>
+                        <input type="button" class="btn btn-info btn-sm" style="width: 100px" value="教学时数分配" id="btnSyllabusPeriod" data-content-id="@Model.SyllabusId"/>
+                        <input type="button" class="btn btn-info btn-sm" style="width: 100px" value="设置对应专业" id="btnSyllabusProfessional" data-content-id="@Model.SyllabusId"/>
+                        <input type="button" class="btn btn-info btn-sm" style="width: 100px" value="设置先修课程" id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId"/>
+                        <input type="button" class="btn btn-info btn-sm" style="width: 100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId"/>
+                        <input type="submit" class="btn btn-danger btn-sm" style="width: 100px" value="保存"/>
+                        <input type="button" class="btn btn-danger btn-sm sendReview" style="width: 100px" value="送审"/>
+                        <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width: 100px">预览</a>
+                        <a asp-action="Index" class="btn btn-success btn-sm">返回</a>
                     </div>
+                }else
+                {
+                    <div style="padding-bottom: 15px; text-align: right">
+                        <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width: 100px">预览</a>
+                        <a asp-action="Index" class="btn btn-success btn-sm">返回</a>
+                    </div>
+                }
 
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">教学目标</a></li>
@@ -66,15 +75,15 @@
                     <li><a href="#tab5" data-toggle="tab">课程评价方法</a></li>
                     <li><a href="#tab7" data-toggle="tab">教学方法建议</a></li>
                 </ul>
+               
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade in active" id="tab1"><textarea id="tab1-editor" asp-for="Tar"></textarea></div>
                     <div class="tab-pane fade" id="tab2"><textarea id="tab2-editor" asp-for="ConReq"></textarea></div>
                     <div class="tab-pane fade" id="tab4"><textarea id="tab4-editor" asp-for="PraCon"></textarea></div>
                     <div class="tab-pane fade" id="tab5"><textarea id="tab5-editor" asp-for="EvaWay"></textarea></div>
-                    <div class="tab-pane fade" id="tab6"><textarea id="tab6-editor"></textarea></div>
                     <div class="tab-pane fade" id="tab7"><textarea id="tab7-editor" asp-for="Pro"></textarea></div>
                 </div>
-
+                
                 <div class="text-right" style="height:100px;">
 
                 </div>
@@ -150,7 +159,6 @@
     </div>
 </div>
 <!--建议选用教材End-->
-
 <!--课程学时分配Start-->
 <div class="DivSyllabusPeriod" style="display:none">
     <ul class="nav nav-tabs">
@@ -1176,11 +1184,12 @@
                     var id = $('#SyllabusId').val();
                     $.ajax({
                         type: "Post",
-                        url: "/Syllabus/Review",
+                        url: "/Syllabus/SendReview",
                         data: {id: id},
                         dataType: "json",
                         success: function(rst) {
                             console.log(rst);
+                            location.href = location.href;
                         },
                         complete: function(XMLHttpRequest, textStatus) {},
                         error: function(XMLHttpRequest, textStatus, errorThrown) {}
@@ -1196,7 +1205,7 @@
     <script type="text/javascript">
 
         $(function() {
-
+            var isReadOnly = @(Model.SubSta==0?"false":"true");
 
             ClassicEditor
                 .create(document.querySelector('#tab1-editor'),
@@ -1205,9 +1214,13 @@
                             uploadUrl: '/BaseData/Ckeditor'
                         }
                     })
+                .then(editor => {
+                    editor.isReadOnly = isReadOnly;
+                })
                 .catch(error => {
                     console.log(error);
                 });
+            
             ClassicEditor
                 .create(document.querySelector('#tab2-editor'),
                     {
@@ -1215,6 +1228,9 @@
                             uploadUrl: '/BaseData/Ckeditor'
                         }
                     })
+                .then(editor => {
+                    editor.isReadOnly = isReadOnly;
+                })
                 .catch(error => {
                     console.log(error);
                 });
@@ -1225,6 +1241,9 @@
                             uploadUrl: '/BaseData/Ckeditor'
                         }
                     })
+                .then(editor => {
+                    editor.isReadOnly = isReadOnly;
+                })
                 .catch(error => {
                     console.log(error);
                 });
@@ -1235,16 +1254,9 @@
                             uploadUrl: '/BaseData/Ckeditor'
                         }
                     })
-                .catch(error => {
-                    console.log(error);
-                });
-            ClassicEditor
-                .create(document.querySelector('#tab6-editor'),
-                    {
-                        ckfinder: {
-                            uploadUrl: '/BaseData/Ckeditor'
-                        }
-                    })
+                .then(editor => {
+                    editor.isReadOnly = isReadOnly;
+                })
                 .catch(error => {
                     console.log(error);
                 });
@@ -1255,6 +1267,9 @@
                             uploadUrl: '/BaseData/Ckeditor'
                         }
                     })
+                .then(editor => {
+                    editor.isReadOnly = isReadOnly;
+                })
                 .catch(error => {
                     console.log(error);
                 });

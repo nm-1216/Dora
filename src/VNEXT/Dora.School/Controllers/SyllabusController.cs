@@ -221,21 +221,33 @@
 
         #region 送审
         
-        public IActionResult SendReview(string id)
+        public async Task<IActionResult> SendReview(string id)
         {
             var model=_SyllabusService.Find(b => b.SyllabusId == id);
 
-            model.AudName = "";
-            model.AudOrd = 1;
-            model.AudRes = 1;
-            model.SubSta = 1;
+            if (model.SubSta == 0)
+            {
+                //
+                model.AudName = "送审";
+                model.AudOrd = 1;
+                model.AudRes = null;
+                model.SubSta = 1;
+
+                var rst = await _SyllabusService.Update(model);
+
+                return Json(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 1 : 0, method = "SendReview"});
+            }
+            else
+            {
+                return Json(new AjaxResult( "失败,状态不正确") {result = 0, method = "SendReview"}); 
+            }
         }
 
         #region 审核1
 
         public IActionResult Review()
         {
-            return View();
+            return null;
         }
 
         #endregion
@@ -244,7 +256,7 @@
 
         public IActionResult Review2()
         {
-            return View();
+            return null;
         }
 
         #endregion

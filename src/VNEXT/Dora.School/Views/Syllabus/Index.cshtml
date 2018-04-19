@@ -53,6 +53,16 @@
             right: 15%;
             bottom: -15px;
         }
+
+        .YouChuo1 {
+            background-image: url(/Images/Syllabus/11.png);
+        }
+        .YouChuo2 {
+            background-image: url(/Images/Syllabus/22.png);
+        }
+        .YouChuo3 {
+            background-image: url(/Images/Syllabus/33.png);
+        }
     </style>
 
 
@@ -83,7 +93,7 @@
                         <img src="~/Images/Syllabus/2.png"/>
                         <div class="BookName">@item.Course.Name</div>
                         <div class="BookAuthor">@item.Teacher.Name</div>
-                        <div class="YouChuo"></div>
+                        <div class="YouChuo @("YouChuo"+item.SubSta)"></div>
                     </div>
                 </a>
             }
