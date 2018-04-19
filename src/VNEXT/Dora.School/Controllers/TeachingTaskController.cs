@@ -269,7 +269,7 @@
                             {
                                 TeachingTaskId = TeachingTaskId,
                                 ClaRoomCode = ClaRoomCode,
-                                Week = Week,
+                                Week = (Week)Enum.Parse(typeof(Week), Week),
                                 Section = ((SectionType)Convert.ToInt32(Section)),
 
                             };
@@ -374,7 +374,7 @@
             //GetAll().Include(r=> r.Teachers).Include(r=> r.Classes).Where
 
             #region 上课节次
-            List<SelectListItem> type;
+//            List<SelectListItem> type;
             //type = ((Enum)SectionType.节1_2).ToSelectListItem(model.Section.ToString());
 
             //ViewBag.SectionType = type;
@@ -545,7 +545,7 @@
 
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch
             {
                 return View();
             }

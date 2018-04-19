@@ -196,7 +196,7 @@ namespace Dora.School.Controllers
 
         #region Questions
 
-        public async Task<IActionResult> Questions(string id)
+        public IActionResult Questions(string id)
         {
             
             var QType = ((Enum) PaperQuestionType.单选).ToSelectListItem(PaperQuestionType.单选.ToString());
