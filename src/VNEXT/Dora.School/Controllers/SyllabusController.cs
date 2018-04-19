@@ -220,6 +220,34 @@
         #endregion
 
         #region 送审
+        
+        public IActionResult SendReview(string id)
+        {
+            var model=_SyllabusService.Find(b => b.SyllabusId == id);
+
+            model.AudName = "";
+            model.AudOrd = 1;
+            model.AudRes = 1;
+            model.SubSta = 1;
+        }
+
+        #region 审核1
+
+        public IActionResult Review()
+        {
+            return View();
+        }
+
+        #endregion
+        
+        #region 审核2
+
+        public IActionResult Review2()
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
 

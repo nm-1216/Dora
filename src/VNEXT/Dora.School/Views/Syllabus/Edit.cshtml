@@ -54,7 +54,7 @@
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置先修课程" id="btnSyllabusFirstCourse" data-content-id="@Model.SyllabusId" />
                         <input type="button" class="btn btn-info btn-sm" style="width:100px" value="设置任课老师" id="btnSyllabusTeacher" data-content-id="@Model.SyllabusId" />
                         <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="保存" />
-                        <input type="submit" class="btn btn-danger btn-sm" style="width:100px" value="送审" />
+                        <input type="button" class="btn btn-danger btn-sm sendReview" style="width:100px" value="送审" />
                     <a asp-action="Details" asp-route-id="@Model.SyllabusId" class="btn btn-success btn-sm" style="width:100px">预览</a>
                     <a asp-action="Index" class="btn btn-success btn-sm">返回</a>
                     </div>
@@ -394,18 +394,18 @@
 </div>
 <!--设置对应老师End-->
 @section scripts{
-<script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
     <script type="text/javascript">
         //导入数据
         var import_options = {
-            beforeSend: function () {
+            beforeSend: function() {
                 $('#msgul').html('')
                 layer.load(3, { shade: 0.8 });
             },
-            uploadProgress: function (event, position, total, percentComplete) {
+            uploadProgress: function(event, position, total, percentComplete) {
             },
             dataType: 'json',
-            success: function (r) {
+            success: function(r) {
                 layer.closeAll('loading');
                 console.log(r)
                 if (r.result == 1) {
@@ -416,24 +416,24 @@
                         layer.msg(r.message + ",但是有重复数据");
                         for (var i = 0; i < r.data.length; i++)
                             $('#msgul').append(r.data[i])
-                    }
-                    else {
+                    } else {
                         console.log(3)
-                        layer.msg(r.msg, {
-                            time: 2000, end: function () {
-                                layer.closeAll();
-                                location.href = location.href;
-                            }
-                        })
+                        layer.msg(r.msg,
+                            {
+                                time: 2000,
+                                end: function() {
+                                    layer.closeAll();
+                                    location.href = location.href;
+                                }
+                            })
                     }
-                }
-                else {
+                } else {
                     console.log(4)
                     var msg = r.msg;
                     layer.msg(msg);
                 }
             },
-            complete: function (xhr) {
+            complete: function(xhr) {
             }
         }
 
@@ -442,12 +442,9 @@
         }
 
 
-
-
-
         //删除一条建议选用教材
-        function delSyllabusBook(id,sid) {
-            console.log('btnDel') 
+        function delSyllabusBook(id, sid) {
+            console.log('btnDel')
             $.ajax({
                 url: '/Syllabus/DeleteSyllabusBook',
                 type: 'POST',
@@ -458,11 +455,11 @@
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -474,12 +471,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -488,7 +485,7 @@
 
         //删除一条课程学时分配
         function delSyllabusPeriod(id, sid) {
-            console.log('btnDel') 
+            console.log('btnDel')
             $.ajax({
                 url: '/Syllabus/DeleteSyllabusPeriod',
                 type: 'POST',
@@ -499,11 +496,11 @@
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -515,21 +512,21 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
 
         }
-        
+
         //添加一条先修课程
         function addSyllabusFirstCourse(id, sid) {
-            console.log('btnAdd') 
+            console.log('btnAdd')
             $.ajax({
                 url: '/Syllabus/AddSyllabusFirstCourse',
                 type: 'POST',
@@ -540,11 +537,11 @@
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -555,12 +552,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -575,16 +572,16 @@
                 type: 'POST',
                 async: true,
                 data: {
-                    id: id
-                    ,sid :sid
+                    id: id,
+                    sid: sid
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -596,12 +593,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -621,11 +618,11 @@
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -636,12 +633,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -656,16 +653,16 @@
                 type: 'POST',
                 async: true,
                 data: {
-                    id: id
-                    , sid: sid
+                    id: id,
+                    sid: sid
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -677,12 +674,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -702,11 +699,11 @@
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -717,12 +714,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -737,16 +734,16 @@
                 type: 'POST',
                 async: true,
                 data: {
-                    id: id
-                    , sid: sid
+                    id: id,
+                    sid: sid
                 },
                 timeout: 5000,
                 dataType: 'json',
-                beforeSend: function (xhr) {
+                beforeSend: function(xhr) {
                     console.log(xhr)
                     console.log('发送前')
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     console.log(data)
                     console.log(textStatus)
                     console.log(jqXHR)
@@ -758,12 +755,12 @@
                         layer.msg(data.msg);
                     }
                 },
-                error: function (xhr, textStatus) {
+                error: function(xhr, textStatus) {
                     console.log('错误')
                     console.log(xhr)
                     console.log(textStatus)
                 },
-                complete: function () {
+                complete: function() {
                     console.log('结束')
                 }
             })
@@ -771,18 +768,19 @@
         }
 
 
-        $(function () {
+        $(function() {
             var options = {
                 //target: '#output',          //把服务器返回的内容放入id为output的元素中
                 //beforeSubmit: showRequest,  //提交前的回调函数
-                success: showResponse,      //提交后的回调函数
+                success: showResponse, //提交后的回调函数
                 //url: url,                 //默认是form的action， 如果申明，则会覆盖
-                type: 'post',               //默认是form的method（get or post），如果申明，则会覆盖
-                dataType: 'json',           //html(默认), xml, script, json...接受服务端返回的类型
+                type: 'post', //默认是form的method（get or post），如果申明，则会覆盖
+                dataType: 'json', //html(默认), xml, script, json...接受服务端返回的类型
                 //clearForm: true,          //成功提交后，清除所有表单元素的值
                 //resetForm: true,          //成功提交后，重置所有表单元素的值
-                timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+                timeout: 3000 //限制请求的时间，当请求大于3秒后，跳出请求
             }
+
             function showResponse(responseText, statusText) {
                 console.log("responseText", responseText);
                 console.log("statusText", statusText);
@@ -796,68 +794,80 @@
                 //    }
                 //    )
                 //} else {
-                    layer.msg(data.msg);
+                layer.msg(data.msg);
                 //}
             };
+
             //建议选用教材Start
-            $("#CreateSyllabusBook").submit(function () { $(this).ajaxSubmit(options); return false; });
-            
-            $('#btnSyllabusBook').click(function () {
+            $("#CreateSyllabusBook").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+
+            $('#btnSyllabusBook').click(function() {
                 var id = $(this).attr('data-content-id');
                 DivLayer(1, '建议选用教材', $('.DivSyllabusBook'), '800px', '450px')
                 // IFreamLayer(1, '建议选用教材', "/Syllabus/SyllabusBook?id="+id, '580px', '460px')
-            })
+            });
 
             //设置“建议选用教材”中，每次点击tab中的“列表”，查询数据
-            $('#ViewSyllabusBookList').click(function () {
+            $('#ViewSyllabusBookList').click(function() {
                 var id = $(this).attr('data-content-id');
                 $.ajax({
                     type: "Post",
                     url: "/Syllabus/GetSyllabusBooks",
                     data: {
-                        id:id
+                        id: id
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
+                            $.each(result,
+                                function(i, item) {
 
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += "<td>" + item.compiler + "</td>";
-                                html += "<td>" + item.edition + "</td>";
-                                html += "<td>" + item.press + "</td>";
-                                html += "<td>" + item.preTime.substring(0,10) + "</td>";
-                                html += " <td class='text-right'><a data-content-id='" + item.syllabusBookId
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusBook('" + item.syllabusBookId + "','" + item.syllabusId + "')\">删除</a></td>";//
-                                html += "</tr>";
-                            });
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html += "<td>" + item.compiler + "</td>";
+                                    html += "<td>" + item.edition + "</td>";
+                                    html += "<td>" + item.press + "</td>";
+                                    html += "<td>" + item.preTime.substring(0, 10) + "</td>";
+                                    html += " <td class='text-right'><a data-content-id='" +
+                                        item.syllabusBookId +
+                                        "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusBook('" +
+                                        item.syllabusBookId +
+                                        "','" +
+                                        item.syllabusId +
+                                        "')\">删除</a></td>"; //
+                                    html += "</tr>";
+                                });
                             $("#tabsb2 tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
             //建议选用教材End
 
             //课程学时分配Start
-            $("#CreateSyllabusPeriod").submit(function () { $(this).ajaxSubmit(options); return false; });
+            $("#CreateSyllabusPeriod").submit(function() {
+                $(this).ajaxSubmit(options);
+                return false;
+            });
 
-            $('#btnSyllabusPeriod').click(function () {
+            $('#btnSyllabusPeriod').click(function() {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '课程学时分配', $('.DivSyllabusPeriod'), '800px', '450px')
-            })
+                DivLayer(1, '课程学时分配', $('.DivSyllabusPeriod'), '800px', '450px');
+            });
 
             //设置“课程学时分配”中，每次点击tab中的“列表”，查询数据
-            $('#ViewSyllabusPeriodList').click(function () {
+            $('#ViewSyllabusPeriodList').click(function() {
                 var id = $(this).attr('data-content-id');
                 $.ajax({
                     type: "Post",
@@ -866,45 +876,49 @@
                         id: id
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
-                                html += "<tr>";
-                                html += "<td>" + item.unitOrdNum + "</td>";
-                                html += "<td>" + item.teaPer + "</td>";
-                                html += "<td>" + item.expPer + "</td>";
-                                html += " <td class='text-right'><a  "
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusPeriod('" + item.CourseId + "','" + item.syllabusId + "')\">删除</a></td>";//
-                                html += "</tr>";
-                            })
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.unitOrdNum + "</td>";
+                                    html += "<td>" + item.teaPer + "</td>";
+                                    html += "<td>" + item.expPer + "</td>";
+                                    html += " <td class='text-right'><a  " +
+                                        "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusPeriod('" +
+                                        item.CourseId +
+                                        "','" +
+                                        item.syllabusId +
+                                        "')\">删除</a></td>"; //
+                                    html += "</tr>";
+                                })
                             $("#tabkc2 tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
             //课程学时分配End
 
             //先修课程Start
-          //  $("#CreateSyllabusFirstCourse").submit(function () { $(this).ajaxSubmit(options); return false; });
+            //  $("#CreateSyllabusFirstCourse").submit(function () { $(this).ajaxSubmit(options); return false; });
 
             //弹出div
-            $('#btnSyllabusFirstCourse').click(function () {
+            $('#btnSyllabusFirstCourse').click(function() {
                 var id = $(this).attr('data-content-id');
-                DivLayer(1, '先修课程', $('.DivSyllabusFirstCourse'), '800px', '450px') 
-            })
+                DivLayer(1, '先修课程', $('.DivSyllabusFirstCourse'), '800px', '450px')
+            });
 
             //根据搜索内容加载列表
-            $('#btnSearchCourses').click(function () {
-                var name = $("#searchKey").val(); 
+            $('#btnSearchCourses').click(function() {
+                var name = $("#searchKey").val();
                 var SyllabusId = $("#DivSyllabusFirstCourse_SyllabusId").val();
                 $.ajax({
                     type: "Post",
@@ -913,32 +927,37 @@
                         name: name
                     },
                     dataType: "json",
-                    success: function (result) {
-                        if (result != undefined) { 
+                    success: function(result) {
+                        if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusFirstCourse('" + item.courseId + "','" + SyllabusId + "')\">添加</a></td>";// 
-                                html += "</tr>";
-                            }) 
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html +=
+                                        " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusFirstCourse('" +
+                                        item.courseId +
+                                        "','" +
+                                        SyllabusId +
+                                        "')\">添加</a></td>"; // 
+                                    html += "</tr>";
+                                })
                             $("#tabxx1 tbody tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
 
-          
+
             //设置“先修课程”中，每次点击tab中的“列表”，查询数据
-            $('#ViewSyllabusFirstCourseList').click(function () {
+            $('#ViewSyllabusFirstCourseList').click(function() {
                 var id = $(this).attr('data-content-id');
                 $.ajax({
                     type: "Post",
@@ -947,43 +966,46 @@
                         id: id
                     },
                     dataType: "json",
-                    success: function (result) { 
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) { 
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>"; 
-                                html += " <td class='text-right'><a  "
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusFirstCourse('" + item.courseId + "','" + id+ "')\">删除</a></td>";//
-                                html += "</tr>";
-                            }) 
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html += " <td class='text-right'><a  " +
+                                        "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusFirstCourse('" +
+                                        item.courseId +
+                                        "','" +
+                                        id +
+                                        "')\">删除</a></td>"; //
+                                    html += "</tr>";
+                                })
                             $("#tabxx2 tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
             //先修课程End
-
 
 
             //对应专业Start 
 
             //弹出div
-            $('#btnSyllabusProfessional').click(function () {
+            $('#btnSyllabusProfessional').click(function() {
                 var id = $(this).attr('data-content-id');
                 DivLayer(1, '先修专业', $('.DivSyllabusProfessional'), '800px', '450px')
-            })
+            });
 
             //根据搜索内容加载列表
-            $('#btnSearchProfessionals').click(function () {
+            $('#btnSearchProfessionals').click(function() {
                 var name = $("#ProfessionalsearchKey").val();
                 var SyllabusId = $("#DivSyllabusProfessional_SyllabusId").val();
                 $.ajax({
@@ -993,32 +1015,37 @@
                         name: name
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) { 
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusProfessional('" + item.professionalId + "','" + SyllabusId + "')\">添加</a></td>";// 
-                                html += "</tr>";
-                            })
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html +=
+                                        " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusProfessional('" +
+                                        item.professionalId +
+                                        "','" +
+                                        SyllabusId +
+                                        "')\">添加</a></td>"; // 
+                                    html += "</tr>";
+                                })
                             $("#tabzy1 tbody tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
 
 
             //设置“先修专业”中，每次点击tab中的“列表”，查询数据
-            $('#ViewSyllabusProfessionalList').click(function () {
+            $('#ViewSyllabusProfessionalList').click(function() {
                 var id = $(this).attr('data-content-id');
                 $.ajax({
                     type: "Post",
@@ -1027,42 +1054,46 @@
                         id: id
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += " <td class='text-right'><a  "
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusProfessional('" + item.professionalId + "','" + id + "')\">删除</a></td>";//
-                                html += "</tr>";
-                            })
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html += " <td class='text-right'><a  " +
+                                        "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusProfessional('" +
+                                        item.professionalId +
+                                        "','" +
+                                        id +
+                                        "')\">删除</a></td>"; //
+                                    html += "</tr>";
+                                })
                             $("#tabzy2 tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
             //对应专业End
 
 
             //任课老师Start 
 
             //弹出div
-            $('#btnSyllabusTeacher').click(function () {
+            $('#btnSyllabusTeacher').click(function() {
                 var id = $(this).attr('data-content-id');
                 DivLayer(1, '任课老师', $('.DivSyllabusTeacher'), '800px', '450px')
-            })
+            });
 
             //根据搜索内容加载列表
-            $('#btnSearchTeachers').click(function () {
+            $('#btnSearchTeachers').click(function() {
                 var name = $("#TeachersearchKey").val();
                 var SyllabusId = $("#DivSyllabusTeacher_SyllabusId").val();
                 $.ajax({
@@ -1072,32 +1103,37 @@
                         name: name
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusTeacher('" + item.teacherId + "','" + SyllabusId + "')\">添加</a></td>";// 
-                                html += "</tr>";
-                            })
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html +=
+                                        " <td class='text-right'><a class='btn btn-danger btn-xs btnDel' onclick=\"addSyllabusTeacher('" +
+                                        item.teacherId +
+                                        "','" +
+                                        SyllabusId +
+                                        "')\">添加</a></td>"; // 
+                                    html += "</tr>";
+                                })
                             $("#tabls1 tbody tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
 
 
             //设置“任课老师”中，每次点击tab中的“列表”，查询数据
-            $('#ViewSyllabusTeacherList').click(function () {
+            $('#ViewSyllabusTeacherList').click(function() {
                 var id = $(this).attr('data-content-id');
                 $.ajax({
                     type: "Post",
@@ -1106,92 +1142,119 @@
                         id: id
                     },
                     dataType: "json",
-                    success: function (result) {
+                    success: function(result) {
                         if (result != undefined) {
                             var html = "";
-                            $.each(result, function (i, item) {
-                                html += "<tr>";
-                                html += "<td>" + item.name + "</td>";
-                                html += " <td class='text-right'><a  "
-                                    + "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusTeacher('" + item.teacherId + "','" + id + "')\">删除</a></td>";//
-                                html += "</tr>";
-                            })
+                            $.each(result,
+                                function(i, item) {
+                                    html += "<tr>";
+                                    html += "<td>" + item.name + "</td>";
+                                    html += " <td class='text-right'><a  " +
+                                        "' class='btn btn-danger btn-xs btnDel' onclick=\"delSyllabusTeacher('" +
+                                        item.teacherId +
+                                        "','" +
+                                        id +
+                                        "')\">删除</a></td>"; //
+                                    html += "</tr>";
+                                })
                             $("#tabls2 tbody").html(html);
-                        }
-                        else {
+                        } else {
                             alert("失败");
                         }
                     },
-                    complete: function (XMLHttpRequest, textStatus) {
+                    complete: function(XMLHttpRequest, textStatus) {
                     },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("error");
                     }
                 });
-            })
+            });
             //任课老师End
 
+            $('.sendReview').on('click', function() {
+                layer.confirm('确认要送审吗？', {icon: 3, title:'送审提示'}, function(index) {
+                    var id = $('#SyllabusId').val();
+                    $.ajax({
+                        type: "Post",
+                        url: "/Syllabus/Review",
+                        data: {id: id},
+                        dataType: "json",
+                        success: function(rst) {
+                            console.log(rst);
+                        },
+                        complete: function(XMLHttpRequest, textStatus) {},
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                    });
+                    layer.close(index);
+                });
+            });
 
-        })
+        });
 
     </script>
     <script src="~/lib/ckeditor/classic/ckeditor.js"></script>
     <script type="text/javascript">
 
-        $(function () {
+        $(function() {
 
 
             ClassicEditor
-                .create(document.querySelector('#tab1-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab1-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });
             ClassicEditor
-                .create(document.querySelector('#tab2-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab2-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });
             ClassicEditor
-                .create(document.querySelector('#tab4-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab4-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });
             ClassicEditor
-                .create(document.querySelector('#tab5-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab5-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });
             ClassicEditor
-                .create(document.querySelector('#tab6-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab6-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });
             ClassicEditor
-                .create(document.querySelector('#tab7-editor'), {
-                    ckfinder: {
-                        uploadUrl: '/BaseData/Ckeditor'
-                    }
-                })
+                .create(document.querySelector('#tab7-editor'),
+                    {
+                        ckfinder: {
+                            uploadUrl: '/BaseData/Ckeditor'
+                        }
+                    })
                 .catch(error => {
                     console.log(error);
                 });

@@ -91,28 +91,31 @@ namespace Dora.Domain.Entities.School
         #endregion
 
 
-        /// <summary>
-        /// Gets or sets 提交状态 
-        /// </summary>
-        public virtual int? SubSta { get; set; }
+   
 
+        #region 审核
+
+        /// <summary>
+        /// Gets or sets 状态
+        /// </summary>
+        public virtual int SubSta { get; set; } = 0;
 
         /// <summary>
         /// Gets or sets 审核次序 
         /// </summary>
         public virtual int? AudOrd { get; set; }
 
-
         /// <summary>
-        /// Gets or sets 审核名称 
+        /// Gets or sets 审核名称
         /// </summary>
         public virtual string AudName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets or sets 审核结果 
+        /// Gets or sets 审核结果
         /// </summary>
         public virtual int? AudRes { get; set; }
-
+        #endregion
+        
         /// <summary>
         /// 课程
         /// </summary>
