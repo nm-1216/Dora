@@ -234,11 +234,11 @@
 
                     IRow row = sheet.GetRow(0);
                     var ClaRoomCode = GetValue(row.GetCell(0));
-                    var Week = GetValue(row.GetCell(1));
+                    var StrWeek = GetValue(row.GetCell(1)); 
                     var Section = GetValue(row.GetCell(2));
 
                     if (!ClaRoomCode.Equals("教室编号")
-                    || !Week.Equals("星期")
+                    || !StrWeek.Equals("星期")
                     || !Section.Equals("上课节次"))
                     {
                         return new JsonResult(new AjaxResult("EXCEL文件格式不正确") { result = 0 });
@@ -255,11 +255,11 @@
                             continue;
 
                         ClaRoomCode = GetValue(row.GetCell(0));
-                        Week = GetValue(row.GetCell(1));
+                        StrWeek = GetValue(row.GetCell(1));
                         Section = GetValue(row.GetCell(2));
 
                         if (!string.IsNullOrEmpty(ClaRoomCode)
-                            && !string.IsNullOrEmpty(Week)
+                            && !string.IsNullOrEmpty(StrWeek)
                             && !string.IsNullOrEmpty(Section)//备注可以为空
                             )
                         {
@@ -269,7 +269,7 @@
                             {
                                 TeachingTaskId = TeachingTaskId,
                                 ClaRoomCode = ClaRoomCode,
-                                Week = (Week)Enum.Parse(typeof(Week), Week),
+                                Week = (Week)Enum.Parse(typeof(Week), StrWeek),
                                 Section = ((SectionType)Convert.ToInt32(Section)),
 
                             };
@@ -556,6 +556,20 @@
 
         // GET: TeachingTask/Detail/5
         public ActionResult Detail(string id, string searchKey)
+        {
+
+            ViewData["searchKey"] = searchKey;
+            ViewBag.Details = this._TeachingTaskDetailService.GetAll().Where(b => b.TeachingTaskId == id && (searchKey == null || b.ClaRoomCode.Contains(searchKey)));
+
+            ViewBag.TeachingTaskId = id;
+
+            return View();
+        }
+
+
+
+        // GET: TeachingTask/Detail/5
+        public ActionResult Detail2(string id, string searchKey)
         {
 
             ViewData["searchKey"] = searchKey;
