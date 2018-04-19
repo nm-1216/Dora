@@ -1,0 +1,239 @@
+﻿
+@{
+    ViewData["Title"] = "教学任务明细";
+    Layout = "_Layout";
+}
+<style>
+    .columntitle:not(:last-child ) {
+        background-color: floralwhite;
+        border-left: 1px dashed black;
+        border-top: 1px dashed black;
+    }
+
+    .columntitle:last-child {
+        background-color: floralwhite;
+        border-left: 1px dashed black;
+        border-top: 1px dashed black ;
+        border-right: 1px dashed black;
+    }
+    
+    .item:not(:last-child ) {
+        border-left: 1px dashed black;
+        border-top: 1px dashed black;
+    }
+    .item:last-child {
+        border-left: 1px dashed black;
+        border-top: 1px dashed black;
+        border-right: 1px dashed black;
+    }
+
+    .rowtitle:not(:last-child ) {
+        background-color: floralwhite;
+        border-left: 1px dashed black;
+        border-top: 1px dashed black; 
+    }
+
+    .rows:last-child .item, 
+    .rows:last-child .rowtitle {
+        border-bottom: 1px dashed black;
+    }
+</style>
+<!--导入Start-->
+<div id="importDiv" style="display:none">
+    <form id="AjaxForm1" name="AjaxForm1" action="~/TeachingTask/ImportTeachingTaskDetail" enctype="multipart/form-data" method="post">
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <input type="file" name="files" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    <input type="hidden" name="TeachingTaskId" value="@ViewBag.TeachingTaskId" />
+                    <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>约束：</b><br />
+                    1，第一行表头必须固定，不支持随意调换列。<br />
+                    2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
+                    2，<a href="~/template/teachingtaskdetail.xlsx">下载模板</a>
+                </td>
+            </tr>
+        </table>
+        <ol id="msgul"></ol>
+    </form>
+</div><!--导入End-->
+
+<div class="container-fluid">
+    <form id="mainForm" class="form-inline" method="post">
+        <div class="row" style="padding-top:10px;">
+            <div class="col-lg-10">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">搜索条件</div>
+                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="教室编号">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info">search</button>
+            </div>
+            <div class="col-lg-2 text-right">
+                <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务明细',$('#importDiv'))">导入</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-10">
+                <!--列标题-->
+                <div class="col-lg-10 ">
+                    <div class="col-lg-2 columntitle">
+                        <label>星期/课程</label>
+                    </div>
+                    @for (int j = 1; j <= 4; j++)
+                    {
+                        <div class="col-lg-2 columntitle">
+                            <label>@((SectionType)j)</label>
+                        </div> 
+                    }
+                </div>
+                <!--行-->
+                @for (int i = 1; i <= 5; i++)
+                {
+                     <!--行标题-->
+                    <div class="col-lg-10 rows">
+                        <div class="col-lg-2 rowtitle">
+                            <label>@((Week)i)</label>
+                        </div>
+                        <!--内容-->
+                        @for (int j = 1; j <= 4; j++)
+                        {
+                            <div class="col-lg-2 item">
+                                @{
+                                    if (ViewBag.Details != null && ((IQueryable<TeachingTaskDetail>)ViewBag.Details).Where(r => (int)(Week)r.Week == i && (int)(SectionType)r.Section == j).FirstOrDefault() != null)
+                                    {
+                                        <label> 有 </label>
+                                    }
+                                    else
+                                    {
+                                        <label> 无 </label>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                 }
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+
+        var options = {
+            beforeSend: function () {
+                $('#msgul').html('')
+                layer.load(3, { shade: 0.8 });
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+            },
+            dataType: 'json',
+            success: function (r) {
+                if (r.result == 1) {
+                    console.log(1)
+                    //jQuery("#grid-table").trigger("reloadGrid");
+                    if (r.data != null) {
+                        console.log(2)
+                        layer.msg(r.message + ",但是有重复数据");
+                        for (var i = 0; i < r.data.length; i++)
+                            $('#msgul').append(r.data[i])
+                    }
+                    else {
+                        console.log(3)
+                        layer.msg(r.msg, {
+                            time: 2000, end: function () {
+                                layer.closeAll();
+                                location.href = location.href;
+                            }
+                        })
+                    }
+                }
+                else {
+                    console.log(4)
+                    var msg = r.msg;
+                    layer.msg(msg);
+                }
+            },
+            complete: function (r) {
+
+            }
+        }
+
+        function AjaxForm1Submit() {
+            $("#AjaxForm1").ajaxSubmit(options);
+        }
+
+
+        $('.btnDel').on('click', function () {
+            console.log('btnDel')
+            var id = $(this).attr('data-content-id');
+
+            layer.confirm('数据不可恢复，确认要删除吗？', {
+                btn: ['确定', '取消']
+            }, function () {
+                $.ajax({
+                    url: '/TeachingTask/DeleteDetail',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        id: id
+                    },
+                    timeout: 5000,
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        console.log(xhr)
+                        console.log('发送前')
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data)
+                        console.log(textStatus)
+                        console.log(jqXHR)
+                        if (data.result == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {
+                                time: 2000, end: function () {
+                                    location.href = location.href;
+                                }
+                            }
+                            )
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    },
+                    error: function (xhr, textStatus) {
+                        console.log('错误')
+                        console.log(xhr)
+                        console.log(textStatus)
+                    },
+                    complete: function () {
+                        console.log('结束')
+                    }
+                })
+            }, function () {
+                return
+            });
+        })
+
+
+    </script>
+}
+
+
+
