@@ -263,18 +263,19 @@
                             && !string.IsNullOrEmpty(Section)//备注可以为空
                             )
                         {
-
-                            //教学任务
-                            var model = new Domain.Entities.School.TeachingTaskDetail()
+                            if (_TeachingTaskDetailService.GetAll().Where(r => r.TeachingTaskId == TeachingTaskId && r.ClaRoomCode == ClaRoomCode && (int)r.Week == Convert.ToInt32(StrWeek) && (int)r.Section == Convert.ToInt32(Section)).FirstOrDefault() == null)
                             {
-                                TeachingTaskId = TeachingTaskId,
-                                ClaRoomCode = ClaRoomCode,
-                                Week = (Week)Enum.Parse(typeof(Week), StrWeek),
-                                Section = ((SectionType)Convert.ToInt32(Section)),
+                                //教学任务
+                                var model = new Domain.Entities.School.TeachingTaskDetail()
+                                {
+                                    TeachingTaskId = TeachingTaskId,
+                                    ClaRoomCode = ClaRoomCode,
+                                    Week = (Week)Enum.Parse(typeof(Week), StrWeek),
+                                    Section = ((SectionType)Convert.ToInt32(Section)),
 
-                            };
-
-                            _list.Add(model);
+                                };
+                                _list.Add(model);
+                            }  
                         }
                         else
                         {

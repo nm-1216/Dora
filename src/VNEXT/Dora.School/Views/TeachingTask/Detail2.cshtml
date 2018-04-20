@@ -70,14 +70,14 @@
     <form id="mainForm" class="form-inline" method="post">
         <div class="row" style="padding-top:10px;">
             <div class="col-lg-10">
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
                         <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="教室编号">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-info">search</button>
+                <button type="submit" class="btn btn-info">search</button>*@
             </div>
             <div class="col-lg-2 text-right">
                 <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务明细',$('#importDiv'))">导入</button>
@@ -118,7 +118,7 @@
                                     }
                                     else
                                     {
-                                        <label> 无 </label>
+                                        <label>&nbsp;</label>
                                     }
                                 }
                             </div>
