@@ -71,13 +71,13 @@
         <div class="row" style="padding-top:10px;">
             <div class="col-lg-10">
                 @*<div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">搜索条件</div>
-                        <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="教室编号">
+                        <div class="input-group">
+                            <div class="input-group-addon">搜索条件</div>
+                            <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="教室编号">
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" class="btn btn-info">search</button>*@
+                    <button type="submit" class="btn btn-info">search</button>*@
             </div>
             <div class="col-lg-2 text-right">
                 <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务明细',$('#importDiv'))">导入</button>
@@ -85,32 +85,32 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-2"></div>
-            <div class="col-lg-10">
+            <div class="col-lg-2 col-md-2 col-sm-2"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
                 <!--列标题-->
-                <div class="col-lg-10 ">
-                    <div class="col-lg-2 columntitle">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    <div class="col-lg-2 col-md-2 col-sm-2 columntitle">
                         <label>星期/课程</label>
                     </div>
                     @for (int j = 1; j <= 4; j++)
                     {
-                        <div class="col-lg-2 columntitle">
+                        <div class="col-lg-2 col-md-2 col-sm-2 columntitle">
                             <label>@((SectionType)j)</label>
-                        </div> 
+                        </div>
                     }
                 </div>
                 <!--行-->
                 @for (int i = 1; i <= 5; i++)
                 {
                      <!--行标题-->
-                    <div class="col-lg-10 rows">
-                        <div class="col-lg-2 rowtitle">
+                    <div class="col-lg-10 col-md-10 col-sm-10 rows">
+                        <div class="col-lg-2 col-md-2 col-sm-2 rowtitle">
                             <label>@((Week)i)</label>
                         </div>
                         <!--内容-->
                         @for (int j = 1; j <= 4; j++)
                         {
-                            <div class="col-lg-2 item">
+                            <div class="col-lg-2 col-md-2 col-sm-2 item">
                                 @{
                                     if (ViewBag.Details != null && ((IQueryable<TeachingTaskDetail>)ViewBag.Details).Where(r => (int)(Week)r.Week == i && (int)(SectionType)r.Section == j).FirstOrDefault() != null)
                                     {
@@ -122,7 +122,7 @@
                                     }
                                 }
                             </div>
-                        }
+                          }
                     </div>
                  }
             </div>
