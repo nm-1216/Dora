@@ -49,7 +49,7 @@
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <input type="hidden" name="TeachingTaskId" value="@ViewBag.TeachingTaskId" />
+                    <input type="hidden" id="TeachingTaskId" name="TeachingTaskId" value="@ViewBag.TeachingTaskId" />
                     <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
                 </td>
             </tr>
@@ -80,6 +80,7 @@
                     <button type="submit" class="btn btn-info">search</button>*@
             </div>
             <div class="col-lg-2 text-right">
+                @*<button type="button" class="btn btn-info" onclick="deleteDetail()">删除</button>*@
                 <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务明细',$('#importDiv'))">导入</button>
             </div>
         </div>
@@ -114,7 +115,9 @@
                                 @{
                                     if (ViewBag.Details != null && ((IQueryable<TeachingTaskDetail>)ViewBag.Details).Where(r => (int)(Week)r.Week == i && (int)(SectionType)r.Section == j).FirstOrDefault() != null)
                                     {
-                                        <label> 有 </label>
+                                        <label onclick="check('@j','@i')"> 有 </label>
+                                        <input type="hidden" id="chkWeek" />
+                                        <input type="hidden" id="chkSection" />
                                     }
                                     else
                                     {
@@ -122,9 +125,9 @@
                                     }
                                 }
                             </div>
-                          }
+                                    }
                     </div>
-                 }
+                                    }
             </div>
         </div>
 
@@ -181,58 +184,52 @@
         }
 
 
-        $('.btnDel').on('click', function () {
-            console.log('btnDel')
-            var id = $(this).attr('data-content-id');
+        function check(week, section) {
+            $("#chkWeek").val(week);
+            $("#chkSection").val(section);
+        }
 
-            layer.confirm('数据不可恢复，确认要删除吗？', {
-                btn: ['确定', '取消']
-            }, function () {
-                $.ajax({
-                    url: '/TeachingTask/DeleteDetail',
-                    type: 'POST',
-                    async: true,
-                    data: {
-                        id: id
-                    },
-                    timeout: 5000,
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        console.log(xhr)
-                        console.log('发送前')
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        console.log(data)
-                        console.log(textStatus)
-                        console.log(jqXHR)
-                        if (data.result == 1) {
-                            layer.closeAll();
-                            layer.msg(data.msg, {
-                                time: 2000, end: function () {
-                                    location.href = location.href;
-                                }
+        function deleteDetail() {
+            alert(1)
+            alert($("#TeachingTaskId").val());
+            var id = $("#TeachingTaskId").val();
+            var week = $("#chkWeek").val();
+            var section = $("#chkSection").val();
+
+            $.ajax({
+                url: '/TeachingTask/DeleteDetail',
+                type: 'POST',
+                async: true,
+                data: {
+                    id, id,
+                    week: week,
+                    section: section
+                },
+                timeout: 5000,
+                dataType: 'json',
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+                    if (data.result == 1) {
+                        layer.closeAll();
+                        layer.msg(data.msg, {
+                            time: 2000, end: function () {
+                                location.href = location.href;
                             }
-                            )
-                        } else {
-                            layer.msg(data.msg);
                         }
-                    },
-                    error: function (xhr, textStatus) {
-                        console.log('错误')
-                        console.log(xhr)
-                        console.log(textStatus)
-                    },
-                    complete: function () {
-                        console.log('结束')
+                        )
+                    } else {
+                        layer.msg(data.msg);
                     }
-                })
-            }, function () {
-                return
-            });
-        })
+                }
+            }
 
-
-    </script>
+</script>
 }
 
 

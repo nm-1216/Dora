@@ -599,10 +599,25 @@
 
 
 
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteDetail(int id)
+        //{
+        //    var model = _TeachingTaskDetailService.Find(b => b.TeachingTaskDetailId == id);
+        //    if (model != null)
+        //    {
+        //        await _TeachingTaskDetailService.Remove(model);
+        //        return Json(new AjaxResult("操作成功") { result = 1 });
+        //    }
+        //    else
+        //    {
+        //        return Json(new AjaxResult("操作失败,未找到对象") { result = 0 });
+        //    }
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> DeleteDetail(int id)
+        public async Task<IActionResult> DeleteDetail(string id, int week,int section)
         {
-            var model = _TeachingTaskDetailService.Find(b => b.TeachingTaskDetailId == id);
+            var model = _TeachingTaskDetailService.Find(b => b.TeachingTaskId == id && (int)b.Week == week && (int)b.Section == section);
             if (model != null)
             {
                 await _TeachingTaskDetailService.Remove(model);
