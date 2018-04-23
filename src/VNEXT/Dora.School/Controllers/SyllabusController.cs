@@ -220,14 +220,13 @@
         #endregion
 
         #region 送审
-        
+
         public async Task<IActionResult> SendReview(string id)
         {
-            var model=_SyllabusService.Find(b => b.SyllabusId == id);
+            var model = _SyllabusService.Find(b => b.SyllabusId == id);
 
-            if (model.SubSta == 0)
+            if (model.SubSta == 0 || model.SubSta == 2)
             {
-                //
                 model.AudName = "送审";
                 model.AudOrd = 1;
                 model.AudRes = null;
@@ -239,7 +238,7 @@
             }
             else
             {
-                return Json(new AjaxResult( "失败,状态不正确") {result = 0, method = "SendReview"}); 
+                return Json(new AjaxResult("失败,状态不正确") {result = 0, method = "SendReview"});
             }
         }
 
@@ -247,8 +246,46 @@
 
         public IActionResult Review()
         {
-            return null;
+            var list=_SyllabusService.GetAll().Include(b=>b.Course).Where(b=>b.SubSta==1&&b.AudOrd==1);
+
+            return View(list);
         }
+
+        public async Task<IActionResult> ReviewPass(string[] ids, string msg, int rst)
+        {
+            // rst=1 通过
+            // rst=0 拒绝
+
+            var list = _SyllabusService.GetAll()
+                .Where(b => b.SubSta == 1 && b.AudOrd == 1 && ids.Contains(b.SyllabusId));
+
+            string AudName = "被拒";
+            int AudOrd = 1;
+            int AudRes = 0;
+
+            if (rst == 1)
+            {
+                AudName = "复审";
+                AudOrd = 2;
+                AudRes = 1;
+            }
+
+            foreach (var item in list)
+            {
+
+                item.AudName = AudName;
+                item.AudOrd = AudOrd;
+                item.AudRes = AudRes;
+                if (rst == 0)
+                {
+                    item.SubSta = 2;
+                }
+            }
+
+            var ii = await _SyllabusService.UpdateRange(list);
+            return Json(new AjaxResult(ii ? "成功" : "失败") {result = ii ? 1 : 0, method = "ReviewPass"});
+        }
+
 
         #endregion
         
@@ -256,7 +293,47 @@
 
         public IActionResult Review2()
         {
-            return null;
+            var list=_SyllabusService.GetAll().Include(b=>b.Course).Where(b=>b.SubSta==1&&b.AudOrd==2);
+
+            return View(list);
+        }
+        
+        public async Task<IActionResult> ReviewPass2(string[] ids, string msg, int rst)
+        {
+            // rst=1 通过
+            // rst=0 拒绝
+            // SubSta 0未送审 1待审 2拒绝 3通过
+            
+
+            var list = _SyllabusService.GetAll()
+                .Where(b => b.SubSta == 1 && b.AudOrd == 2 && ids.Contains(b.SyllabusId));
+
+            string AudName = "被拒";
+            int AudOrd = 2;
+            int AudRes = 0;
+            int SubSta = 2;
+
+            if (rst == 1)
+            {
+                AudName = "通过";
+                AudOrd = 3;
+                AudRes = 1;
+                SubSta = 3;
+            }
+
+            foreach (var item in list)
+            {
+
+                item.AudName = AudName;
+                item.AudOrd = AudOrd;
+                item.AudRes = AudRes;
+
+                item.SubSta = SubSta;
+
+            }
+
+            var ii = await _SyllabusService.UpdateRange(list);
+            return Json(new AjaxResult(ii ? "成功" : "失败") {result = ii ? 1 : 0, method = "ReviewPass2"});
         }
 
         #endregion

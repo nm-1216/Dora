@@ -1,0 +1,186 @@
+﻿@model IEnumerable<Syllabus>
+@{
+    ViewData["Title"] = "审批";
+    Layout = "_Layout";
+}
+
+
+<div class="container-fluid">
+    <div class="row" style="padding-top: 10px;">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">批量拒绝</div>
+                    <input type="text" class="form-control" name="result" value="" id="result" placeholder="拒绝理由">
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger Decline" type="button">批量拒绝</button>
+                    </span>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 text-right">
+            <button class="btn btn-success Pass" type="button">批量通过</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table-striped table">
+                <thead>
+                <tr>
+                    <th style="width: 24px;">
+                        <input type="checkbox" style="cursor: pointer" id="idList"/>
+                    </th>
+                    <th>课程名</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                    <th class="text-right">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="idList" value="@item.SyllabusId"/>
+                        </td>
+                        <td>
+                            <a asp-route-id="@item.SyllabusId" asp-action="Details">@item.Course.Name</a>
+                        </td>
+                        <td>@item.AudName</td>
+                        <td>@item.AudRes</td>
+                        <td class="text-right">
+                            <a data-content-id="@item.SyllabusId" class="btn btn-success btnPass btn-xs btnDel">通过</a>
+                            <a data-content-id="@item.SyllabusId" class="btn btn-danger btnNoPass btn-xs btnDel">拒绝</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#idList').on('click',
+                function() {
+                    $(this).prop("checked", $(this).prop("checked"));
+                    $("input[name='idList']").each(function() {
+                        $(this).prop("checked", !$(this).prop("checked"));
+                    });
+                });
+
+            $('.Decline').on('click',
+                function() {
+                    var result = $.trim($('#result').val());
+                    var ids = []
+                    $("input[name='idList']:checked").each(function() {
+                        ids.push($(this).val()); 
+                    });
+
+                    console.log('xxx', { ids, result })
+                    if (ids.length<=0) {
+                        layer.msg('请选择操作对象');
+                    } else if (result === '') {
+                        layer.msg('请填写拒绝理由');
+                    } else {
+                        layer.confirm('确认要拒绝审核吗？', {icon: 3, title:'提示'}, function(index) {
+                            $.ajax({
+                                type: "Post",
+                                url: "/Syllabus/ReviewPass2",
+                                data: { ids: ids, msg: result, rst: 0 },
+                                dataType: "json",
+                                success: function(rst) {
+                                    console.log(rst);
+                                    location.href = location.href;
+                                },
+                                complete: function(XMLHttpRequest, textStatus) {},
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                            });
+                            layer.close(index);
+                        });
+                    }
+                });
+            
+            $('.Pass').on('click',
+                function() {
+                    var result = $.trim($('#result').val());
+                    var ids = []
+                    $("input[name='idList']:checked").each(function() {
+                        ids.push($(this).val()); 
+                    });
+
+                    console.log('xxx', { ids, result })
+                    if (ids.length<=0) {
+                        layer.msg('请选择操作对象');
+                    } else {
+                        layer.confirm('确认要通过审核吗？', {icon: 3, title:'提示'}, function(index) {
+                            $.ajax({
+                                type: "Post",
+                                url: "/Syllabus/ReviewPass2",
+                                data: { ids: ids, msg: result, rst: 1 },
+                                dataType: "json",
+                                success: function(rst) {
+                                    console.log(rst);
+                                    location.href = location.href;
+                                },
+                                complete: function(XMLHttpRequest, textStatus) {},
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                            });
+                            layer.close(index);
+                        });
+                    }
+                });
+            
+
+            $('.btnPass').on('click',
+                function() {
+                    var ids = [];
+                    ids.push($(this).attr('data-content-id'));
+
+                    layer.confirm('确认要通过审核吗？', { icon: 3, title: '提示' },
+                        function(index) {
+                            $.ajax({
+                                type: "Post",
+                                url: "/Syllabus/ReviewPass2",
+                                data: { ids: ids, msg: '通过', rst: 1 },
+                                dataType: "json",
+                                success: function(rst) {
+                                    console.log(rst);
+                                    location.href = location.href;
+                                },
+                                complete: function(XMLHttpRequest, textStatus) {},
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                            });
+                            layer.close(index);
+                        });
+                });
+            
+            $('.btnNoPass').on('click',
+                function() {
+                    var ids = [];
+                    ids.push($(this).attr('data-content-id'));
+
+                    layer.confirm('确认要拒绝审核吗？', {icon: 3, title:'提示'}, function(index) {
+                        $.ajax({
+                            type: "Post",
+                            url: "/Syllabus/ReviewPass2",
+                            data: { ids: ids, msg: '拒绝', rst: 0 },
+                            dataType: "json",
+                            success: function(rst) {
+                                console.log(rst);
+                                location.href = location.href;
+                            },
+                            complete: function(XMLHttpRequest, textStatus) {},
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {}
+                        });
+                        layer.close(index);
+                    });
+                    
+                });
+        });
+    </script>
+}
