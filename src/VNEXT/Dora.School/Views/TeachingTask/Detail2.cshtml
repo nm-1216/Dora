@@ -132,7 +132,7 @@
 
             </div>
 
-            <input type="hidden" id="chkWeek" value="a" />
+            <input type="hidden" id="chkWeek"/>
             <input type="hidden" id="chkSection" />
         </div>
 
@@ -199,7 +199,12 @@
         }
 
         function deleteDetail() { 
-           
+
+            if ($("#chkWeek").val() == "")
+            {
+                return layer.msg("请先选择课程");
+            }
+
             var id = $("#TeachingTaskId").val();
             var week = $("#chkWeek").val();
             var section = $("#chkSection").val();
