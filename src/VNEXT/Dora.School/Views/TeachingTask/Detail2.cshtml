@@ -26,6 +26,9 @@
         border-top: 1px dashed black;
         border-right: 1px dashed black;
     }
+    .item:focus {
+        background:olive;
+    }
 
     .rowtitle:not(:last-child ) {
         background-color: floralwhite;
@@ -80,7 +83,7 @@
                     <button type="submit" class="btn btn-info">search</button>*@
             </div>
             <div class="col-lg-2 text-right">
-                @*<button type="button" class="btn btn-info" onclick="deleteDetail()">删除</button>*@
+                <button type="button" class="btn btn-info" onclick="deleteDetail()">删除</button>
                 <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务明细',$('#importDiv'))">导入</button>
             </div>
         </div>
@@ -111,25 +114,29 @@
                         <!--内容-->
                         @for (int j = 1; j <= 4; j++)
                         {
-                            <div class="col-lg-2 col-md-2 col-sm-2 item">
-                                @{
-                                    if (ViewBag.Details != null && ((IQueryable<TeachingTaskDetail>)ViewBag.Details).Where(r => (int)(Week)r.Week == i && (int)(SectionType)r.Section == j).FirstOrDefault() != null)
-                                    {
-                                        <label onclick="check('@j','@i')"> 有 </label>
-                                        <input type="hidden" id="chkWeek" />
-                                        <input type="hidden" id="chkSection" />
-                                    }
-                                    else
-                                    {
-                                        <label>&nbsp;</label>
-                                    }
-                                }
-                            </div>
-                                    }
+                            if (ViewBag.Details != null && ((IQueryable<TeachingTaskDetail>)ViewBag.Details).Where(r => (int)(Week)r.Week == i && (int)(SectionType)r.Section == j).FirstOrDefault() != null)
+                            {
+                                <div class="col-lg-2 col-md-2 col-sm-2 item" onclick="docheck(this,@i,@j)">
+                                    <label> 有 </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-lg-2 col-md-2 col-sm-2 item" >
+                                    <label>&nbsp;</label>
+                                </div>
+                            } 
+                        }
                     </div>
-                                    }
+                }
+
             </div>
+
+            <input type="hidden" id="chkWeek"/>
+            <input type="hidden" id="chkSection" />
         </div>
+
+
 
     </form>
 
@@ -184,14 +191,20 @@
         }
 
 
-        function check(week, section) {
+        function docheck(obj,week, section) {
             $("#chkWeek").val(week);
             $("#chkSection").val(section);
+            $(".item").css("background-color", "white");
+            obj.style.backgroundColor = "Highlight"; 
         }
 
-        function deleteDetail() {
-            alert(1)
-            alert($("#TeachingTaskId").val());
+        function deleteDetail() { 
+
+            if ($("#chkWeek").val() == "")
+            {
+                return layer.msg("请先选择课程");
+            }
+
             var id = $("#TeachingTaskId").val();
             var week = $("#chkWeek").val();
             var section = $("#chkSection").val();
@@ -227,7 +240,9 @@
                         layer.msg(data.msg);
                     }
                 }
-            }
+            });
+        }
+                
 
 </script>
 }
