@@ -38,12 +38,13 @@
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
                         <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="代码或名称">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">检索</button>
+                        </span>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-info">search</button>
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-1 hidden">
                 <a class="btn  btn-danger btnAdd">添加</a>
             </div>
         </div>

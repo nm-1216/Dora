@@ -25,12 +25,14 @@
         <tbody>
             <tr>
                 <td>
-                    <div class="checkbox">
+                    <div class="checkbox row">
                         @foreach (SelectListItem item in Model)
                         {
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="ModuleTypeIds" value="@item.Value" @(item.Selected ? "checked" : "") /> @item.Text
-                            </label>
+                            <div class="col-xs-1" style="width: 45%">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" name="ModuleTypeIds" value="@item.Value" @(item.Selected ? "checked" : "") /> @item.Text
+                                </label>
+                            </div>
                         }
                     </div>
                 </td>

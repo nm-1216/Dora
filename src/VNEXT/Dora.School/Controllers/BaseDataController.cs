@@ -1,4 +1,6 @@
 ﻿
+using Dora.Services.School;
+
 namespace Dora.School.Controllers
 {
     using Dora.Core;
@@ -58,6 +60,49 @@ namespace Dora.School.Controllers
             return View(list);
         }
 
+        public async Task<IActionResult> EditClass(string id, string name)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name))
+            {
+                return new JsonResult(new AjaxResult("参数不能是空") {result = 0});
+            }
+
+            var model = _ClassService.Find(b => b.ClassId == id);
+
+            if (model == null)
+            {
+                return new JsonResult(new AjaxResult("查询失败，班级是空") {result = 0});
+            }
+            else
+            {
+                model.Name = name;
+
+                var rst = await _ClassService.Update(model);
+
+                return new JsonResult(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 1 : 0});
+            }
+        }
+
+        public async Task<IActionResult> DeleteClass(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new JsonResult(new AjaxResult("参数不能是空") {result = 0});
+            }
+
+            var model = _ClassService.Find(b => b.ClassId == id);
+
+            if (model == null)
+            {
+                return new JsonResult(new AjaxResult("查询失败，班级是空") {result = 0});
+            }
+            else
+            {
+                var rst = await _ClassService.Remove(model);
+                return new JsonResult(new AjaxResult(rst ? "成功" : "失败") {result = rst ? 1 : 0});
+            }
+        }
+        
         public async Task<IActionResult> ImportClass([FromServices]IHostingEnvironment env, IList<IFormFile> files)
         {
             foreach (var file in files)

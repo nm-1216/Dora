@@ -33,18 +33,19 @@
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
-        <div class="row" style="padding-top:10px;">
-            <div class="col-lg-10">
+        <div class="row" style="padding:10px 0;">
+            <div class="col-xs-6">
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
                         <input type="text" class="form-control" name="IndexsearchKey" value="@ViewData["IndexsearchKey"]" id="IndexsearchKey" placeholder="学期">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">检索</button>
+                        </span>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-info">search</button>
             </div>
-            <div class="col-lg-2 text-right">
+            <div class="col-xs-6 text-right">
                 <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入教学任务',$('#importDiv'))">导入</button>
                 <a class="btn btn-danger" asp-action="Create">添加信息</a>
             </div> 
@@ -56,14 +57,8 @@
                     <thead>
                         <tr>
                             <th>学期</th>
-                            <th>开始周次</th>
-                            <th>结束周次</th>
-                            @*<th>教室编号</th>
-                            <th>星期</th>
-                            <th>上课节次</th>*@
                             <th>课程</th>
-                            <th>备注</th>
-
+                            <th>周次</th>
                             <th class="text-right">操作</th>
                         </tr>
                     </thead>
@@ -71,21 +66,14 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.Term</td>
-                                <td>@item.BegWeek</td>
-                                <td>@item.EndWeek</td>
-                                @*<td>@item.ClaRoomCode</td>
-                                <td>@item.Week</td>
-                                <td>@item.Section</td>*@
-                                <td>@item.Course</td> 
-                                <td>@item.Memo</td>   
-
+                                <td title="@item.Memo">@item.Term</td>
+                                <td>@item.Course.Name</td> 
+                                <td>@($@"{item.BegWeek}/{item.EndWeek}")</td>
                                 <td class="text-right"> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-info btn-xs btnPush">下发</a>
                                     <a asp-action="Detail2" asp-route-id="@item.TeachingTaskId" class="btn btn-primary btn-xs">排程</a> 
                                     <a asp-action="Edit" asp-route-id="@item.TeachingTaskId" class="btn btn-primary btn-xs">修改</a> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-danger btn-xs btnDel">删除</a>
-                              
                                 </td>
                             </tr>
                         }

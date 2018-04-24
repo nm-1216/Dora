@@ -71,9 +71,12 @@
                     <div class="input-group">
                         <div class="input-group-addon">分组</div>
                         <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="请输入分组">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">检索</button>
+                        </span>
                     </div>
                 </div>               
-                <button type="submit" class="btn btn-info">检索</button>
+                
             </div>
             <div class="col-sm-4 text-right">
                 <button class="btn btn-danger" type="button" onclick="DivLayer(1,'添加分类',$('.AddTypeDiv'))">添加分类</button>

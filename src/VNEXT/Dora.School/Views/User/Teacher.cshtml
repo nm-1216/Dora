@@ -34,21 +34,20 @@
 
 <div class="container-fluid">
     <form id="mainForm" class="form-inline" method="post">
-        <div class="row" style="padding-top:10px;">
-            <div class="col-lg-6">
+        <div class="row" style="padding:10px 0;">
+            <div class="col-xs-6">
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">搜索条件</div>
                         <input type="text" class="form-control" name="searchKey" value="@ViewData["searchKey"]" id="searchKey" placeholder="工号或姓名">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">检索</button>
+                        </span>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-info">检索</button>
-
             </div>
-            <div class="col-sm-2 col-sm-offset-4">
-                <button type="button" class="btn btn-block btn-danger" onclick="DivLayer(1,'导入学生',$('#importDiv'))">导入</button>
-                <button type="button" class="btn btn-block btn-primary">导出</button>
+            <div class="col-xs-6 text-right">
+                <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入学生',$('#importDiv'))">导入</button>
             </div>
 
         </div>
