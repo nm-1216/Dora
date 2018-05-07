@@ -1,4 +1,6 @@
-﻿namespace Dora.Services.School
+﻿using System.Linq;
+
+namespace Dora.Services.School
 {
     using Dora.Domain.Entities.School;
     using Dora.Infrastructure.Infrastructures.Interfaces;
@@ -9,6 +11,12 @@
     {
         public StudentService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+            
+        }
+        
+        public void SynchroUser(string AppID,string Appsecret)
+        {
+           
         }
     }
 }

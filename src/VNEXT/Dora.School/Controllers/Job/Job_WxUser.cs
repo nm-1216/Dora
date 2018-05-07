@@ -1,4 +1,6 @@
-﻿namespace Dora.School.Controllers.Job
+﻿using Dora.Services.School.Interfaces;
+
+namespace Dora.School.Controllers.Job
 {
     using Pomelo.AspNetCore.TimedJob;
     using System;
@@ -16,7 +18,7 @@
     public class JobWxUser : Job
     {
         [Invoke(Interval = 1000 * 3600 * 1, SkipWhileExecuting = true)]
-        public void Run([FromServices] IOptions<WxConfig> options, DbContext dbContext)
+        public void Run1([FromServices] IOptions<WxConfig> options,DbContext dbContext)
         {
             var wxconfig = options.Value;
 
@@ -50,5 +52,10 @@
                 db.SaveChanges();
             }
         }
+        
+       
     }
+    
+
+  
 }

@@ -75,11 +75,11 @@ namespace Dora.School
                 // options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
             });
 
-            services.AddMvc();
+            //services.AddMvc();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<WxConfig>(Configuration.GetSection("wx"));
-            services.AddSession();
+            //services.AddSession();
 
 
             services.AddScoped<DbContext, ApplicationDbContext>();
@@ -125,7 +125,15 @@ namespace Dora.School
             services.AddTransient<ITimeCardService, TimeCardService>();
 
 
-            services.AddTimedJob();
+            #region AddObject
+            //services.AddTimedJob();
+            services.AddSession();
+            services.AddMvc()
+                .AddJsonOptions(
+                    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+            #endregion
+            
             return services.BuildServiceProvider();
         }
 

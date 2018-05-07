@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Dora.Domain.Entities.School;
-
+﻿
 namespace Dora.School
 {
     using Dora.Database;

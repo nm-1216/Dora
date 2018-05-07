@@ -53,6 +53,9 @@
             ViewData["IndexsearchKey"] = IndexsearchKey;
             var list = _TeachingTaskService.GetAll()
                 .Include(b=>b.Course)
+                .Include(b=>b.Teachers).ThenInclude(c=>c.Teacher)
+                .Include(b=>b.Classes).ThenInclude(c=>c.Class)
+                
                 .Where(r => (IndexsearchKey == null || r.Term.Contains(IndexsearchKey)));
 
             return View(list);

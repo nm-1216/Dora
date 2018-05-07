@@ -58,6 +58,8 @@
                         <tr>
                             <th>学期</th>
                             <th>课程</th>
+                            <th>班级</th>
+                            <th>教师</th>
                             <th>周次</th>
                             <th class="text-right">操作</th>
                         </tr>
@@ -67,7 +69,9 @@
                         {
                             <tr>
                                 <td title="@item.Memo">@item.Term</td>
-                                <td>@item.Course.Name</td> 
+                                <td>@item.Course.Name (@item.CourseId)</td> 
+                                <td>@(string.Join(",",item.Classes.Select(b=>b.Class.Name)))</td> 
+                                <td>@(string.Join(",",item.Teachers.Select(b=>b.Teacher.Name)))</td> 
                                 <td>@($@"{item.BegWeek}/{item.EndWeek}")</td>
                                 <td class="text-right"> 
                                     <a data-content-id="@item.TeachingTaskId" class="btn btn-info btn-xs btnPush">下发</a>

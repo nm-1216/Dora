@@ -17,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 using Dora.ViewModels.Extensions;
 using System.IO;
 using Microsoft.AspNetCore.StaticFiles;
-using Dora.School.Helpers;
 
 namespace Dora.School.Controllers
 {
@@ -48,10 +47,10 @@ namespace Dora.School.Controllers
                 || m.Professional.Name.Contains(searchKey)
                 || m.Year.Contains(searchKey)).OrderBy(m => m.CreateTime).AsNoTracking(), page, pageSize);
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("SearchList", list);
-            }
+            //if (Request.IsAjaxRequest())
+//            {
+//                return PartialView("SearchList", list);
+//            }
             return View(list);
         }
 

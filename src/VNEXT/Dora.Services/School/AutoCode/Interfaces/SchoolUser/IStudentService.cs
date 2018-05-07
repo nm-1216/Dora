@@ -5,5 +5,6 @@
 
     public partial interface IStudentService : IBaseService<Student>
     {
+        void SynchroUser(string AppID,string Appsecret);
     }
 }
