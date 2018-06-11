@@ -37,17 +37,17 @@
         /// <summary>
         /// Gets or sets 课程简介 
         /// </summary>
-        public virtual string Discription { get; set; } = string.Empty;
+        public virtual string Discription { get; set; }
 
         /// <summary>
         /// Gets or sets 课程性质 专业课    非专业课
         /// </summary>
-        public virtual string Nature { get; set; } = string.Empty;
+        public virtual string Nature { get; set; }
 
         /// <summary>
         /// Gets or sets 课程类别 理论课    理论+实践 课
         /// </summary>
-        public virtual string Type { get; set; } = string.Empty;
+        public virtual string Type { get; set; }
 
         /// <summary>
         /// Gets or sets 组织架构ID 所属部门

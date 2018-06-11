@@ -59,6 +59,7 @@
                             <th>工号</th>
                             <th>姓名</th>
                             <th>创建时间</th>
+                            <th style="text-align: right">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,6 +69,9 @@
                                 <td>@item.TeacherId</td>
                                 <td>@item.Name</td>
                                 <td>@item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td style="text-align: right">
+                                    <a data-content-id="@item.TeacherId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -127,6 +131,60 @@
         function AjaxForm1Submit() {
             $("#AjaxForm1").ajaxSubmit(options);
         }
+        
+        
+        $(function() {
+            $('.btnDel').on('click', function () {
+                console.log('btnDel')
+                var id = $(this).attr('data-content-id');
+
+                layer.confirm('数据不可恢复，确认要删除吗？', {
+                    btn: ['确定', '取消']
+                }, function () {
+                    $.ajax({
+                        url: '/User/Delete',
+                        type: 'POST',
+                        async: true,
+                        data: {
+                            id: id
+                        },
+                        timeout: 5000,
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            console.log(xhr)
+                            console.log('发送前')
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data)
+                            console.log(textStatus)
+                            console.log(jqXHR)
+                            if (data.result == 1) {
+                                layer.closeAll();
+                                layer.msg(data.msg, {
+                                        time: 2000, end: function () {
+                                            location.href = location.href;
+                                        }
+                                    }
+                                )
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+                            console.log('错误')
+                            console.log(xhr)
+                            console.log(textStatus)
+                        },
+                        complete: function () {
+                            console.log('结束')
+                        }
+                    })
+                }, function () {
+                    return
+                });
+            })
+        })
+        
     </script>
 }
 

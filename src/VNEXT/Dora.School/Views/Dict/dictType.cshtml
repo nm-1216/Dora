@@ -1,33 +1,38 @@
-﻿@model Dora.Core.PageList<Student>
+﻿@model Dora.Core.PageList<DictType>
 
 @{
-    ViewData["Title"] = "学生管理";
+    ViewData["Title"] = "字典管理";
     Layout = "_Layout";
 }
 
-<div id="importDiv" style="display:none">
-    <form id="AjaxForm1" name="AjaxForm1" action="~/User/ImportStudent" enctype="multipart/form-data" method="post">
-        <table class="table table-striped">
+<div class="AddDiv" style="display:none">
+    <form id="AddModule" method="post" enctype="multipart/form-data" asp-action="CreateType">
+        <table class="table-striped table">
+            <thead>
             <tr>
-                <td>
-                    <input type="file" name="files" />
-                </td>
+                <th>分类</th>
+                <th>名称:</th>
+                <th>路径:</th>
+                <th>排序:</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><select class="form-control" name="moduleType" asp-items="@ViewBag.type"></select> </td>
+                <td><input name="name" type="text" class="form-control" /></td>
+                <td><input name="url" type="text" class="form-control" /></td>
+                <td><input name="index" value="1" type="number" class="form-control" /></td>
             </tr>
             <tr>
-                <td style="text-align: center">
-                    <input type="button" onclick="AjaxForm1Submit()" value="提交" class="btn btn-danger btn-sm" style="width:150px" />
-                </td>
+                <td colspan="4"><input name="files" type="file" class="" /></td>
             </tr>
             <tr>
-                <td>
-                    <b>约束：</b><br />
-                    1，第一行表头必须固定，不支持随意调换列。<br />
-                    2，工作簿选取顺序，第一顺序是工作簿名字叫学生，第二顺序是第一工作簿<br />
-                    2，<a href="~/template/student.xlsx">下载模板</a>
+                <td colspan="4" class="text-center">
+                    <button class="btn btn-danger" style="width:120px" type="submit">提交</button>
                 </td>
             </tr>
+            </tbody>
         </table>
-        <ol id="msgul"></ol>
     </form>
 </div>
 
@@ -46,7 +51,8 @@
                 </div>
             </div>
             <div class="col-xs-6 text-right">
-                <button type="button" class="btn btn-danger" onclick="DivLayer(1,'导入学生',$('#importDiv'))">导入</button>
+                <a class="btn btn-info" href="dictType">分类管理</a>
+                <button class="btn btn-danger" type="button" onclick="DivLayer(1, '添加', $('.AddDiv'))">添加</button>
             </div>
 
         </div>
@@ -56,12 +62,10 @@
                 <table class="table-striped table">
                     <thead>
                         <tr>
-                            <th>学号</th>
-                            <th>姓名</th>
-                            <th>身份证</th>
-                            <th>出生日期</th>
-                            <th>性别</th>
-                            <th>班级</th>
+                            <th>类型</th>
+                            <th>类型名称</th>
+                            <th>字典key</th>
+                            <th>字典值</th>
                             <th style="text-align: right">操作</th>
                         </tr>
                     </thead>
@@ -69,14 +73,15 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.StudentId</td>
-                                <td>@item.Name</td>
-                                <td>@item.IdCard</td>
-                                <td>@Dora.Helpers.IdCardHelper.GetBrithdayFromIdCard(item.IdCard)</td>
-                                <td>@Dora.Helpers.IdCardHelper.GetSexFromIdCard(item.IdCard)</td>
-                                <td>@item.Class.ClassId</td>
+                                <td>@item.Type</td>
+                                <td>@item.DictType.name</td>
+                                <td>@item.Key</td>
+                                <td>@item.Value</td>
+                               
+
+
                                 <td style="text-align: right">
-                                    <a data-content-id="@item.StudentId" class="btn btn-danger btn-xs btnDel">删除</a>
+                                    <a data-content-key="@item.Key" data-content-type="@item.Type" class="btn btn-danger btn-xs btnDel">删除</a>
                                 </td>
                             </tr>
                         }

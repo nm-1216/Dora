@@ -27,7 +27,8 @@ namespace Dora.Database
             //builder.AddConfiguration(new ApplicationMap());
 
             ////builder.AddConfiguration(new ApplicationUserMap());
-            //builder.AddConfiguration(new DictMap());
+            builder.AddConfiguration(new DictMap());
+            builder.AddConfiguration(new DictTypeMap());
 
 
 

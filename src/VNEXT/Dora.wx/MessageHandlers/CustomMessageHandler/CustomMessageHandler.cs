@@ -97,18 +97,8 @@ namespace Dora.wx.CustomMessageHandler
         /// <returns></returns>
         public override Weixin.MP.Entities.IResponseMessageBase OnTextRequest(RequestMessageText requestMessage)
         {
-
-
-
-
             var defaultResponseMessage = base.CreateResponseMessage<ResponseMessageText>();
-
-            var requestHandler =
-                requestMessage.StartHandler()
-
-
-                
-                
+            var requestHandler =requestMessage.StartHandler()
                 .Keyword("OPENID", () =>
                 {
                     var openId = requestMessage.FromUserName;//获取OpenId
@@ -153,9 +143,7 @@ namespace Dora.wx.CustomMessageHandler
 
         public override Weixin.MP.Entities.IResponseMessageBase OnShortVideoRequest(RequestMessageShortVideo requestMessage)
         {
-            var responseMessage = this.CreateResponseMessage<ResponseMessageText>();
-            responseMessage.Content = "您刚才发送的是小视频";
-            return responseMessage;
+            return null;
         }
 
         /// <summary>
@@ -165,34 +153,7 @@ namespace Dora.wx.CustomMessageHandler
         /// <returns></returns>
         public override Weixin.MP.Entities.IResponseMessageBase OnImageRequest(RequestMessageImage requestMessage)
         {
-            //一隔一返回News或Image格式
-            if (base.WeixinContext.GetMessageContext(requestMessage).RequestMessages.Count() % 2 == 0)
-            {
-                var responseMessage = CreateResponseMessage<ResponseMessageNews>();
-
-                responseMessage.Articles.Add(new Article()
-                {
-                    Title = "您刚才发送了图片信息",
-                    Description = "您发送的图片将会显示在边上",
-                    PicUrl = requestMessage.PicUrl,
-                    Url = "http://wx.nieba.cn"
-                });
-                responseMessage.Articles.Add(new Article()
-                {
-                    Title = "第二条",
-                    Description = "第二条带连接的内容",
-                    PicUrl = requestMessage.PicUrl,
-                    Url = "http://wx.nieba.cn"
-                });
-
-                return responseMessage;
-            }
-            else
-            {
-                var responseMessage = CreateResponseMessage<ResponseMessageImage>();
-                responseMessage.Image.MediaId = requestMessage.MediaId;
-                return responseMessage;
-            }
+            return null;
         }
 
         /// <summary>
@@ -202,28 +163,7 @@ namespace Dora.wx.CustomMessageHandler
         /// <returns></returns>
         public override Weixin.MP.Entities.IResponseMessageBase OnVoiceRequest(RequestMessageVoice requestMessage)
         {
-            var responseMessage = CreateResponseMessage<ResponseMessageMusic>();
-            //上传缩略图
-            //var accessToken = Containers.AccessTokenContainer.TryGetAccessToken(appId, appSecret);
-            var uploadResult = Weixin.MP.AdvancedAPIs.MediaApi.UploadTemporaryMedia(appId, UploadMediaFileType.image,"");
-
-            //设置音乐信息
-//            responseMessage.Music.Title = "天籁之音";
-//            responseMessage.Music.Description = "播放您上传的语音";
-//            responseMessage.Music.MusicUrl = "http://sdk.weixin.senparc.com/Media/GetVoice?mediaId=" + requestMessage.MediaId;
-//            responseMessage.Music.HQMusicUrl = "http://sdk.weixin.senparc.com/Media/GetVoice?mediaId=" + requestMessage.MediaId;
-//            responseMessage.Music.ThumbMediaId = uploadResult.media_id;
-
-            //推送一条客服消息
-            try
-            {
-                CustomApi.SendText(appId, WeixinOpenId, "本次上传的音频MediaId：" + requestMessage.MediaId);
-
-            }
-            catch {
-            }
-
-            return responseMessage;
+            return null;
         }
         /// <summary>
         /// 处理视频请求
@@ -232,35 +172,7 @@ namespace Dora.wx.CustomMessageHandler
         /// <returns></returns>
         public override Weixin.MP.Entities.IResponseMessageBase OnVideoRequest(RequestMessageVideo requestMessage)
         {
-            var responseMessage = CreateResponseMessage<ResponseMessageText>();
-            responseMessage.Content = "您发送了一条视频信息，ID：" + requestMessage.MediaId;
-
-            #region 上传素材并推送到客户端
-
-            Task.Factory.StartNew(async () =>
-             {
-                 //上传素材
-                 var dir = "";
-                 var file = await MediaApi.GetAsync(appId, requestMessage.MediaId, dir);
-                 var uploadResult = await MediaApi.UploadTemporaryMediaAsync(appId, UploadMediaFileType.video, file, 50000);
-                 await CustomApi.SendVideoAsync(appId, base.WeixinOpenId, uploadResult.media_id, "这是您刚才发送的视频", "这是一条视频消息");
-             }).ContinueWith(async task =>
-             {
-                 if (task.Exception != null)
-                 {
-
-                     var msg = string.Format("上传素材出错：{0}\r\n{1}",
-                                task.Exception.Message,
-                                task.Exception.InnerException != null
-                                    ? task.Exception.InnerException.Message
-                                    : null);
-                     await CustomApi.SendTextAsync(appId, base.WeixinOpenId, msg);
-                 }
-             });
-
-            #endregion
-
-            return responseMessage;
+            return null;
         }
 
 
@@ -271,12 +183,7 @@ namespace Dora.wx.CustomMessageHandler
         /// <returns></returns>
         public override Weixin.MP.Entities.IResponseMessageBase OnLinkRequest(RequestMessageLink requestMessage)
         {
-            var responseMessage = Weixin.MP.Entities.ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            responseMessage.Content = string.Format(@"您发送了一条连接信息：
-Title：{0}
-Description:{1}
-Url:{2}", requestMessage.Title, requestMessage.Description, requestMessage.Url);
-            return responseMessage;
+            return null;
         }
 
         /// <summary>
@@ -300,9 +207,7 @@ Url:{2}", requestMessage.Title, requestMessage.Description, requestMessage.Url);
             * return responseMessage;
             */
 
-            var responseMessage = this.CreateResponseMessage<ResponseMessageText>();
-            responseMessage.Content = "这条消息来自DefaultResponseMessage。";
-            return responseMessage;
+            return null;
         }
 
 

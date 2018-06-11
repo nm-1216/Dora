@@ -60,13 +60,18 @@
         {
             ViewData["searchKey"] = searchKey;
 
-            var list = new PageList<Student>(_StudentService.GetAll().Include(b => b.Class)
-                .Include(b => b.SchoolUser)
-                .Where(
-                b => string.IsNullOrEmpty(searchKey) ||
-                b.StudentId.Contains(searchKey) ||
-                b.Name.Contains(searchKey))
-                .OrderBy(o => o.CreateTime), page, 10);
+            var list = new PageList<Student>(
+                _StudentService.GetAll()
+                    .Include(b => b.Class)
+                    .Include(b => b.SchoolUser)
+                    .Where(
+                        b => string.IsNullOrEmpty(searchKey) ||
+                             b.StudentId.Contains(searchKey) ||
+                             b.Name.Contains(searchKey)||
+                             b.Class.ClassId.Contains(searchKey)
+                     )
+                    
+                    .OrderBy(o => o.CreateTime), page, 10);
 
             return View(list);
         }

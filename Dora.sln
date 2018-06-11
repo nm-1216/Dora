@@ -45,6 +45,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wx-app", "src\VNEXT\wx-app\
 	ProjectSection(WebsiteProperties) = preProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dora.WexinPay", "src\VNEXT\Dora.WexinPay\Dora.WexinPay.csproj", "{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{50457F05-B2E5-4238-B1D3-E1A76BCE5D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{50457F05-B2E5-4238-B1D3-E1A76BCE5D4B} = {28F98A7A-49BA-4399-A040-C45C439A790E}
 		{1C8C6BB6-D393-4F78-AD6F-55693F0B822B} = {28F98A7A-49BA-4399-A040-C45C439A790E}
 		{58F62469-BDB3-4BDA-A36D-26EC781AE4CE} = {6D4BC6AC-0120-470C-B6A9-7AB43717092D}
+		{D332A5F4-6C5B-44E6-8ED8-0EB3185BC431} = {6C7D1130-315A-412C-B4EC-88835E4D51C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {299D562A-89A6-4208-AF36-A7EB02FB1BE9}

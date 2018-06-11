@@ -33,11 +33,11 @@ namespace Dora.School
         {
 //            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-            services.Configure<FormOptions>(x =>
-            {
-                x.ValueLengthLimit = int.MaxValue;
-                x.MultipartBodyLengthLimit = int.MaxValue;
-            });
+//            services.Configure<FormOptions>(x =>
+//            {
+//                x.ValueLengthLimit = int.MaxValue;
+//                x.MultipartBodyLengthLimit = int.MaxValue;
+//            });
 
             services.AddCors(options => options.AddPolicy(
                 "AllowSameDomain",
@@ -75,11 +75,9 @@ namespace Dora.School
                 // options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;//401状态改为302状态并重定向到登录路径。
             });
 
-            //services.AddMvc();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<WxConfig>(Configuration.GetSection("wx"));
-            //services.AddSession();
 
 
             services.AddScoped<DbContext, ApplicationDbContext>();
@@ -124,9 +122,12 @@ namespace Dora.School
             services.AddTransient<ICoursewareService, CoursewareService>();
             services.AddTransient<ITimeCardService, TimeCardService>();
 
+            services.AddTransient<IDictService, DictService>();
+            services.AddTransient<IDictTypeService, DictTypeService>();
+
 
             #region AddObject
-            //services.AddTimedJob();
+            services.AddTimedJob();
             services.AddSession();
             services.AddMvc()
                 .AddJsonOptions(
@@ -153,6 +154,7 @@ namespace Dora.School
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            
             app.UseTimedJob();
             app.UseSession();
             app.UseStaticFiles();

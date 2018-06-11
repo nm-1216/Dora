@@ -234,6 +234,8 @@ namespace Dora.School.Controllers
 
             url = "/upload/" + NewFile;
             return Json(new { uploaded = uploaded, fileName = NewFile, url = url });
+
+           
         }
 
         public static string SaveFile(IHostingEnvironment hostingEnvironment, string dir, IFormFile upload)

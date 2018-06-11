@@ -14,7 +14,8 @@ namespace Dora.Database
         //public DbSet<Action> Actions { get; set; }
         //public DbSet<Application> Applications { get; set; }
         public DbSet<Group> Groups { get; set; }
-        //public DbSet<Dict> Dicts { get; set; }
+        public DbSet<Dict> Dicts { get; set; }
+        public DbSet<Dict> DictTypes { get; set; }
 
         //#endregion
 

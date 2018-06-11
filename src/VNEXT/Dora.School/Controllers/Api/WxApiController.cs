@@ -103,6 +103,23 @@ namespace Dora.School.Controllers
 
         
         [EnableCors("AllowSameDomain")]
+        public IActionResult GetWxJsConfig()
+        {
+            
+            var model = new
+            {
+                appId=_wxConfig.AppID,
+                timeStamp=timestamp,
+                nonceStr=nonceStr,
+                signature=signature,
+                paySign=paySign
+            };
+            return null;
+
+        }
+
+        
+        [EnableCors("AllowSameDomain")]
         public IActionResult GetCourseList(string openId)
         {
             var user = this._userManager.Users.Include(b=>b.Teacher).Include(b=>b.Student).FirstOrDefault(o => o.WxOpenId == openId);

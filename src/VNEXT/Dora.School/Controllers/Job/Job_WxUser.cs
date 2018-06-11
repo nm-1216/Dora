@@ -1,4 +1,5 @@
 ﻿using Dora.Services.School.Interfaces;
+using Dora.Weixin;
 
 namespace Dora.School.Controllers.Job
 {
@@ -18,15 +19,15 @@ namespace Dora.School.Controllers.Job
     public class JobWxUser : Job
     {
         [Invoke(Interval = 1000 * 3600 * 1, SkipWhileExecuting = true)]
-        public void Run1([FromServices] IOptions<WxConfig> options,DbContext dbContext)
+        public void Run1([FromServices] IOptions<WxConfig> options, DbContext dbContext)
         {
             var wxconfig = options.Value;
 
             using (var db = dbContext as ApplicationDbContext)
             {
-                if(db==null)
+                if (db == null)
                     return;
-                
+
                 var list = db.Users.Where(b => !string.IsNullOrEmpty(b.WxOpenId));
                 Weixin.MP.Containers.AccessTokenContainer.Register(wxconfig.AppID, wxconfig.Appsecret);
                 foreach (var item in list)
@@ -41,7 +42,8 @@ namespace Dora.School.Controllers.Job
                         Console.WriteLine(e);
                         continue;
                     }
-                    if (model != null)
+
+                    if (model != null && (model.ErrorCodeValue<=0))
                     {
                         item.WxAvatar = model.headimgurl;
                         item.WxName = model.nickname;
@@ -52,10 +54,10 @@ namespace Dora.School.Controllers.Job
                 db.SaveChanges();
             }
         }
-        
-       
-    }
-    
 
-  
+
+    }
+
+
+
 }
